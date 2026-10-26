@@ -1,4 +1,4 @@
-"""API_Server security controls for the local prototype (design §21, Req 27.1-27.4).
+﻿"""API_Server security controls for the local prototype (design Â§21, Req 27.1-27.4).
 
 HELIX implements no authentication or authorisation. These controls narrow who can reach
 it from a browser on the same machine; they are not a substitute for auth:

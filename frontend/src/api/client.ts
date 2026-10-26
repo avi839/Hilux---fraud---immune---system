@@ -1,4 +1,4 @@
-// Typed fetch wrapper for the HELIX REST API (/api/v1). Every request has a deadline so a
+﻿// Typed fetch wrapper for the HELIX REST API (/api/v1). Every request has a deadline so a
 // control action that receives no confirmation surfaces as an error (Req 22.15).
 
 import {
@@ -24,7 +24,7 @@ import {
   type TimelineDoc,
 } from "./types";
 
-export const API_BASE = "/api/v1";
+export const API_BASE = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/v1` : "/api/v1";
 /** Deadline of control actions: no confirmation within it is reported as an error (Req 22.15). */
 export const CONFIRM_TIMEOUT_MS = 5_000;
 /** Deadline of read-only Case documents. The evidence, timeline and subgraph of a large Case

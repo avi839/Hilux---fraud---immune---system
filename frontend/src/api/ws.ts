@@ -1,4 +1,4 @@
-// WebSocket client (design §22): one reconnecting socket per channel, aggregated into a
+﻿// WebSocket client (design Â§22): one reconnecting socket per channel, aggregated into a
 // single connection status. On drop the status goes "down" at once (Req 22.12) and the last
 // data stays in the store; reconnects follow backoffDelay; when every channel is open again
 // after a drop, onReconnect fires so the caller can refetch REST state (Req 22.13).
