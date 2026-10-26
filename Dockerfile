@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r backend/requirements.txt
 COPY backend/ ./backend/
 COPY --from=frontend /build/frontend/dist ./frontend/dist
 ENV PYTHONPATH=/app/backend
-CMD python -m helix.api --config backend/config/demo.json --generator --soc --attacker --immune
+CMD python -m helix.api --config backend/config/demo.json --generator --soc --attacker --immune --host 0.0.0.0
