@@ -37,3 +37,4 @@ backend/data/*
 .env.*
 # Regenerable HELIX export (large); summary.json/results.md hold the scored results
 benchmarks/results/helix_alerts*.csv
+frontend/tmp-*.mjs
