@@ -1,0 +1,13 @@
+﻿node_modules
+.venv
+data
+*.duckdb
+*.duckdb.wal
+logs
+benchmarks/.cache
+.git
+__pycache__
+*.pyc
+.pytest_cache
+frontend/dist
+frontend/node_modules

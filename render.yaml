@@ -1,0 +1,6 @@
+﻿services:
+  - type: web
+    name: helix-fraud-immune
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/v1/status

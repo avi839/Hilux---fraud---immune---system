@@ -130,7 +130,7 @@ Build the Python 3.10 backend module by module (codec → fusion → sensors →
   - [x] 31.2 Frontend: simulated-analyst indicator, explained n/a states in Red vs Blue and the loop panel, Trace recent chips that favour high-risk transactions, and a compact dataset-stream line, with tests. _Requirements: 22, 38_
 
 - [ ] 32. Render deployment
-  - [-] 32.1 Deploy to Render: single Docker web service serving the built dashboard and API on one origin, password (HTTP Basic) auth on every route and WebSocket via environment variables, configurable host, port and dashboard origin, render.yaml blueprint, with tests. _Requirements: 27_
+  - [ ] 32.1 Deploy to Render: single Docker web service serving the built dashboard and API on one origin, password (HTTP Basic) auth on every route and WebSocket via environment variables, configurable host, port and dashboard origin, render.yaml blueprint, with tests. _Requirements: 27_
 
 - [ ]* 17. Optional: Narrative_Generator
   - [ ]* 17.1 Implement Narrative_Generator with unit + Hypothesis property tests for the design properties of this module. _Requirements: 26_
