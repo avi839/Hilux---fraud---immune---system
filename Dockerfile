@@ -1,4 +1,4 @@
-FROM node:20-slim AS frontend
+﻿FROM node:20-slim AS frontend
 WORKDIR /build
 COPY frontend/package*.json ./frontend/
 COPY docs/ ./docs/
@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r backend/requirements.txt
 COPY backend/ ./backend/
 COPY --from=frontend /build/frontend/dist ./frontend/dist
 ENV PYTHONPATH=/app/backend
-CMD python -m helix.api --config backend/config/demo.json --generator --soc --attacker --immune --static-dir /app/frontend/dist
+CMD python -m helix.api --config backend/config/demo.json --generator --soc --attacker --immune
