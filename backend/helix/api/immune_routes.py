@@ -43,10 +43,23 @@ def campaign_doc(attacker: Any, c: Any) -> dict[str, Any]:
     }
 
 
-def genome_doc(g: Any) -> dict[str, Any]:
+def genome_doc(g: Any, agent: Any = None) -> dict[str, Any]:
+    """One Pattern_Genome: identity, lineage, score, its numeric ``params`` and, when the parent
+    is known to ``agent``, ``changed_dimensions`` (the Req 20.7 dimensions that differ from the
+    parent; None for a root genome or an unknown parent)."""
+    params = {str(k): (int(v) if isinstance(v, int) and not isinstance(v, bool) else float(v))
+              for k, v in dict(getattr(g, "params", None) or {}).items()}
+    changed: Optional[list[str]] = None
+    if agent is not None and g.parent_id is not None:
+        try:
+            parent = agent.genome(g.parent_id)
+            changed = [str(d) for d in g.differs_from(parent)]
+        except (KeyError, AttributeError):
+            changed = None
     return {"genome_id": g.genome_id, "pattern_type": str(getattr(g.ptype, "value", g.ptype)),
             "parent_id": g.parent_id, "generation": g.generation, "evasion": g.evasion,
-            "scored_campaigns": g.scored_campaigns, "retired": g.retired}
+            "scored_campaigns": g.scored_campaigns, "retired": g.retired, "params": params,
+            "changed_dimensions": changed}
 
 
 def attacker_doc(state: Any, recent: int = RECENT) -> dict[str, Any]:
@@ -74,7 +87,7 @@ def attacker_doc(state: Any, recent: int = RECENT) -> dict[str, Any]:
         campaigns_total=len(camps), campaigns_completed=len(done), campaigns_live=len(camps) - len(done),
         mean_evasion=(sum(ev) / len(ev)) if ev else None,
         recent_campaigns=[campaign_doc(agent, c) for c in sorted(camps, key=lambda c: c.started_at)[-recent:][::-1]],
-        top_genomes=[genome_doc(g) for g in scored[:10]],
+        top_genomes=[genome_doc(g, agent) for g in scored[:10]],
     )
     return jsonable(doc)
 

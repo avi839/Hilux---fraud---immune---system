@@ -4,7 +4,8 @@ import { axe } from "vitest-axe";
 import { dashboard } from "../../store/store";
 import { jsonResponse, routeFetch } from "../../test/fixtures";
 import { sampleMetrics } from "../../test/sampleRun";
-import { LoopPanel } from "./LoopPanel";
+import { simAnalystOf } from "../../api/live";
+import { LoopPanel, SIM_ANALYST_HELP, WEIGHTS_AT_START_TEXT } from "./LoopPanel";
 import { attackerRunning, normaliseMetrics, NOT_APPLICABLE, poolSize, pushSample, stageRows, throughput, type Sample } from "./loop";
 
 const AXE_OPTIONS = { rules: { "color-contrast": { enabled: false } } };
@@ -88,9 +89,54 @@ describe("LoopPanel", () => {
     expect(wl).toHaveTextContent("Labels, total31");
     expect(wl).toHaveTextContent("Auto-cleared (not labels)12 total · 3 in the last 60 min");
     expect(wl).toHaveTextContent("Bulk label requests4");
-    expect(await screen.findByTestId("dataset-disabled")).toHaveTextContent("Dataset streaming is not enabled.");
+    expect(await screen.findByTestId("dataset-disabled")).toHaveTextContent(
+      "Dataset stream off (synthetic demo). Start with -Dataset amlworld to stream IBM AMLworld.",
+    );
+    // Compact: one line, no "Dataset stream" heading block.
+    expect(within(screen.getByTestId("dataset")).queryByRole("heading")).toBeNull();
     const results = await axe(container, AXE_OPTIONS);
     expect(results.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+  });
+
+  it("explains weights at the 1.00 ceiling, an empty evaluation and zero labels", async () => {
+    routeFetch({
+      "/metrics": {
+        ...sampleMetrics,
+        weights: { amount: 1, geo: 1 },
+        evaluation: { precision: 0, recall: NOT_APPLICABLE, alerts_per_hour: 0, latency_median_s: null, latency_mean_s: null },
+        workload: { labelled_last_hour: 0, labelled_total: 0, auto_cleared_total: 0, auto_cleared_last_hour: 0, bulk_requests_total: 0 },
+      },
+    });
+    render(<LoopPanel />);
+    expect(await screen.findByTestId("loop-weights-note")).toHaveTextContent(WEIGHTS_AT_START_TEXT);
+    expect(screen.getByTestId("loop-weights")).toHaveTextContent("amount 1.00geo 1.00");
+    expect(screen.getByTestId("loop-eval-note")).toHaveTextContent("No fraud detected yet in this run");
+    expect(screen.getByTestId("loop-workload-note")).toHaveTextContent("No labels yet.");
+  });
+
+  it("shows per-sensor weight changes once labels moved them, without the ceiling note", async () => {
+    routeFetch({ "/metrics": { ...sampleMetrics, weights: { amount: 0.85, geo: 1 } } });
+    render(<LoopPanel />);
+    expect(await screen.findByTestId("loop-weights-delta")).toHaveTextContent("amount −0.15");
+    expect(screen.getByTestId("loop-weights-delta")).not.toHaveTextContent("geo");
+    expect(screen.queryByTestId("loop-weights-note")).toBeNull();
+  });
+
+  it("shows the simulated analyst chip only while it is enabled", async () => {
+    routeFetch({ "/metrics": sampleMetrics });
+    render(<LoopPanel />);
+    await waitFor(() => expect(screen.getByTestId("loop-breach")).toHaveTextContent("Within latency target"));
+    expect(screen.queryByTestId("sim-analyst")).toBeNull(); // not reported
+
+    const status = { status: "ok", sim_investigator: { enabled: true, labels_total: 12, confirmed: 9, false_positive: 3, error_rate: 0.05, interval_s: 20 } };
+    act(() => dashboard.getState().setSimAnalyst(simAnalystOf(status)));
+    const chip = screen.getByTestId("sim-analyst");
+    expect(chip).toHaveTextContent("Simulated analyst on · 12 labels (9 fraud, 3 false positive)");
+    expect(chip).toHaveTextContent(SIM_ANALYST_HELP);
+
+    act(() => dashboard.getState().setSimAnalyst(simAnalystOf({ ...status, sim_investigator: { enabled: false } })));
+    expect(screen.queryByTestId("sim-analyst")).toBeNull();
+    expect(simAnalystOf({ status: "ok" })).toBeNull(); // older server
   });
 
   it("shows n/a for workload when GET /metrics does not report it", async () => {

@@ -626,6 +626,8 @@ def _router(state: AppState) -> APIRouter:  # noqa: C901 - one closure per route
             "immune": {"enabled": state.immune is not None, "miss_detection": state.miss_detector is not None,
                        "running": state.running("immune")},
             "learner": state.learner is not None,
+            "sim_investigator": state.sim_investigator_status(),  # task 31.1 (demo only)
+            "generator_warmup": jsonable(state.generator_warmup_status()),
             "replay": state.replay is not None,
             "ingest": state.ingest_stats(),
             "latency_breach": breach,

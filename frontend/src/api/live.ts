@@ -2,7 +2,7 @@
 // flushed every 100 ms so a fast stream re-renders the feed at most ~10 times a second while
 // still showing each event well within 1 s of publication (Req 22.1).
 
-import type { DashboardStore } from "../store/store";
+import type { DashboardStore, SimAnalyst } from "../store/store";
 import { toFeedItem, type FeedItem } from "../store/reducers";
 import { api as defaultApi, type Api } from "./client";
 import {
@@ -12,6 +12,7 @@ import {
   type Channel,
   type MetricsMessage,
   type ScoredEventMessage,
+  type StatusDoc,
 } from "./types";
 import { WsClient, type SocketFactory } from "./ws";
 
@@ -21,6 +22,30 @@ export const STATUS_POLL_MS = 10_000;
 
 function isObj(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null;
+}
+
+const count = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : 0);
+const numOrNull = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : null);
+
+/** The optional GET /status "sim_investigator" block; null when the server does not report it. */
+export function simAnalystOf(status: unknown): SimAnalyst | null {
+  if (!isObj(status) || !isObj(status.sim_investigator)) return null;
+  const s = status.sim_investigator;
+  return {
+    enabled: s.enabled === true,
+    labelsTotal: count(s.labels_total),
+    confirmed: count(s.confirmed),
+    falsePositive: count(s.false_positive),
+    errorRate: numOrNull(s.error_rate),
+    intervalS: numOrNull(s.interval_s),
+  };
+}
+
+/** Apply one GET /status document: generator state and the simulated investigator. */
+function applyStatus(store: DashboardStore, st: StatusDoc) {
+  const s = store.getState();
+  s.setConfirmed({ generatorRunning: st.generator?.configured ? st.generator.running : null });
+  s.setSimAnalyst(simAnalystOf(st));
 }
 
 /** Fetch the REST snapshot: Cases + backlog, confirmed config, generator state. Each part is
@@ -39,7 +64,7 @@ export async function refreshFromRest(store: DashboardStore, api: Pick<Api, "all
         appliesFromPeriod: Object.keys(c.pending).length ? c.current_period + 1 : null,
       }),
     ),
-    api.getStatus().then((st) => s.setConfirmed({ generatorRunning: st.generator?.configured ? st.generator.running : null })),
+    api.getStatus().then((st) => applyStatus(store, st)),
   ]);
 }
 
@@ -86,7 +111,7 @@ export function startLive({ store, api = defaultApi, factory, url }: LiveOptions
   const statusTimer = setInterval(() => {
     api
       .getStatus()
-      .then((st) => store.getState().setConfirmed({ generatorRunning: st.generator?.configured ? st.generator.running : null }))
+      .then((st) => applyStatus(store, st))
       .catch(() => undefined);
   }, STATUS_POLL_MS);
 

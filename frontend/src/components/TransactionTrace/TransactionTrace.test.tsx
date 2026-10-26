@@ -3,7 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import { dashboard } from "../../store/store";
-import { feedItem, jsonResponse, routeFetch } from "../../test/fixtures";
+import { toFeedItem } from "../../store/reducers";
+import { feedItem, jsonResponse, routeFetch, scored } from "../../test/fixtures";
+import { pickRecent, vacuousHint } from "./recent";
 import { TransactionTrace } from "./TransactionTrace";
 import { STAGE_ORDER, type TraceDoc } from "./traceApi";
 
@@ -68,9 +70,66 @@ describe("TransactionTrace", () => {
     routeFetch({ "/trace/T-3": { ...TRACE, tx_id: "T-3" } });
     dashboard.getState().applyEvents([feedItem(3)]);
     render(<TransactionTrace />);
-    await userEvent.setup().click(screen.getByRole("button", { name: "T-3" }));
+    await userEvent.setup().click(screen.getByRole("button", { name: /^T-3 · risk 0\.50/ }));
     expect(await screen.findByRole("article", { name: "Trace of T-3" })).toBeInTheDocument();
     expect(screen.getByLabelText("Transaction ID")).toHaveValue("T-3");
+  });
+
+  it("offers up to 8 recent chips: in a Case or risk ≥ 0.6 first, then highest risk, then newest", () => {
+    const item = (seq: number, risk: number, caseId: string | null = null) => ({ ...toFeedItem(scored(seq, {}, risk)), case_id: caseId });
+    // Arrival order (oldest first); the feed holds the newest first.
+    dashboard.getState().applyEvents([
+      item(1, 0.1),
+      item(2, 0.3, "C-1"),
+      item(3, 0.7),
+      item(4, 0.2),
+      item(5, 0.2),
+      item(6, 0.65),
+      item(7, 0.05),
+      item(8, 0.4),
+      item(9, 0.1),
+      item(10, 0.05),
+    ]);
+    render(<TransactionTrace />);
+    const chips = screen.getAllByTestId("trace-recent-chip").map((c) => c.textContent);
+    expect(chips).toEqual([
+      "T-3 · risk 0.70",
+      "T-6 · risk 0.65",
+      "T-2 · risk 0.30 · C-1",
+      "T-8 · risk 0.40",
+      "T-5 · risk 0.20",
+      "T-4 · risk 0.20",
+      "T-9 · risk 0.10",
+      "T-1 · risk 0.10",
+    ]);
+    const feed = dashboard.getState().feed;
+    expect(pickRecent(feed).map((f) => f.tx_id)).toEqual(chips.map((c) => c!.split(" ")[0]));
+  });
+
+  it("explains vacuous sensors in plain language", async () => {
+    const withHistory: TraceDoc = {
+      ...TRACE,
+      stages: {
+        ...TRACE.stages,
+        PERCEIVE: {
+          ...TRACE.stages.PERCEIVE,
+          sensor_results: [
+            ...(TRACE.stages.PERCEIVE?.sensor_results ?? []),
+            { name: "velocity", outcome: "SUCCESS", mass: { fraud: 0, legit: 0, uncertainty: 1 }, features: {}, vacuous_reason: "history:1" },
+          ],
+        },
+      },
+    };
+    routeFetch({ "/trace/T-1": withHistory });
+    render(<TransactionTrace />);
+    await userEvent.setup().type(screen.getByLabelText("Transaction ID"), "T-1{Enter}");
+    const perceive = await screen.findByRole("region", { name: "PERCEIVE" });
+    expect(within(perceive).getByRole("row", { name: /velocity/ })).toHaveTextContent(
+      "vacuous: history:1 (not enough history yet (needs 5 events))",
+    );
+    expect(within(perceive).getByRole("row", { name: /geo/ })).toHaveTextContent("vacuous: missing:lat,lon (no location in this event)");
+    expect(vacuousHint("history:3")).toBe("not enough history yet (needs 5 events)");
+    expect(vacuousHint("weird")).toBeNull();
   });
 
   it("reports an unknown transaction with the server's message", async () => {

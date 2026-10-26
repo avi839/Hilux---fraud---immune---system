@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { ApiError } from "../../api/client";
 import { useDashboard } from "../../store/store";
 import { TierBadge } from "../common/TierBadge";
@@ -13,6 +13,7 @@ import {
   type TraceDoc,
   type TraceMass,
 } from "./traceApi";
+import { pickRecent, vacuousHint } from "./recent";
 import "./TransactionTrace.css";
 
 const STAGE_HINT: Record<StageName, string> = {
@@ -102,6 +103,22 @@ function Assessment({ label, a }: { label: string; a: TraceAssessment | null | u
   );
 }
 
+/** "vacuous: history:1" plus a plain-language hint of what it means. */
+function VacuousNote({ reason }: { reason: string }) {
+  const hint = vacuousHint(reason);
+  return (
+    <>
+      <span className="mono">vacuous: {reason}</span>
+      {hint ? (
+        <span className="trace-muted trace-vacuous-hint" data-testid="vacuous-hint">
+          {" "}
+          ({hint})
+        </span>
+      ) : null}
+    </>
+  );
+}
+
 function StageBody({ name, trace, openCase }: { name: StageName; trace: TraceDoc; openCase: (id: string) => void }): ReactNode {
   const s = trace.stages;
   switch (name) {
@@ -140,7 +157,7 @@ function StageBody({ name, trace, openCase }: { name: StageName; trace: TraceDoc
                     <th scope="row">{r.name}</th>
                     <td>{r.outcome}</td>
                     <MassCells m={r.mass} />
-                    <td>{r.error ?? (r.vacuous_reason ? `vacuous: ${r.vacuous_reason}` : "")}</td>
+                    <td>{r.error ?? (r.vacuous_reason ? <VacuousNote reason={r.vacuous_reason} /> : "")}</td>
                   </tr>
                 ))}
               </tbody>
@@ -254,7 +271,8 @@ export function TransactionTrace() {
   const [error, setError] = useState<{ text: string; disabled: boolean } | null>(null);
   const [loading, setLoading] = useState(false);
   const ctrl = useRef<AbortController | null>(null);
-  const recent = useDashboard((s) => s.feed).slice(0, 8);
+  const feed = useDashboard((s) => s.feed);
+  const recent = useMemo(() => pickRecent(feed), [feed]);
   const selectCase = useDashboard((s) => s.selectCase);
   const { select } = useShellTab();
 
@@ -345,8 +363,11 @@ export function TransactionTrace() {
                       className="trace-chip"
                       aria-pressed={trace?.tx_id === f.tx_id}
                       onClick={() => pick(f.tx_id)}
+                      data-testid="trace-recent-chip"
                     >
                       {f.tx_id}
+                      <span className="trace-chip__risk"> · risk {f.risk.toFixed(2)}</span>
+                      {f.case_id ? <span className="trace-chip__risk"> · {f.case_id}</span> : null}
                     </button>
                   </li>
                 ))}

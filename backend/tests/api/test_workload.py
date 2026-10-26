@@ -51,7 +51,8 @@ def test_metrics_endpoint_has_the_workload_block_fed_by_labels():
     cid = h.process(tx(1, "A", "B", 85, at(0))).case_id
     with TestClient(create_app(state, manage_lifecycle=False)) as cl:
         w = cl.get("/api/v1/metrics").json()["workload"]
-        assert set(w) == KEYS and w["labelled_total"] == 0
+        assert set(w) == KEYS | {"sim_investigator"} and w["labelled_total"] == 0
+        assert w["sim_investigator"]["enabled"] is False  # off by default (task 31.1)
         assert cl.post(f"/api/v1/cases/{cid}/open", json={"investigator": "ana"}).status_code == 200
         assert cl.post(f"/api/v1/cases/{cid}/feedback",
                        json={"by": "ana", "label": Label.CONFIRMED_FRAUD.value}).status_code == 200

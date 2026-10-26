@@ -98,6 +98,22 @@ describe("Arena", () => {
     expect(results.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
   });
 
+  it("gives each n/a a reason", async () => {
+    routeFetch({ "/attacker": attackerOff, "/immune": immuneOff, "/metrics": { evaluation: null } });
+    render(<Arena />);
+    await waitFor(() => expect(screen.getByTestId("arena-rate")).toHaveTextContent("n/a (attacker not running)"));
+    expect(screen.getByTestId("arena-pool")).toHaveTextContent("n/a (Immune_System not enabled)");
+    for (const na of screen.getAllByTestId("arena-na")) expect(na.title).not.toBe("");
+  });
+
+  it("explains an unscored campaign and a seed genome's missing comparison", async () => {
+    routeFetch({ "/attacker": attackerOn, "/immune": immuneOn, "/metrics": metricsWithRecall });
+    render(<Arena />);
+    await waitFor(() => expect(screen.getByTestId("campaign-C4")).toBeInTheDocument());
+    expect(screen.getByTestId("campaign-C4")).toHaveTextContent("scored after the 10-min detection deadline");
+    expect(screen.getByTestId("genome-G1")).toHaveTextContent("seed genome: no parent to compare with");
+  });
+
   it("explains when the attacker cannot run without a Synthetic_Generator", async () => {
     routeFetch({ "/attacker": { ...attackerOff, available: false }, "/immune": immuneOff });
     render(<Arena />);

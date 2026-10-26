@@ -389,3 +389,7 @@
   height: 6px;
   border-radius: 999px;
 }
+
+.trace-view .trace-chip__risk {
+  font-size: 0.85em;
+}

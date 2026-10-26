@@ -8,7 +8,7 @@ export const DATASET_POLL_MS = 5_000;
 /** Re-check period when the server has no /dataset route (404). */
 export const DATASET_ABSENT_RECHECK_MS = 60_000;
 
-export const DATASET_DISABLED_TEXT = "Dataset streaming is not enabled.";
+export const DATASET_DISABLED_TEXT = "Dataset stream off (synthetic demo). Start with -Dataset amlworld to stream IBM AMLworld.";
 export const UNMAPPED_PRECISION = "unavailable (no motif)";
 
 const STATUS_TEXT: Record<DatasetStatus, string> = {
@@ -173,6 +173,16 @@ function Body({ doc }: { doc: DatasetDoc }) {
 /** Dataset_Feeder status (Req 39.5, 39.6, 40.8), shown inside the HELIX loop panel. */
 export function DatasetPanel({ pollMs = DATASET_POLL_MS }: { pollMs?: number }) {
   const load = useDataset(pollMs);
+  // Off is the normal synthetic-demo state: one compact muted line instead of a whole block.
+  if (load.kind === "ok" && load.doc.status === "DISABLED") {
+    return (
+      <div className="dataset dataset--off" data-testid="dataset">
+        <p className="muted small" data-testid="dataset-disabled">
+          {DATASET_DISABLED_TEXT}
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="dataset" data-testid="dataset">
       <h3 className="ev-section__title">Dataset stream</h3>
@@ -185,10 +195,6 @@ export function DatasetPanel({ pollMs = DATASET_POLL_MS }: { pollMs?: number }) 
       ) : load.kind === "error" ? (
         <p className="msg msg--error small" role="alert">
           GET /dataset failed: {load.message}
-        </p>
-      ) : load.doc.status === "DISABLED" ? (
-        <p className="muted small" data-testid="dataset-disabled">
-          {DATASET_DISABLED_TEXT}
         </p>
       ) : (
         <>

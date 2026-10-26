@@ -1382,6 +1382,32 @@
         "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
         "timestamp": 1792981371677
       }
+    ],
+    "31.1 Backend: generator warm-up history at startup, an opt-in simulated investigator that labels top Cases from generator ground truth through the normal label path, genome parameters in GET /attacker, and status fields for both, with tests. _Requirements: 3, 19, 20, 22_": [
+      {
+        "executionId": "d9f9706b-b903-485d-9237-2a0c78dc1a1b",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792982482759
+      }
+    ],
+    "31.2 Frontend: simulated-analyst indicator, explained n/a states in Red vs Blue and the loop panel, Trace recent chips that favour high-risk transactions, and a compact dataset-stream line, with tests. _Requirements: 22, 38_": [
+      {
+        "executionId": "d9f9706b-b903-485d-9237-2a0c78dc1a1b",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792982486780
+      },
+      {
+        "executionId": "2ec7ea35-82b2-4a22-9131-c6c066a282a4",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792983646182
+      }
+    ],
+    "32.1 Deploy to Render: single Docker web service serving the built dashboard and API on one origin, password (HTTP Basic) auth on every route and WebSocket via environment variables, configurable host, port and dashboard origin, render.yaml blueprint, with tests. _Requirements: 27_": [
+      {
+        "executionId": "2ec7ea35-82b2-4a22-9131-c6c066a282a4",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792983659369
+      }
     ]
   }
 }

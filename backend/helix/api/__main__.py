@@ -91,6 +91,20 @@ def build_state(args: argparse.Namespace) -> AppState:
     state = AppState.build(cfg, clock, storage=storage, monitor=monitor, generator=generator, immune=immune,
                            gt_writer=writer, gt_reader=reader, soc=soc)
     state.generator_autostart = bool(args.generator) and feeder is None
+    warm = float(getattr(args, "generator_warmup_s", 0.0) or 0.0)
+    if warm > 0:
+        if state.generator_autostart:
+            state.generator_warmup_s = warm
+        else:
+            log.warning("--generator-warmup-s ignored: it needs --generator (and no --dataset)")
+    if getattr(args, "sim_investigator", False):
+        from helix.evaluation import SimInvestigatorConfig
+
+        state.enable_sim_investigator(SimInvestigatorConfig(
+            interval_s=args.sim_interval_s, per_tick=args.sim_per_tick, min_age_s=args.sim_min_age_s,
+            error_rate=args.sim_error_rate, seed=int(args.seed if args.seed is not None else cfg.generator.default_seed)))
+        log.warning("simulated investigator ON (demo only): Cases are labelled as %r from generator ground truth",
+                    state.sim_investigator.cfg.actor)
     if feeder is not None:
         feeder.state = state
         state.dataset = feeder
@@ -120,6 +134,19 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
                    help="enable the Immune_System and its miss detection (also when immune.enabled)")
     p.add_argument("--soc", action="store_true",
                    help="enable cyber fusion and the SOC components (also when soc.enabled)")
+    g = p.add_argument_group("demo liveliness (task 31.1)")
+    g.add_argument("--generator-warmup-s", type=_non_negative, default=0.0, metavar="SECONDS",
+                   help="with --generator: first run SECONDS of simulated generator traffic in Warm_Up_Mode "
+                        "(DNA / CPD / graph, no Cases) as fast as possible, then go live (default 0 = off)")
+    g.add_argument("--sim-investigator", action="store_true",
+                   help="demo only: a simulated analyst ('sim-analyst') labels top Active_Queue Cases from "
+                        "generator ground truth through the normal label path (off by default)")
+    g.add_argument("--sim-interval-s", type=_positive, default=20.0, help="simulated investigator tick (wall s)")
+    g.add_argument("--sim-per-tick", type=int, default=2, help="Cases labelled per tick (default 2)")
+    g.add_argument("--sim-min-age-s", type=_non_negative, default=30.0,
+                   help="minimum Case age in stream time before it is labelled (default 30)")
+    g.add_argument("--sim-error-rate", type=float, default=0.05,
+                   help="probability a simulated label is flipped (default 0.05, seeded)")
     d = p.add_argument_group("dataset streaming (Req 39, 40)")
     d.add_argument("--dataset", choices=("amlworld", "csv"), default=None,
                    help="stream a dataset file into the live pipeline (excludes --generator)")
@@ -140,7 +167,28 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     p.add_argument("--log-level", default="info")
     args = p.parse_args(argv)
     _check_dataset_args(p, args)
+    if args.sim_per_tick < 1:
+        p.error("--sim-per-tick must be >= 1")
+    if not (0.0 <= args.sim_error_rate <= 1.0):
+        p.error("--sim-error-rate must be in [0, 1]")
     return args
+
+
+def _non_negative(s: str) -> float:
+    try:
+        v = float(s)
+    except ValueError:
+        raise argparse.ArgumentTypeError("must be a number >= 0") from None
+    if not (math.isfinite(v) and v >= 0):
+        raise argparse.ArgumentTypeError("must be a number >= 0")
+    return v
+
+
+def _positive(s: str) -> float:
+    v = _non_negative(s)
+    if v <= 0:
+        raise argparse.ArgumentTypeError("must be a number > 0")
+    return v
 
 
 def _speed(s: str) -> object:

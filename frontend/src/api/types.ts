@@ -250,6 +250,15 @@ export interface GeneratorState {
 export interface StatusDoc {
   status: string;
   generator?: { configured: boolean; running: boolean };
+  /** Demo-only simulated investigator (absent on older servers). */
+  sim_investigator?: {
+    enabled: boolean;
+    labels_total?: number;
+    confirmed?: number;
+    false_positive?: number;
+    error_rate?: number;
+    interval_s?: number;
+  } | null;
   [key: string]: unknown;
 }
 

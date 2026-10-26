@@ -2028,3 +2028,22 @@ kbd {
 * {
   scrollbar-color: rgba(170, 185, 255, 0.18) transparent;
 }
+
+/* Task 31.2: one-line explanations of empty or constant loop values. */
+.loop-note {
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+.loop-sim {
+  margin: 4px 0 0;
+}
+.dataset--off {
+  margin-top: 8px;
+}
+.dataset--off p {
+  margin: 0;
+}
+.arena-na__reason {
+  display: block;
+  font-weight: 400;
+}

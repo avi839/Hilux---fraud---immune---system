@@ -95,6 +95,13 @@ class AppState:
     workload: Any = None  # helix.cases.workload.WorkloadMeter
     triage_tick_s: float = 0.5  # wall-clock poll; sweeps happen on stream-time boundaries
     _triage_next: Optional[datetime] = None  # next stream-time sweep boundary
+    # Demo liveliness (task 31.1). Generator warm-up: seconds of simulated generator traffic
+    # run in Warm_Up_Mode before the live feeder starts (0 = off). Simulated investigator:
+    # helix.evaluation.sim_investigator.SimInvestigator (None = disabled, the default).
+    generator_warmup_s: float = 0.0
+    generator_warmup_report: Any = None  # helix.datasets.WarmupReport once the warm-up finished
+    generator_warmup_state: str = "off"  # off | pending | running | done | failed
+    sim_investigator: Any = None
 
     worker_errors: int = 0
     ws_origin_rejected: int = 0  # WebSocket handshakes closed with 1008 (bad/missing Origin)
@@ -449,7 +456,7 @@ class AppState:
 
     def workload_metrics(self) -> dict[str, Any]:
         """The ``workload`` block of GET /metrics (Req 41.10)."""
-        return self.enable_workload().snapshot()
+        return {**self.enable_workload().snapshot(), "sim_investigator": self.sim_investigator_status()}
 
     # --- attacker -----------------------------------------------------------------------
 
@@ -575,23 +582,37 @@ class AppState:
         if st is not None:
             self._spawn("storage_writer", st.writer())
             self._spawn("storage_snapshotter", st.snapshotter(self._snapshot_source))
-        if self.generator is not None and self.generator_autostart and self.dataset is None:
+        warm = (self.generator is not None and self.generator_autostart and self.dataset is None
+                and self.generator_warmup_s > 0)
+        if self.generator is not None and self.generator_autostart and self.dataset is None and not warm:
             self.start_generator()
         self.start_dataset()
         if self.immune is not None:
             self._spawn("immune", self._immune_loop())
         if self.triage is not None:
             self._spawn("triage", self._triage_loop())
-        if self.attacker_autostart:
-            try:
-                self.start_attacker()
-            except LookupError:
-                log.warning("attacker autostart skipped: no Synthetic_Generator configured")
+        if self.sim_investigator is not None:
+            self._spawn("sim_investigator", self._sim_investigator_loop())
+        if warm:
+            # The warm-up runs as a startup task (the server answers meanwhile); the live
+            # feeder and the attacker start from its end.
+            self.generator_warmup_state = "pending"
+            self._spawn("generator_warmup", self._warmup_then_start())
+        elif self.attacker_autostart:
+            self._autostart_attacker()
+
+    def _autostart_attacker(self) -> None:
+        try:
+            self.start_attacker()
+        except LookupError:
+            log.warning("attacker autostart skipped: no Synthetic_Generator configured")
 
     async def stop(self) -> None:
+        await self._cancel("generator_warmup")
         a = self.attacker
         if a is not None and hasattr(a, "aclose"):
             await a.aclose()
+        await self._cancel("sim_investigator")
         await self._cancel("immune")
         await self._cancel("triage")
         await self.stop_dataset()
@@ -705,6 +726,116 @@ class AppState:
             self._gen_cursor += timedelta(seconds=step)
             for ev in gen.events_until(self._gen_cursor):
                 self.ingestor.submit(ev)
+
+    # --- generator warm-up (task 31.1) ------------------------------------------------------
+    #
+    # ``seconds`` of the generator's own schedule are pushed through the Stream_Ingestor as
+    # fast as backpressure allows while ``helix.warmup`` is set (Warm_Up_Mode, Req 40.7):
+    # Behavioural_DNA, Change_Point_Detector and Temporal_Graph state are built, no Case is
+    # created. Ground-truth labels are written by the generator as usual (it holds only the
+    # writer). The stream-time clock ends at the warm-up end and the live feeder continues
+    # from that cursor, so the warm-up history is simply the past of the live stream.
+
+    async def run_generator_warmup(self, seconds: float, *, chunk_s: float = 5.0,
+                                   log_every_s: float = 5.0) -> Any:
+        """Run the warm-up (needs the pipeline worker running). Returns the WarmupReport."""
+        from helix.datasets.warmup import build_report
+
+        gen = self.generator
+        if gen is None:
+            raise LookupError("no Synthetic_Generator configured")
+        if self._gen_cursor is None:
+            self._gen_cursor = gen.t0
+        end = self._gen_cursor + timedelta(seconds=float(seconds))
+        step = timedelta(seconds=float(chunk_s))
+        ing = self.ingestor
+        self.generator_warmup_state = "running"
+        self.helix.warmup = True
+        t0 = last_log = time.monotonic()
+        n = 0
+        log.info("generator warm-up: %.0f s of simulated traffic (until %s)", seconds, end.isoformat())
+        try:
+            while self._gen_cursor < end:
+                self._gen_cursor = min(end, self._gen_cursor + step)
+                for ev in gen.events_until(self._gen_cursor):
+                    while ing.backpressure:
+                        await asyncio.sleep(0.001)
+                    ing.submit(ev)
+                    n += 1
+                now = time.monotonic()
+                if now - last_log >= log_every_s:
+                    last_log = now
+                    done = (self._gen_cursor - (end - timedelta(seconds=float(seconds)))).total_seconds()
+                    log.info("generator warm-up: %.0f/%.0f s simulated, %d events, %.0f ev/s", done, seconds,
+                             n, n / max(1e-9, now - t0))
+                await asyncio.sleep(0)
+            while len(ing) > 0:  # let the worker process everything in Warm_Up_Mode
+                await asyncio.sleep(0.005)
+            await asyncio.sleep(0)
+        except BaseException:
+            self.generator_warmup_state = "failed"
+            raise
+        finally:
+            self.helix.warmup = False
+        now = self.clock.now()
+        if end > now and hasattr(self.clock, "advance"):
+            self.clock.advance(end - now)  # stream time continues from the warm-up end
+        dur = max(0.0, time.monotonic() - t0)
+        rep = build_report(self.helix, n, dur, end)
+        self.generator_warmup_report = rep
+        self.generator_warmup_state = "done"
+        log.info("generator warm-up done: %d events in %.1f s (%.0f ev/s), %d accounts, %d ready (>= %d events)",
+                 rep.events, rep.duration_s, rep.events_per_s, rep.accounts, rep.accounts_ready, rep.min_history)
+        return rep
+
+    async def _warmup_then_start(self) -> None:
+        try:
+            await self.run_generator_warmup(self.generator_warmup_s)
+        except asyncio.CancelledError:
+            raise
+        except Exception:  # noqa: BLE001 - go live anyway without (complete) warm-up history
+            log.exception("generator warm-up failed; starting live generation")
+        if self.dataset is None and self.generator is not None:
+            self.start_generator()
+        if self.attacker_autostart:
+            self._autostart_attacker()
+
+    def generator_warmup_status(self) -> dict[str, Any]:
+        rep = self.generator_warmup_report
+        return {"seconds": float(self.generator_warmup_s), "state": self.generator_warmup_state,
+                "report": None if rep is None else asdict(rep)}
+
+    # --- simulated investigator (task 31.1, demo only) -------------------------------------
+
+    def enable_sim_investigator(self, cfg: Any = None) -> Any:
+        """Build the simulated investigator (idempotent). It reads the ground truth, so it
+        needs the label reader; it labels through ``Helix.open_case`` / ``Helix.label``."""
+        if self.sim_investigator is not None:
+            return self.sim_investigator
+        if self.gt_reader is None:
+            raise LookupError("the simulated investigator needs the ground-truth reader")
+        from helix.evaluation import SimInvestigator
+
+        self.sim_investigator = SimInvestigator(self.helix, self.gt_reader, cfg)
+        return self.sim_investigator
+
+    def sim_investigator_status(self) -> dict[str, Any]:
+        from helix.evaluation import sim_investigator_status_doc
+
+        si = self.sim_investigator
+        return sim_investigator_status_doc() if si is None else si.status(enabled=True)
+
+    def sim_investigator_step(self, now: Optional[datetime] = None) -> list[Any]:
+        si = self.sim_investigator
+        return [] if si is None else si.step(now)
+
+    async def _sim_investigator_loop(self) -> None:
+        while True:
+            await asyncio.sleep(float(self.sim_investigator.cfg.interval_s))
+            try:
+                self.sim_investigator_step()
+            except Exception:  # noqa: BLE001 - one bad tick must not stop the loop
+                log.exception("simulated investigator tick failed")
 
 
 def attach_learner(helix: Helix) -> Any:

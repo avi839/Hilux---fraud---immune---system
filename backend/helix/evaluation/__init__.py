@@ -17,8 +17,14 @@ from .monitor import (
     Metrics,
     PatternTypeStats,
 )
+from .sim_investigator import SimInvestigator, SimInvestigatorConfig, SimLabel
+from .sim_investigator import status_doc as sim_investigator_status_doc
 
 __all__ = [
+    "SimInvestigator",
+    "SimInvestigatorConfig",
+    "SimLabel",
+    "sim_investigator_status_doc",
     "NOT_APPLICABLE",
     "DatasetSummary",
     "EvaluationMonitor",

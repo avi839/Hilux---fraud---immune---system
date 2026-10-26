@@ -89,6 +89,52 @@ function useArenaData(pollMs: number) {
 const t = (iso: string | null) => (iso === null ? "n/a" : formatTime(iso));
 const ev3 = (x: number | null) => (x === null ? "n/a" : x.toFixed(3));
 
+// Why a value reads "n/a". Shown as a tooltip and as screen-reader text (table cells), or as a
+// small muted note (scoreboard), so no "n/a" is left unexplained.
+export const NA_REASON = {
+  deadline: "not scored yet: scored after the 10-min detection deadline",
+  notRunning: "attacker not running",
+  notReported: "not reported by this server",
+  paramsNotReported: "parameters not reported by this server",
+  noParent: "seed genome: no parent to compare with",
+  parentUnknown: "parent's evasion not in the reported genomes",
+  noEvents: "no Transaction_Events injected",
+  immuneOff: "Immune_System not enabled",
+  missOff: "miss detection is off on this server",
+  noMetrics: "GET /metrics has not reported evaluation",
+} as const;
+
+/** "n/a" with its reason: title plus screen-reader text, or a visible muted note. */
+function NA({ reason, visible = false, big = false }: { reason: string; visible?: boolean; big?: boolean }) {
+  const na = big ? <Big>n/a</Big> : "n/a";
+  return (
+    <span className="arena-na" title={reason} data-testid="arena-na">
+      {na}
+      {visible ? <span className="muted small arena-na__reason"> ({reason})</span> : <span className="sr-only"> ({reason})</span>}
+    </span>
+  );
+}
+
+function sourceReason(name: string, s: Source<unknown>): string {
+  if (s.kind === "loading") return `waiting for GET ${name}`;
+  if (s.kind === "absent") return `GET ${name} is not available on this server`;
+  if (s.kind === "error") return `GET ${name} failed`;
+  return NA_REASON.notReported;
+}
+
+/** Reason the red-side scores are n/a. */
+function attackerReason(src: Source<AttackerView>, a: AttackerView | null): string {
+  if (a === null) return sourceReason("/attacker", src);
+  if (!a.configured || a.running === false) return NA_REASON.notRunning;
+  return NA_REASON.deadline;
+}
+
+/** Reason the blue-side Immune_System figures are n/a. */
+function immuneReason(src: Source<ImmuneView>, im: ImmuneView | null): string {
+  if (im === null) return sourceReason("/immune", src);
+  return im.enabled ? NA_REASON.notReported : NA_REASON.immuneOff;
+}
+
 /** Section with its own heading, labelled for landmark navigation. */
 function Section({ title, className, hint, children }: { title: string; className?: string; hint?: string; children: ReactNode }) {
   const id = useId();
@@ -193,13 +239,15 @@ function CampaignsTable({ campaigns }: { campaigns: CampaignView[] }) {
                 <th scope="row" className="mono">
                   {c.id}
                 </th>
-                <td>{c.patternType ?? "n/a"}</td>
+                <td>{c.patternType ?? <NA reason={NA_REASON.notReported} />}</td>
                 <td className="mono">{c.genomeId}</td>
                 <td>{t(c.startedAt)}</td>
                 <td className="num">{c.events}</td>
                 <td className="num">{c.injected}</td>
                 <td className="num">{c.withheld}</td>
-                <td className="num">{ev3(c.evasion)}</td>
+                <td className="num">
+                  {c.evasion === null ? <NA reason={c.completed ? NA_REASON.noEvents : NA_REASON.deadline} /> : ev3(c.evasion)}
+                </td>
                 <td>
                   <span className={`arena-outcome arena-outcome--${o.tone}`}>{o.text}</span>
                 </td>
@@ -220,8 +268,8 @@ function GenomesTable({ genomes }: { genomes: GenomeView[] }) {
     <>
       {anyParams ? null : (
         <p className="muted small" data-testid="arena-params-note">
-          Parameter values are not reported by GET /attacker, so each mutation is shown as its lineage step (parent →
-          child generation) and its effect on evasion.
+          Genome parameters are not reported by this server (no params in GET /attacker), so each mutation is shown as
+          its lineage step (parent → child generation) and its effect on evasion.
         </p>
       )}
       <TableScroll label="Pattern_Genome mutations table">
@@ -259,8 +307,8 @@ function GenomesTable({ genomes }: { genomes: GenomeView[] }) {
                   <th scope="row" className="mono">
                     {g.id}
                   </th>
-                  <td>{g.patternType ?? "n/a"}</td>
-                  <td className="num">{g.generation ?? "n/a"}</td>
+                  <td>{g.patternType ?? <NA reason={NA_REASON.notReported} />}</td>
+                  <td className="num">{g.generation ?? <NA reason={NA_REASON.notReported} />}</td>
                   <td className="mono">
                     {g.parentId === null ? "seed genome (no parent)" : chain.join(" → ")}
                   </td>
@@ -268,14 +316,28 @@ function GenomesTable({ genomes }: { genomes: GenomeView[] }) {
                     {g.parentId === null
                       ? "none"
                       : muts === null
-                        ? "not reported"
+                        ? (
+                            <span title={NA_REASON.paramsNotReported}>
+                              not reported<span className="sr-only"> ({NA_REASON.paramsNotReported})</span>
+                            </span>
+                          )
                         : muts.length === 0
                           ? "none"
                           : muts.map((m) => `${m.param} ${m.from} → ${m.to}`).join("; ")}
                   </td>
-                  <td className="num">{ev3(g.evasion)}</td>
-                  <td className="num">{delta === null ? "n/a" : `${delta >= 0 ? "+" : "−"}${Math.abs(delta).toFixed(3)}`}</td>
-                  <td className="num">{g.scoredCampaigns ?? "n/a"}</td>
+                  <td className="num">{g.evasion === null ? <NA reason={NA_REASON.deadline} /> : ev3(g.evasion)}</td>
+                  <td className="num">
+                    {delta === null ? (
+                      <NA
+                        reason={
+                          g.parentId === null ? NA_REASON.noParent : g.evasion === null ? NA_REASON.deadline : NA_REASON.parentUnknown
+                        }
+                      />
+                    ) : (
+                      `${delta >= 0 ? "+" : "−"}${Math.abs(delta).toFixed(3)}`
+                    )}
+                  </td>
+                  <td className="num">{g.scoredCampaigns ?? <NA reason={NA_REASON.notReported} />}</td>
                   <td>{g.retired ? "retired" : "active"}</td>
                 </tr>
               );
@@ -329,11 +391,11 @@ function AntibodyTable({ immune }: { immune: ImmuneView }) {
                 <td>
                   <span className="arena-status">{a.status}</span>
                 </td>
-                <td className="mono">{a.origin ?? "n/a"}</td>
+                <td className="mono">{a.origin ?? <NA reason={NA_REASON.notReported} />}</td>
                 <td className="mono">{a.parentId ?? "none"}</td>
                 <td>{t(a.createdAt)}</td>
                 <td>{a.activatedAt === null ? "not activated" : t(a.activatedAt)}</td>
-                <td>{a.dims.length ? a.dims.join(", ") : "n/a"}</td>
+                <td>{a.dims.length ? a.dims.join(", ") : <NA reason={NA_REASON.notReported} />}</td>
                 <td className="num">{a.matches}</td>
                 <td className="num">
                   {a.confirmedFraudMatches} / {a.falsePositiveMatches}
@@ -376,7 +438,7 @@ function MissedTable({ attacker, immune }: { attacker: AttackerView; immune: Imm
               <th scope="row" className="mono">
                 {c.id}
               </th>
-              <td>{c.patternType ?? "n/a"}</td>
+              <td>{c.patternType ?? <NA reason={NA_REASON.notReported} />}</td>
               <td className="mono">{c.genomeId}</td>
               <td>
                 <span className={`arena-outcome arena-outcome--${outcome === "fully missed" ? "bad" : "warn"}`}>
@@ -384,7 +446,7 @@ function MissedTable({ attacker, immune }: { attacker: AttackerView; immune: Imm
                 </span>
               </td>
               <td className="num">{pct(c.evasion)}</td>
-              <td className="num">{immune?.missDetection ? missRecords : "n/a"}</td>
+              <td className="num">{immune?.missDetection ? missRecords : <NA reason={NA_REASON.missOff} />}</td>
             </tr>
           ))}
         </tbody>
@@ -513,6 +575,7 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
   const boardId = useId();
   const fullyMissed = missed.filter((m) => m.outcome === "fully missed").length;
   const poolOn = im !== null && im.enabled && im.pool !== null;
+  const redReason = attackerReason(attacker, a);
 
   return (
     <div className="hx-view arena" role="region" aria-labelledby="arena-title" aria-busy={busy || undefined}>
@@ -535,7 +598,7 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
         <div className="arena-board__grid" data-testid="arena-sides">
           <div className="arena-team arena-team--red">
             <p className="arena-team__name">
-              Red team (Attacker_Agent): <strong className="arena-team__state">{attackerState(a)}</strong>
+              Red team (Attacker_Agent): <strong className="arena-team__state">{a === null ? <NA reason={redReason} /> : attackerState(a)}</strong>
             </p>
             <p className="arena-team__role">The attacker: launches campaigns and mutates the patterns that slip through.</p>
             <dl className="arena-stats">
@@ -545,11 +608,11 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
                     <Big>{a.campaignsTotal}</Big> total, {a.campaignsCompleted} completed, {a.campaignsLive} live
                   </>
                 ) : (
-                  <Big>n/a</Big>
+                  <NA big visible reason={redReason} />
                 )}
               </Stat>
-              <Stat label="Mean evasion">
-                <Big>{a ? ev3(a.meanEvasion) : "n/a"}</Big>
+              <Stat label="Mean evasion" testId="arena-mean-evasion">
+                {a && a.meanEvasion !== null ? <Big>{ev3(a.meanEvasion)}</Big> : <NA big visible reason={redReason} />}
               </Stat>
               <Stat label="Campaigns missed" testId="arena-missed-count">
                 {a ? (
@@ -557,7 +620,7 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
                     <Big>{missed.length}</Big> of {series.length} scored ({fullyMissed} fully)
                   </>
                 ) : (
-                  <Big>n/a</Big>
+                  <NA big visible reason={redReason} />
                 )}
               </Stat>
             </dl>
@@ -570,15 +633,21 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
           <div className="arena-team arena-team--blue">
             <p className="arena-team__name">
               Blue team (HELIX + Immune_System):{" "}
-              <strong className="arena-team__state">{im === null ? "n/a" : im.enabled ? "enabled" : "not enabled"}</strong>
+              <strong className="arena-team__state">
+                {im === null ? <NA reason={immuneReason(immune, im)} /> : im.enabled ? "enabled" : "not enabled"}
+              </strong>
             </p>
             <p className="arena-team__role">The defender: HELIX detection, plus antibodies grown from every miss.</p>
             <dl className="arena-stats">
               <Stat label="Detection rate (mean over campaigns)" testId="arena-rate">
-                <Big>{a && a.meanEvasion !== null ? pct(1 - a.meanEvasion) : "n/a"}</Big>
+                {a && a.meanEvasion !== null ? <Big>{pct(1 - a.meanEvasion)}</Big> : <NA big visible reason={redReason} />}
               </Stat>
               <Stat label="Antibody_Pool size" testId="arena-pool">
-                <Big>{poolOn ? `${im.pool!.size}${im.pool!.max !== null ? ` / ${im.pool!.max}` : ""}` : "n/a"}</Big>
+                {poolOn ? (
+                  <Big>{`${im.pool!.size}${im.pool!.max !== null ? ` / ${im.pool!.max}` : ""}`}</Big>
+                ) : (
+                  <NA big visible reason={immuneReason(immune, im)} />
+                )}
                 {poolOn ? " active" : ""}
                 {im && im.enabled ? `, ${im.held} held` : ""}
               </Stat>
@@ -588,12 +657,12 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
                     <Big>{im.misses}</Big> plus {im.pendingAttackEvents} attack events awaiting their deadline
                   </>
                 ) : (
-                  <Big>n/a</Big>
+                  <NA big visible reason={im && im.enabled ? NA_REASON.missOff : immuneReason(immune, im)} />
                 )}
               </Stat>
               <Stat label="Recall, all labelled fraud" testId="arena-recall">
                 {ev === undefined ? (
-                  <Big>n/a</Big>
+                  <NA big visible reason={NA_REASON.noMetrics} />
                 ) : ev === NOT_APPLICABLE ? (
                   "not applicable (no Evaluation_Monitor)"
                 ) : (
@@ -649,7 +718,7 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
           className="arena-red"
           hint="The attack recipes that evade best, and what changed from their parent."
         >
-          {a && a.configured ? <GenomesTable genomes={a.genomes} /> : <Empty>n/a</Empty>}
+          {a && a.configured ? <GenomesTable genomes={a.genomes} /> : <Empty>n/a ({redReason})</Empty>}
         </Section>
 
         <Section
@@ -657,7 +726,7 @@ export function Arena({ pollMs = ARENA_POLL_MS }: { pollMs?: number }) {
           className="arena-red"
           hint="Completed campaigns HELIX did not fully catch; each one teaches the immune system."
         >
-          {a && a.configured ? <MissedTable attacker={a} immune={im} /> : <Empty>n/a</Empty>}
+          {a && a.configured ? <MissedTable attacker={a} immune={im} /> : <Empty>n/a ({redReason})</Empty>}
         </Section>
       </div>
     </div>

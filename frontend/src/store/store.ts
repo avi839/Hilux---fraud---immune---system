@@ -21,6 +21,16 @@ export interface ConfirmedControls {
   generatorRunning: boolean | null;
 }
 
+/** Demo-only simulated investigator reported under GET /status "sim_investigator". */
+export interface SimAnalyst {
+  enabled: boolean;
+  labelsTotal: number;
+  confirmed: number;
+  falsePositive: number;
+  errorRate: number | null;
+  intervalS: number | null;
+}
+
 export interface DashboardState {
   feed: FeedItem[];
   cases: Record<string, CaseSummary>;
@@ -38,6 +48,8 @@ export interface DashboardState {
   /** The investigator name typed in Controls (raw; validated by checkInvestigator at use).
    *  Shared so the CaseQueue bulk actions send the same ``by``. */
   investigator: string;
+  /** GET /status "sim_investigator"; null when the server does not report it. */
+  simAnalyst: SimAnalyst | null;
 
   applyEvents: (batch: FeedItem[]) => void;
   applyCaseMessage: (m: CaseUpdatedMessage) => void;
@@ -49,6 +61,7 @@ export interface DashboardState {
   setConfirmed: (patch: Partial<ConfirmedControls>) => void;
   setReplayT: (t: number | null) => void;
   setInvestigator: (name: string) => void;
+  setSimAnalyst: (s: SimAnalyst | null) => void;
   reset: () => void;
 }
 
@@ -65,6 +78,7 @@ const initialData = () => ({
   lastRefresh: null as number | null,
   replayT: null as number | null,
   investigator: "",
+  simAnalyst: null as SimAnalyst | null,
 });
 
 export function createDashboardStore() {
@@ -107,6 +121,7 @@ export function createDashboardStore() {
     setConfirmed: (patch) => set((s) => ({ confirmed: { ...s.confirmed, ...patch } })),
     setReplayT: (replayT) => set({ replayT }),
     setInvestigator: (investigator) => set({ investigator }),
+    setSimAnalyst: (simAnalyst) => set({ simAnalyst }),
     reset: () => set(initialData()),
   }));
 }

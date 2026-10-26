@@ -125,6 +125,13 @@ Build the Python 3.10 backend module by module (codec → fusion → sensors →
   - [x] 30.2 Add the XGBoost baseline (time-based split, same features) to the benchmark and re-run the comparison. _Requirements: 4_
   - [x] 30.3 Add a Benchmark section to the frontend showing the measured comparison and ROI numbers from the benchmark results. _Requirements: 38, 42_
 
+- [ ] 31. Live demo liveliness
+  - [ ] 31.1 Backend: generator warm-up history at startup, an opt-in simulated investigator that labels top Cases from generator ground truth through the normal label path, genome parameters in GET /attacker, and status fields for both, with tests. _Requirements: 3, 19, 20, 22_
+  - [x] 31.2 Frontend: simulated-analyst indicator, explained n/a states in Red vs Blue and the loop panel, Trace recent chips that favour high-risk transactions, and a compact dataset-stream line, with tests. _Requirements: 22, 38_
+
+- [ ] 32. Render deployment
+  - [-] 32.1 Deploy to Render: single Docker web service serving the built dashboard and API on one origin, password (HTTP Basic) auth on every route and WebSocket via environment variables, configurable host, port and dashboard origin, render.yaml blueprint, with tests. _Requirements: 27_
+
 - [ ]* 17. Optional: Narrative_Generator
   - [ ]* 17.1 Implement Narrative_Generator with unit + Hypothesis property tests for the design properties of this module. _Requirements: 26_
 
@@ -166,7 +173,8 @@ Build the Python 3.10 backend module by module (codec → fusion → sensors →
     { "id": 26, "tasks": ["28.1"] },
     { "id": 27, "tasks": ["30.1"] },
     { "id": 28, "tasks": ["29.1", "30.2"] },
-    { "id": 29, "tasks": ["30.3"] }
+    { "id": 29, "tasks": ["30.3"] },
+    { "id": 30, "tasks": ["31.1", "31.2"] }
   ]
 }
 ```
