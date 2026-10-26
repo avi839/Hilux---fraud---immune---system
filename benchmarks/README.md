@@ -22,7 +22,7 @@ backend\.venv\Scripts\python.exe benchmarks\prepare_data.py --profile
 # 2. HELIX export: warm-up replay, then the test window live -> results/helix_alerts.csv
 #    tiny smoke run first (a few seconds):
 backend\.venv\Scripts\python.exe benchmarks\export_helix.py --max-rows 4000 --warmup-rows 2000 --out tiny
-#    full run (about 20 min for the configured windows):
+#    full run (about 9 min for the configured 12 h test window):
 backend\.venv\Scripts\python.exe benchmarks\export_helix.py
 #    optional Auto_Triage variant -> results/helix_alerts_triage.csv
 backend\.venv\Scripts\python.exe benchmarks\export_helix.py --triage --triage-idle-s 3600 --out helix_alerts_triage

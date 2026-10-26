@@ -73,7 +73,7 @@ HELIX was built in the order below (see `.kiro/specs/helix-fraud-immune-system/t
 | 13 | Learning loop (`learn`, `attacker`, `immune`) | Fraud changes, so detection has to change too. | A false-positive label on C-1 lowers four sensor weights from 1.0 to 0.95. |
 | 14 | SOC layer (`soc`) | Fraud often starts as a login attack, so security and fraud teams must share one picture. | A takeover Case gets a kill chain and the `PB-ATO-CONTAIN` playbook, with HIGH+ actions waiting for approval. |
 | 15 | Integration and hardening | Cases grew without limit, and a restart lost everything. | Cases are capped at 50 accounts, 500 events and 100 motifs; restart restores Cases, weights and DNA. |
-| 16 | Showcase views | Judges and managers need a clear, visual story. | Tabs for Home, Dashboard, Workflow (3D simulation), SOC console, Red vs Blue, Trace, Live log and Pricing. |
+| 16 | Showcase views | Judges and managers need a clear, visual story. | Tabs for Home, Dashboard, Workflow (3D simulation), SOC console, Red vs Blue, Benchmark, Trace, Live log and Pricing. |
 | 17 | Viability: dataset streaming, onboarding, workload | A bank must be able to plug in its own data and not drown in work. | Warm-up processed 50,000 events in 42.2 s (see Onboarding time); suggested labels, bulk labels and auto-triage cut clicks. |
 
 Size of the result, counted in this repository:
@@ -390,7 +390,7 @@ The OpenAPI docs are at http://127.0.0.1:8000/docs.
 
 ## Scenarios
 
-All scenarios use the dashboard at http://localhost:5173. Its tabs are **Home**, **Dashboard**, **Workflow**, **SOC console**, **Red vs Blue**, **Trace**, **Live log** and **Pricing**. The app opens on Home; **Open dashboard** (top right) jumps to the Dashboard tab.
+All scenarios use the dashboard at http://localhost:5173. Its tabs are **Home**, **Dashboard**, **Workflow**, **SOC console**, **Red vs Blue**, **Benchmark**, **Trace**, **Live log** and **Pricing**. The app opens on Home; **Open dashboard** (top right) jumps to the Dashboard tab.
 
 ### 1. Sample scenario: Alice, Bob and a mule chain
 
@@ -615,7 +615,7 @@ powershell -ExecutionPolicy Bypass -File scripts\aml.ps1 -Name HI-Small -MaxRows
 
 ### Benchmark vs baselines and ROI (AMLworld)
 
-**Status: method fixed, results not produced yet.** No numbers below are measured. They go in this section only after `benchmarks/run_benchmark.py` has been run; until then, HELIX has not been compared with any baseline. The tables show the layout, not results.
+**Status: measured** on one 12 h AMLworld HI-Small test window (2022/09/04 01:00-13:00 UTC, 95,881 transactions, 203 laundering). Results, assumptions and limitations: [BENCHMARK_NOTES.md](BENCHMARK_NOTES.md); every system x seed x N row: `benchmarks/results/results.csv`.
 
 **The question.** With the same investigator capacity (the same number of alerts per hour), does HELIX find more laundering value per investigator-hour than simple, common baselines? The answer is reported whether HELIX wins or loses, and nothing is tuned to favour HELIX during this comparison.
 
@@ -653,18 +653,66 @@ The baselines are standard off-the-shelf models with moderate, equal effort. The
 
 Assumptions, kept in `benchmarks/config.json`: 20 minutes per case and an analyst cost of $30/hour, so $10 per case. A sensitivity run uses 10, 20 and 30 minutes. Isolation Forest and XGBoost are run with 3 seeds and the range is reported. If Auto_Triage is enabled, the report adds the LOW Cases auto-cleared, the hours saved and the laundering value inside them (which should be near zero).
 
-**Results layout** (filled in after the run; every cell is pending)
+**Measured results** (AMLworld test data only). Windows: baselines fit on 2022/09/03 00:00 to 09/04 01:00 (230,114 rows); HELIX warm-up 2022/09/03 19:00 to 09/04 01:00 (62,973 rows, Warm_Up_Mode); test 2022/09/04 01:00 to 13:00. HELIX is the default config, unchanged. Isolation Forest and XGBoost show seed 7, with the range over seeds 7, 11 and 13 in brackets. 20 min per case at $30/hour = $10 per case. "Capped value" counts each laundering transaction at most $100,000, because two test transactions (about 943M and 158M USD) hold about 99.8% of the raw laundering value. Auto_Triage was not run.
 
-| System (N = 50 per hour) | Alerts | TP | FP | Value captured (USD) | Share of laundering value | Value per investigator-hour | Cost per true catch | Wasted hours |
-|---|---|---|---|---|---|---|---|---|
-| HELIX | pending | pending | pending | pending | pending | pending | pending | pending |
-| Rule baseline | pending | pending | pending | pending | pending | pending | pending | pending |
-| Isolation Forest | pending | pending | pending | pending | pending | pending | pending | pending |
-| XGBoost | pending | pending | pending | pending | pending | pending | pending | pending |
+N = 25 alerts per hour (capacity 300):
 
-Planned outputs: `benchmarks/results/results.csv` and `results.md` for N = 25, 50 and 100, the chart `benchmarks/results/value_per_hour_N50.png`, and `BENCHMARK_NOTES.md` covering the assumptions, the exact slices, limitations and anything that could make the comparison unfair.
+| System | Alerts | TP | FP | Tx recall | Value captured (USD) | Share of laundering value | Inv. hours | Value / inv. hour (USD) | Capped value / inv. hour (USD) | Cost per true catch (USD) | Wasted hours |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| HELIX (Active_Queue, own budget 20/h) | 239 | 11 | 228 | 0.059 | 158,019,634 | 0.143 | 80 | 1,983,510 | 3,492 | 217 | 76 |
+| HELIX + Backlog (equal capacity) | 300 | 12 | 288 | 0.064 | 158,021,085 | 0.143 | 100 | 1,580,211 | 2,796 | 250 | 96 |
+| Rule (P99 amount / 1h burst) | 300 | 3 | 297 | 0.015 | 1,100,869,352 | 0.997 | 100 | 11,008,694 | 2,002 | 1,000 | 99 |
+| Isolation Forest | 300 | 10 [10-11] | 290 | 0.059 [0.059-0.064] | 157,871,585 | 0.143 | 100 | 1,578,716 [1,578,716-1,578,904] | 1,301 [1,301-1,490] | 300 | 97 |
+| XGBoost (supervised) | 300 | 82 [80-83] | 218 | 0.414 [0.404-0.419] | 792,102 | 0.001 | 100 | 7,921 [7,757-7,921] | 7,921 [7,757-7,921] | 37 | 73 |
 
-**What to expect, honestly.** The runs above (precision 0.002, recall 0.045, 0 of 78 patterns detected) suggest HELIX's default detectors may lose to these baselines on AMLworld. HELIX ranks Cases by expected loss, so it may do better on value per hour than on alert counts, but that is not measured. Whatever the result, it is reported "on AMLworld test data" and is not a claim about real-world savings.
+N = 50 alerts per hour (capacity 600):
+
+| System | Alerts | TP | FP | Tx recall | Value captured (USD) | Share of laundering value | Inv. hours | Value / inv. hour (USD) | Capped value / inv. hour (USD) | Cost per true catch (USD) | Wasted hours |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| HELIX (Active_Queue, own budget 20/h) | 239 | 11 | 228 | 0.059 | 158,019,634 | 0.143 | 80 | 1,983,510 | 3,492 | 217 | 76 |
+| HELIX + Backlog (equal capacity) | 600 | 16 | 584 | 0.089 | 158,028,949 | 0.143 | 200 | 790,145 | 1,438 | 375 | 195 |
+| Rule (P99 amount / 1h burst) | 581 | 4 | 577 | 0.020 | 1,102,961,375 | 0.998 | 194 | 5,695,153 | 1,550 | 1,452 | 192 |
+| Isolation Forest | 600 | 11 [11-12] | 589 | 0.064 [0.064-0.069] | 157,890,412 [157,890,412-1,100,918,111] | 0.143 | 200 | 789,452 [789,452-5,504,591] | 745 [745-1,245] | 545 | 196 |
+| XGBoost (supervised) | 600 | 90 [90-93] | 510 | 0.453 [0.453-0.468] | 864,341 | 0.001 | 200 | 4,322 [4,322-4,447] | 4,322 [4,322-4,447] | 67 | 170 |
+
+N = 100 alerts per hour (capacity 1,200):
+
+| System | Alerts | TP | FP | Tx recall | Value captured (USD) | Share of laundering value | Inv. hours | Value / inv. hour (USD) | Capped value / inv. hour (USD) | Cost per true catch (USD) | Wasted hours |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| HELIX (Active_Queue, own budget 20/h) | 239 | 11 | 228 | 0.059 | 158,019,634 | 0.143 | 80 | 1,983,510 | 3,492 | 217 | 76 |
+| HELIX + Backlog (equal capacity) | 1,200 | 25 | 1,175 | 0.138 | 158,094,800 | 0.143 | 400 | 395,237 | 883 | 480 | 392 |
+| Rule (P99 amount / 1h burst) | 662 | 4 | 658 | 0.020 | 1,102,961,375 | 0.998 | 221 | 4,998,314 | 1,360 | 1,655 | 219 |
+| Isolation Forest | 1,200 | 11 [11-14] | 1,189 | 0.064 [0.064-0.079] | 157,890,412 [157,890,412-1,103,011,057] | 0.143 | 400 | 394,726 [394,726-2,757,528] | 372 [372-875] | 1,091 | 396 |
+| XGBoost (supervised) | 1,200 | 106 [105-109] | 1,094 | 0.532 [0.527-0.547] | 987,740 | 0.001 | 400 | 2,469 [2,469-2,516] | 2,469 [2,469-2,516] | 113 | 365 |
+
+The HELIX (Active_Queue) row is the same at every N because its own budget of 20 per hour produced only 239 alerts in 12 h. The rule flags only 662 account-hours in total, so it cannot fill N = 50 or 100.
+
+Transaction-level ranking on the 95,881 test transactions (PR-AUC of a random ranking = 0.0021):
+
+| System | ROC-AUC | PR-AUC | Note |
+|---|---|---|---|
+| HELIX (both rows) | 0.505 | 0.002 | coarse: a transaction's score is the highest Risk_Score of a Case holding it, else 0 |
+| Rule | 0.521 | 0.005 | max(amount / P99, burst / P99) |
+| Isolation Forest | 0.735 [0.703-0.735] | 0.004 [0.003-0.004] | unsupervised |
+| XGBoost | 0.969 [0.967-0.971] | 0.335 [0.335-0.335] | supervised on the fit window |
+
+![Value per investigator-hour at N = 50, raw and capped](benchmarks/results/value_per_hour_N50.png)
+
+The dashboard's **Benchmark** tab shows the same results (from a copy of `benchmarks/results/summary.json`):
+
+![Benchmark tab](docs/benchmark.png)
+
+Full tables (precision@N, value shares, 10/20/30-minute sensitivity): `benchmarks/results/results.md`.
+
+**What the measurements say, honestly.** On AMLworld test data:
+
+- **XGBoost wins overall.** It is supervised on fit-window labels that HELIX never sees, so it is an upper reference rather than a like-for-like rival. It has 4 to 7 times the true positives of HELIX + Backlog at equal capacity, the lowest cost per true catch ($37-113) and the best capped value per investigator-hour, but it misses both huge transactions (0.1% of raw value).
+- **The rule wins on raw value**, only because it alerts on the two huge transactions. One of them (943M USD) is among 430 test rows (85% of the laundering value) whose amount is outside the range HELIX can ingest, so HELIX never sees it.
+- **Among label-free systems, HELIX leads on counts and cost:** the highest alert precision (0.046 Active_Queue vs 0.033-0.037 Isolation Forest and 0.006-0.010 rule), the fewest wasted hours (76 vs 97+), the most true positives and recall at every N (Isolation Forest's best seed ties its recall at N = 25), and the lowest cost per true catch ($217 Active_Queue; $250-480 with the Backlog, against $300-1,091 for Isolation Forest and $1,000-1,655 for the rule).
+- **HELIX does not lead everywhere.** On capped value per investigator-hour at equal capacity, it leads at N = 25 but the rule is ahead at N = 50 and 100. Its transaction ranking is near random (ROC-AUC 0.505), below Isolation Forest (0.70-0.74).
+- **Absolute numbers are low for every label-free system:** HELIX's alert precision is 2-5%, and its alerts hold 12-28 of the 203 laundering transactions.
+
+This is one 12 h window, single-process, with untuned HELIX. It is not a claim about real-world savings; see [BENCHMARK_NOTES.md](BENCHMARK_NOTES.md) for the limitations.
 
 **After the honest comparison (a separate, later step).** Planned work that is not done yet:
 

@@ -136,7 +136,7 @@ def main() -> int:
             for n in cfg["capacities"]:
                 sel = top_n_per_hour(alerts, n)
                 for minutes in cfg["minutes_sensitivity"]:
-                    costs = Costs(minutes, cfg["analyst_cost_per_hour"], cfg["cost_per_case"])
+                    costs = Costs(minutes, cfg["analyst_cost_per_hour"])
                     m = evaluate(sel, test, costs, hours, n, cfg["value_cap_usd"])
                     rows.append({"system": sysname, "seed": seed, "N": n, "minutes_per_case": minutes,
                                  "candidate_alerts": len(alerts), **m})
@@ -150,6 +150,10 @@ def main() -> int:
         auc[sysname] = {"roc_auc": [v[0] for v in vals], "pr_auc": [v[1] for v in vals]}
 
     base_min = cfg["minutes_per_case"]
+    base_costs = Costs(base_min, cfg["analyst_cost_per_hour"])
+    if abs(base_costs.cost_per_case - cfg["cost_per_case"]) > 1e-9:
+        raise ValueError(f"config cost_per_case {cfg['cost_per_case']} != minutes_per_case / 60 x "
+                         f"analyst_cost_per_hour = {base_costs.cost_per_case}")
     main_seed = cfg["seed"]
     head = res[(res["minutes_per_case"] == base_min) & (res["seed"].isna() | (res["seed"] == main_seed))]
 
@@ -179,7 +183,8 @@ def main() -> int:
             "true_positive": "alert holds >= 1 laundering transaction",
             "capacity": "each system takes its own top N alerts per clock hour",
             "minutes_per_case": base_min, "analyst_cost_per_hour": cfg["analyst_cost_per_hour"],
-            "cost_per_case": cfg["cost_per_case"], "cost_per_alert": Costs(base_min, cfg["analyst_cost_per_hour"], cfg["cost_per_case"]).cost_per_alert,
+            "cost_per_case": base_costs.cost_per_case,
+            "cost_formula": "cost per case = minutes_per_case / 60 x analyst_cost_per_hour; cost per true catch = alerts x cost per case / TP (sensitivity: same formula at 10/20/30 min)",
             "currency": "Amount Paid x fixed approximate USD rate table (benchmarks/config.json)",
             "value_cap_usd": cfg["value_cap_usd"], "value_cap_note": cfg["value_cap_note"],
             "helix_config": helix_run["config"], "helix_alert_budget_per_hour": helix_run["alert_budget_per_period"],
@@ -222,7 +227,8 @@ def main() -> int:
           f"{int(y.sum())} laundering, {summary['rows']['test_laundering_usd']:,.0f} USD laundering value). "
           f"Baselines fit on {w['fit_start']} .. {w['test_start']} ({len(fit):,} tx). HELIX warm-up "
           f"{w['helix_warmup_start']} .. {w['test_start']} ({helix_run['warmup_rows']:,} tx, Warm_Up_Mode), default config.",
-          f"Costs: {base_min} min/case, {cfg['analyst_cost_per_hour']}/h analyst, {cfg['cost_per_case']}/case. "
+          f"Costs: {base_min} min/case x {cfg['analyst_cost_per_hour']} USD/h analyst = {base_costs.cost_per_case:g} USD/case; "
+          f"cost per true catch = alerts x cost per case / TP. "
           f"IF/XGBoost: seed {main_seed} shown, range over seeds {cfg['seeds']} in brackets. On AMLworld test data only.\n"]
     for n in cfg["capacities"]:
         md.append(f"## N = {n} alerts per hour (capacity {n * hours})\n")

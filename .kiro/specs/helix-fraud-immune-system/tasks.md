@@ -120,10 +120,10 @@ Build the Python 3.10 backend module by module (codec → fusion → sensors →
 - [ ] 29. AMLworld improvement
   - [ ] 29.1 Improve HELIX on AMLworld: map or add motif detectors for the unmapped pattern types, tune the alert threshold and budget on a training day and evaluate on a separate test day, re-run the benchmark and update the README results. _Requirements: 4, 11_
 
-- [ ] 30. AMLworld benchmark and ROI
-  - [ ] 30.1 Build the honest head-to-head benchmark in benchmarks/: export HELIX alerts from a warm-up then test replay, add the rule and Isolation Forest baselines, compare at equal alert limits (25, 50, 100 per hour) with ROI metrics, and write the results table, chart and BENCHMARK_NOTES.md. _Requirements: 4, 39, 41_
-  - [ ] 30.2 Add the XGBoost baseline (time-based split, same features) to the benchmark and re-run the comparison. _Requirements: 4_
-  - [-] 30.3 Add a Benchmark section to the frontend showing the measured comparison and ROI numbers from the benchmark results. _Requirements: 38, 42_
+- [x] 30. AMLworld benchmark and ROI
+  - [x] 30.1 Build the honest head-to-head benchmark in benchmarks/: export HELIX alerts from a warm-up then test replay, add the rule and Isolation Forest baselines, compare at equal alert limits (25, 50, 100 per hour) with ROI metrics, and write the results table, chart and BENCHMARK_NOTES.md. _Requirements: 4, 39, 41_
+  - [x] 30.2 Add the XGBoost baseline (time-based split, same features) to the benchmark and re-run the comparison. _Requirements: 4_
+  - [x] 30.3 Add a Benchmark section to the frontend showing the measured comparison and ROI numbers from the benchmark results. _Requirements: 38, 42_
 
 - [ ]* 17. Optional: Narrative_Generator
   - [ ]* 17.1 Implement Narrative_Generator with unit + Hypothesis property tests for the design properties of this module. _Requirements: 26_

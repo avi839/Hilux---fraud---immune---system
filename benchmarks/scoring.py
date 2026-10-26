@@ -25,15 +25,16 @@ HOUR = pd.Timedelta(hours=1)
 
 @dataclass(frozen=True)
 class Costs:
+    """One alert = one case = ``minutes_per_case`` of analyst time at ``analyst_cost_per_hour``.
+
+    There is exactly one cost per case (no separate per-alert fee on top): 20 min x 30/h = 10.
+    The minutes sensitivity uses the same formula (10 min -> 5, 30 min -> 15)."""
+
     minutes_per_case: float = 20.0
     analyst_cost_per_hour: float = 30.0
-    cost_per_case: float = 10.0
 
     @property
-    def cost_per_alert(self) -> float:
-        """Analyst time per alert: minutes_per_case / 60 x analyst_cost_per_hour. At the base
-        20 min and 30/h this is the configured cost_per_case (10); the sensitivity runs scale it
-        with the minutes (10 min -> 5, 30 min -> 15). cost_per_case is not added on top."""
+    def cost_per_case(self) -> float:
         return self.minutes_per_case / 60.0 * self.analyst_cost_per_hour
 
 
@@ -121,7 +122,7 @@ def evaluate(selected: pd.DataFrame, tx: pd.DataFrame, costs: Costs, hours: int,
     fp = alerts - tp
     value = float(sum(lab_usd[t] for t in caught))
     inv_h = alerts * costs.minutes_per_case / 60.0
-    cost = alerts * costs.cost_per_alert
+    cost = alerts * costs.cost_per_case  # cost per true catch = alerts x cost_per_case / TP
     out = {
         "alerts": alerts,
         "capacity": None if n is None else n * hours,

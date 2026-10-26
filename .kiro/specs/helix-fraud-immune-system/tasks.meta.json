@@ -1335,6 +1335,21 @@
         "executionId": "5fba5f4d-cf33-40a3-a5ee-092015f3a201",
         "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
         "timestamp": 1792974245599
+      },
+      {
+        "executionId": "ade62c3a-20bd-40f6-ae03-58d6e10b4a5b",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792979515702
+      },
+      {
+        "executionId": "7e54ddde-3cbb-41db-ace6-22abb2da6a93",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792980417983
+      },
+      {
+        "executionId": "7e54ddde-3cbb-41db-ace6-22abb2da6a93",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792981370513
       }
     ],
     "30.2 Add the XGBoost baseline (time-based split, same features) to the benchmark and re-run the comparison. _Requirements: 4_": [
@@ -1342,6 +1357,11 @@
         "executionId": "5fba5f4d-cf33-40a3-a5ee-092015f3a201",
         "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
         "timestamp": 1792974246036
+      },
+      {
+        "executionId": "7e54ddde-3cbb-41db-ace6-22abb2da6a93",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792981371456
       }
     ],
     "30.3 Add a Benchmark section to the frontend showing the measured comparison and ROI numbers from the benchmark results. _Requirements: 38, 42_": [
@@ -1349,6 +1369,18 @@
         "executionId": "ea8b1f26-baae-45fe-beb7-bcfdd67523f8",
         "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
         "timestamp": 1792977702871
+      },
+      {
+        "executionId": "7e54ddde-3cbb-41db-ace6-22abb2da6a93",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792980416610
+      }
+    ],
+    "30. AMLworld benchmark and ROI": [
+      {
+        "executionId": "7e54ddde-3cbb-41db-ace6-22abb2da6a93",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792981371677
       }
     ]
   }

@@ -57,7 +57,7 @@ def test_top_n_per_hour_takes_each_hours_best():
 def test_tp_rule_value_per_hour_and_cost_per_catch():
     sel = pd.DataFrame({"hour": [T0, T0, T0], "key": ["S1", "S2", "S3"], "score": [3, 2, 1],
                         "tx_ids": [("a", "b"), ("c",), ("e", "b")]})
-    costs = Costs(minutes_per_case=20, analyst_cost_per_hour=30, cost_per_case=10)
+    costs = Costs(minutes_per_case=20, analyst_cost_per_hour=30)
     m = evaluate(sel, TX, costs, hours=2, n=5, value_cap_usd=500)
     assert (m["alerts"], m["tp"], m["fp"]) == (3, 2, 1)  # an alert with >= 1 laundering tx is a TP
     assert m["laundering_tx_caught"] == 2 and m["tx_recall"] == 1.0  # b counted once
@@ -68,6 +68,28 @@ def test_tp_rule_value_per_hour_and_cost_per_catch():
     assert m["wasted_hours"] == pytest.approx(1 / 3, abs=0.01)
     assert m["precision_at_n"] == pytest.approx(2 / 10)
     assert m["value_capped_usd"] == 600.0  # e capped at 500
+
+
+@pytest.mark.parametrize("minutes, per_case", [(10, 5.0), (20, 10.0), (30, 15.0)])
+def test_cost_per_true_catch_is_alerts_times_cost_per_case_over_tp(minutes, per_case):
+    """Regression: cost per true catch once used 20 USD per alert at 20 min (a per-alert fee on
+    top of the analyst time). It must be alerts x (minutes / 60 x 30) / TP, one cost per case."""
+    costs = Costs(minutes_per_case=minutes, analyst_cost_per_hour=30)
+    assert costs.cost_per_case == pytest.approx(per_case)
+    sel = pd.DataFrame({"hour": [T0] * 4, "key": ["S1", "S2", "S3", "S4"], "score": [4, 3, 2, 1],
+                        "tx_ids": [("b",), ("c",), ("e",), ("a",)]})
+    m = evaluate(sel, TX, costs, hours=1, n=4)
+    assert m["tp"] == 2
+    assert m["total_cost_usd"] == pytest.approx(4 * per_case)
+    assert m["cost_per_true_catch_usd"] == pytest.approx(4 * per_case / 2)
+    assert m["investigator_hours"] == pytest.approx(4 * minutes / 60, abs=0.01)
+
+
+def test_config_cost_per_case_matches_formula():
+    from common import load_config
+
+    cfg = load_config()
+    assert Costs(cfg["minutes_per_case"], cfg["analyst_cost_per_hour"]).cost_per_case == cfg["cost_per_case"] == 10
 
 
 def test_no_alerts_gives_no_cost_per_catch():

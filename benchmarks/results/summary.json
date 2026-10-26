@@ -38,8 +38,8 @@
     "capacity": "each system takes its own top N alerts per clock hour",
     "minutes_per_case": 20,
     "analyst_cost_per_hour": 30,
-    "cost_per_case": 10,
-    "cost_per_alert": 20.0,
+    "cost_per_case": 10.0,
+    "cost_formula": "cost per case = minutes_per_case / 60 x analyst_cost_per_hour; cost per true catch = alerts x cost per case / TP (sensitivity: same formula at 10/20/30 min)",
     "currency": "Amount Paid x fixed approximate USD rate table (benchmarks/config.json)",
     "value_cap_usd": 100000,
     "value_cap_note": "Secondary value metric: each laundering transaction counts at most this many USD, because two test transactions (943M and 158M USD) hold ~99.8% of the raw laundering value.",
@@ -77,10 +77,10 @@
           "value_captured_frac": 0.1430489043620658,
           "investigator_hours": 79.67,
           "value_per_inv_hour_usd": 1983510.05,
-          "cost_per_true_catch_usd": 434.55,
+          "cost_per_true_catch_usd": 217.27,
           "wasted_hours": 76.0,
           "value_capped_usd": 278194.73,
-          "value_capped_frac": 0.13955333516567217,
+          "value_capped_frac": 0.1395533351656722,
           "value_capped_per_inv_hour_usd": 3491.98,
           "seed_range": null
         },
@@ -95,10 +95,10 @@
           "value_captured_frac": 0.1430489043620658,
           "investigator_hours": 79.67,
           "value_per_inv_hour_usd": 1983510.05,
-          "cost_per_true_catch_usd": 434.55,
+          "cost_per_true_catch_usd": 217.27,
           "wasted_hours": 76.0,
           "value_capped_usd": 278194.73,
-          "value_capped_frac": 0.13955333516567217,
+          "value_capped_frac": 0.1395533351656722,
           "value_capped_per_inv_hour_usd": 3491.98,
           "seed_range": null
         },
@@ -113,10 +113,10 @@
           "value_captured_frac": 0.1430489043620658,
           "investigator_hours": 79.67,
           "value_per_inv_hour_usd": 1983510.05,
-          "cost_per_true_catch_usd": 434.55,
+          "cost_per_true_catch_usd": 217.27,
           "wasted_hours": 76.0,
           "value_capped_usd": 278194.73,
-          "value_capped_frac": 0.13955333516567217,
+          "value_capped_frac": 0.1395533351656722,
           "value_capped_per_inv_hour_usd": 3491.98,
           "seed_range": null
         }
@@ -130,17 +130,17 @@
       "minutes_sensitivity_N50": {
         "10": {
           "value_per_inv_hour_usd": 3967020.1,
-          "cost_per_true_catch_usd": 325.91,
+          "cost_per_true_catch_usd": 108.64,
           "investigator_hours": 39.83
         },
         "20": {
           "value_per_inv_hour_usd": 1983510.05,
-          "cost_per_true_catch_usd": 434.55,
+          "cost_per_true_catch_usd": 217.27,
           "investigator_hours": 79.67
         },
         "30": {
           "value_per_inv_hour_usd": 1322340.03,
-          "cost_per_true_catch_usd": 543.18,
+          "cost_per_true_catch_usd": 325.91,
           "investigator_hours": 119.5
         }
       }
@@ -159,10 +159,10 @@
           "value_captured_frac": 0.14305021823733952,
           "investigator_hours": 100.0,
           "value_per_inv_hour_usd": 1580210.85,
-          "cost_per_true_catch_usd": 500.0,
+          "cost_per_true_catch_usd": 250.0,
           "wasted_hours": 96.0,
           "value_capped_usd": 279646.11,
-          "value_capped_frac": 0.1402814032135784,
+          "value_capped_frac": 0.14028140321357843,
           "value_capped_per_inv_hour_usd": 2796.46,
           "seed_range": null
         },
@@ -177,10 +177,10 @@
           "value_captured_frac": 0.14305733645466304,
           "investigator_hours": 200.0,
           "value_per_inv_hour_usd": 790144.74,
-          "cost_per_true_catch_usd": 750.0,
+          "cost_per_true_catch_usd": 375.0,
           "wasted_hours": 194.67,
           "value_capped_usd": 287509.28,
-          "value_capped_frac": 0.1442258770117076,
+          "value_capped_frac": 0.14422587701170764,
           "value_capped_per_inv_hour_usd": 1437.55,
           "seed_range": null
         },
@@ -192,10 +192,10 @@
           "precision_at_n": 0.020833333333333332,
           "tx_recall": 0.13793103448275862,
           "value_captured_usd": 158094799.98,
-          "value_captured_frac": 0.14311694910110506,
+          "value_captured_frac": 0.14311694910110503,
           "investigator_hours": 400.0,
           "value_per_inv_hour_usd": 395237.0,
-          "cost_per_true_catch_usd": 960.0,
+          "cost_per_true_catch_usd": 480.0,
           "wasted_hours": 391.67,
           "value_capped_usd": 353360.67,
           "value_capped_frac": 0.17725950203914398,
@@ -212,17 +212,17 @@
       "minutes_sensitivity_N50": {
         "10": {
           "value_per_inv_hour_usd": 1580289.49,
-          "cost_per_true_catch_usd": 562.5,
+          "cost_per_true_catch_usd": 187.5,
           "investigator_hours": 100.0
         },
         "20": {
           "value_per_inv_hour_usd": 790144.74,
-          "cost_per_true_catch_usd": 750.0,
+          "cost_per_true_catch_usd": 375.0,
           "investigator_hours": 200.0
         },
         "30": {
           "value_per_inv_hour_usd": 526763.16,
-          "cost_per_true_catch_usd": 937.5,
+          "cost_per_true_catch_usd": 562.5,
           "investigator_hours": 300.0
         }
       }
@@ -241,7 +241,7 @@
           "value_captured_frac": 0.9965733412126165,
           "investigator_hours": 100.0,
           "value_per_inv_hour_usd": 11008693.52,
-          "cost_per_true_catch_usd": 2000.0,
+          "cost_per_true_catch_usd": 1000.0,
           "wasted_hours": 99.0,
           "value_capped_usd": 200214.0,
           "value_capped_frac": 0.10043515608576087,
@@ -259,7 +259,7 @@
           "value_captured_frac": 0.9984671667745822,
           "investigator_hours": 193.67,
           "value_per_inv_hour_usd": 5695153.4,
-          "cost_per_true_catch_usd": 2905.0,
+          "cost_per_true_catch_usd": 1452.5,
           "wasted_hours": 192.33,
           "value_capped_usd": 300214.0,
           "value_capped_frac": 0.1505990587527876,
@@ -277,7 +277,7 @@
           "value_captured_frac": 0.9984671667745822,
           "investigator_hours": 220.67,
           "value_per_inv_hour_usd": 4998314.39,
-          "cost_per_true_catch_usd": 3310.0,
+          "cost_per_true_catch_usd": 1655.0,
           "wasted_hours": 219.33,
           "value_capped_usd": 300214.0,
           "value_capped_frac": 0.1505990587527876,
@@ -294,17 +294,17 @@
       "minutes_sensitivity_N50": {
         "10": {
           "value_per_inv_hour_usd": 11390306.8,
-          "cost_per_true_catch_usd": 2178.75,
+          "cost_per_true_catch_usd": 726.25,
           "investigator_hours": 96.83
         },
         "20": {
           "value_per_inv_hour_usd": 5695153.4,
-          "cost_per_true_catch_usd": 2905.0,
+          "cost_per_true_catch_usd": 1452.5,
           "investigator_hours": 193.67
         },
         "30": {
           "value_per_inv_hour_usd": 3796768.93,
-          "cost_per_true_catch_usd": 3631.25,
+          "cost_per_true_catch_usd": 2178.75,
           "investigator_hours": 290.5
         }
       }
@@ -323,10 +323,10 @@
           "value_captured_frac": 0.14291488162592456,
           "investigator_hours": 100.0,
           "value_per_inv_hour_usd": 1578715.85,
-          "cost_per_true_catch_usd": 600.0,
+          "cost_per_true_catch_usd": 300.0,
           "wasted_hours": 96.67,
           "value_capped_usd": 130145.9,
-          "value_capped_frac": 0.06528626139719225,
+          "value_capped_frac": 0.06528626139719226,
           "value_capped_per_inv_hour_usd": 1301.46,
           "seed_range": {
             "tp": [
@@ -366,10 +366,10 @@
           "value_captured_frac": 0.1429319250046834,
           "investigator_hours": 200.0,
           "value_per_inv_hour_usd": 789452.06,
-          "cost_per_true_catch_usd": 1090.91,
+          "cost_per_true_catch_usd": 545.45,
           "wasted_hours": 196.33,
           "value_capped_usd": 148972.94,
-          "value_capped_frac": 0.07473064302967543,
+          "value_capped_frac": 0.07473064302967541,
           "value_capped_per_inv_hour_usd": 744.86,
           "seed_range": {
             "tp": [
@@ -409,10 +409,10 @@
           "value_captured_frac": 0.1429319250046834,
           "investigator_hours": 400.0,
           "value_per_inv_hour_usd": 394726.03,
-          "cost_per_true_catch_usd": 2181.82,
+          "cost_per_true_catch_usd": 1090.91,
           "wasted_hours": 396.33,
           "value_capped_usd": 148972.94,
-          "value_capped_frac": 0.07473064302967543,
+          "value_capped_frac": 0.07473064302967541,
           "value_capped_per_inv_hour_usd": 372.43,
           "seed_range": {
             "tp": [
@@ -455,17 +455,17 @@
       "minutes_sensitivity_N50": {
         "10": {
           "value_per_inv_hour_usd": 1578904.12,
-          "cost_per_true_catch_usd": 818.18,
+          "cost_per_true_catch_usd": 272.73,
           "investigator_hours": 100.0
         },
         "20": {
           "value_per_inv_hour_usd": 789452.06,
-          "cost_per_true_catch_usd": 1090.91,
+          "cost_per_true_catch_usd": 545.45,
           "investigator_hours": 200.0
         },
         "30": {
           "value_per_inv_hour_usd": 526301.37,
-          "cost_per_true_catch_usd": 1363.64,
+          "cost_per_true_catch_usd": 818.18,
           "investigator_hours": 300.0
         }
       }
@@ -481,13 +481,13 @@
           "precision_at_n": 0.2733333333333333,
           "tx_recall": 0.41379310344827586,
           "value_captured_usd": 792102.35,
-          "value_captured_frac": 0.0007170588283861887,
+          "value_captured_frac": 0.0007170588283861883,
           "investigator_hours": 100.0,
           "value_per_inv_hour_usd": 7921.02,
-          "cost_per_true_catch_usd": 73.17,
+          "cost_per_true_catch_usd": 36.59,
           "wasted_hours": 72.67,
           "value_capped_usd": 792102.35,
-          "value_capped_frac": 0.3973494530656142,
+          "value_capped_frac": 0.397349453065614,
           "value_capped_per_inv_hour_usd": 7921.02,
           "seed_range": {
             "tp": [
@@ -524,13 +524,13 @@
           "precision_at_n": 0.15,
           "tx_recall": 0.45320197044334976,
           "value_captured_usd": 864340.54,
-          "value_captured_frac": 0.0007824531937164453,
+          "value_captured_frac": 0.000782453193716445,
           "investigator_hours": 200.0,
           "value_per_inv_hour_usd": 4321.7,
-          "cost_per_true_catch_usd": 133.33,
+          "cost_per_true_catch_usd": 66.67,
           "wasted_hours": 170.0,
           "value_capped_usd": 864340.54,
-          "value_capped_frac": 0.43358694749271853,
+          "value_capped_frac": 0.4335869474927183,
           "value_capped_per_inv_hour_usd": 4321.7,
           "seed_range": {
             "tp": [
@@ -567,13 +567,13 @@
           "precision_at_n": 0.08833333333333333,
           "tx_recall": 0.5320197044334976,
           "value_captured_usd": 987740.11,
-          "value_captured_frac": 0.0008941619273967267,
+          "value_captured_frac": 0.0008941619273967263,
           "investigator_hours": 400.0,
           "value_per_inv_hour_usd": 2469.35,
-          "cost_per_true_catch_usd": 226.42,
+          "cost_per_true_catch_usd": 113.21,
           "wasted_hours": 364.67,
           "value_capped_usd": 987740.11,
-          "value_capped_frac": 0.4954889874277269,
+          "value_capped_frac": 0.4954889874277266,
           "value_capped_per_inv_hour_usd": 2469.35,
           "seed_range": {
             "tp": [
@@ -616,17 +616,17 @@
       "minutes_sensitivity_N50": {
         "10": {
           "value_per_inv_hour_usd": 8643.41,
-          "cost_per_true_catch_usd": 100.0,
+          "cost_per_true_catch_usd": 33.33,
           "investigator_hours": 100.0
         },
         "20": {
           "value_per_inv_hour_usd": 4321.7,
-          "cost_per_true_catch_usd": 133.33,
+          "cost_per_true_catch_usd": 66.67,
           "investigator_hours": 200.0
         },
         "30": {
           "value_per_inv_hour_usd": 2881.14,
-          "cost_per_true_catch_usd": 166.67,
+          "cost_per_true_catch_usd": 100.0,
           "investigator_hours": 300.0
         }
       }
@@ -654,5 +654,6 @@
     "cases_admitted": 307,
     "worker_errors": 0,
     "auto_cleared": null
-  }
+  },
+  "auto_triage": "not run"
 }

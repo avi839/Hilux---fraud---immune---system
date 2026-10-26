@@ -28,6 +28,8 @@ CROSS_FIELD = {
     "risk.alert_threshold",
     "ingest.dedup_ttl_s",
     "graph.window_s",
+    "graph.fan_span_s",  # <= graph.window_s
+    "graph.round_trip_span_s",  # <= graph.window_s
     "learn.weight_lower",
     "learn.weight_upper",
     "triage.suggest_fraud_belief",

@@ -13,7 +13,7 @@
     "fit_start": "2022/09/03 00:00",
     "helix_warmup_start": "2022/09/03 19:00",
     "test_start": "2022/09/04 01:00",
-    "test_end": "2022/09/05 00:00"
+    "test_end": "2022/09/04 13:00"
   },
   "usd_rate_note": "Fixed approximate USD value of one unit of each AMLworld payment currency (rounded, circa 2022). Applied identically to every system; only used to weight laundering value.",
   "usd_per_unit": {

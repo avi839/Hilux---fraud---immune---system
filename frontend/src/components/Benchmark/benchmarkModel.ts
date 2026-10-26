@@ -150,7 +150,7 @@ export type Badge = "overall" | "label-free";
 
 export const BADGE_TEXT: Record<Badge, string> = {
   overall: "Best overall",
-  "label-free": "Best among label-free",
+  "label-free": "Best without labels",
 };
 
 const isBetter = (a: number, b: number, better: Better) => (better === "higher" ? a > b : a < b);
@@ -160,7 +160,7 @@ function bestValue(values: number[], better: Better): number | null {
 }
 
 /** Winner badges for one metric: "Best overall" to every system tied for the best value, and
- *  "Best among label-free" to the best label-free systems when no label-free system is best
+ *  "Best without labels" to the best label-free systems when no label-free system is best
  *  overall. Systems with no value get none. */
 export function badges(systems: SystemView[], value: (s: SystemView) => number | null | undefined, better: Better | null): Map<string, Badge> {
   const out = new Map<string, Badge>();

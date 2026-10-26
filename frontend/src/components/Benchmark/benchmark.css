@@ -35,7 +35,7 @@
 }
 .bench .bench-first ul {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
   gap: 6px 28px;
   padding-left: 18px;
   color: var(--b-soft);
@@ -214,8 +214,17 @@
 }
 .bench .bench-table {
   width: 100%;
-  min-width: 1120px;
+  min-width: 980px;
   border-collapse: collapse;
+}
+/* The comparison table has 11 columns: let seed ranges, badges and system keys wrap so it
+   fits a 1440 px window without horizontal scrolling. */
+.bench .bench-table th,
+.bench .bench-table td {
+  padding: 8px 8px;
+}
+.bench .bench-table tbody th {
+  white-space: normal;
 }
 .bench .bench-table--small {
   min-width: 520px;
@@ -282,17 +291,19 @@
   display: block;
   color: var(--hx-text-muted);
   font-size: 10.5px;
-  white-space: nowrap;
+  white-space: normal;
 }
 .bench .bench-badge {
   display: inline-flex;
+  align-items: center;
   gap: 4px;
   margin-top: 4px;
   padding: 1px 7px;
   font-size: 10.5px;
   font-weight: 500;
-  line-height: 1.6;
-  white-space: nowrap;
+  line-height: 1.35;
+  white-space: normal;
+  text-align: left;
 }
 .bench .bench-badge--overall {
   border: 1px solid rgba(199, 210, 254, 0.6);

@@ -546,7 +546,7 @@ export function BenchmarkPage({ summary = SUMMARY }: { summary?: BenchmarkSummar
         </p>
         <ComparisonTable systems={systems} n={n} hoursTested={summary.test_hours} />
         <p className="bench-note">
-          Badges are computed from the numbers above: &quot;Best overall&quot; marks the best value in a column, &quot;Best among label-free&quot; the
+          Badges are computed from the numbers above: &quot;Best overall&quot; marks the best value in a column, &quot;Best without labels&quot; the
           best system that needs no labels when a supervised one is best overall. Alerts are not ranked. Seed ranges are shown where a baseline was run
           with several seeds ({summary.seeds.join(", ")}).
         </p>
@@ -623,7 +623,7 @@ export function BenchmarkPage({ summary = SUMMARY }: { summary?: BenchmarkSummar
       </Section>
 
       <p className="bench-honesty">
-        Measured on AMLworld test data only ({a.scope_note ?? "not a real-world savings estimate"}). Every number on this page is read from
+        Measured on AMLworld test data only; these are benchmark results, not a savings estimate. Every number on this page is read from
         benchmarks/results/summary.json. Full method and caveats: the README section &quot;Benchmark vs baselines&quot; and BENCHMARK_NOTES.md in the
         repository.
       </p>

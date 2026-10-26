@@ -56,7 +56,7 @@ describe("BenchmarkPage", () => {
     render(<BenchmarkPage />);
     // Supervised XGBoost has the best alert precision; HELIX is best among the label-free systems.
     expect(badgeOf("xgboost", "alert_precision")).toBe("Best overall");
-    expect(badgeOf("helix", "alert_precision")).toBe("Best among label-free");
+    expect(badgeOf("helix", "alert_precision")).toBe("Best without labels");
     expect(badgeOf("rule", "alert_precision")).toBeNull();
     // Alerts are not ranked.
     for (const id of SYSTEM_IDS) expect(badgeOf(id, "alerts")).toBeNull();
