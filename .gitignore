@@ -1,0 +1,39 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.hypothesis/
+*.egg-info/
+
+# DuckDB storage
+*.duckdb
+*.duckdb.wal
+
+# AMLworld data (downloaded manually, never committed)
+data/*
+!data/.gitkeep
+
+# Frontend
+node_modules/
+frontend/dist/
+
+# Benchmark cache (extracted AMLworld window, logs)
+benchmarks/.cache/
+
+# Local run output and scratch
+logs/
+tmp_aml/
+*.log
+frontend/test-results/
+frontend/playwright-report/
+frontend/_shots/
+frontend/_tmp*/
+frontend/_tmp*.mjs
+frontend/tmp-shot-*
+backend/data/*
+!backend/data/.gitkeep
+.env
+.env.*
+# Regenerable HELIX export (large); summary.json/results.md hold the scored results
+benchmarks/results/helix_alerts*.csv

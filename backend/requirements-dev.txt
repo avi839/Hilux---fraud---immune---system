@@ -1,0 +1,11 @@
+-r requirements.txt
+hypothesis==6.123.2
+pytest==8.3.4
+pytest-asyncio==0.25.0
+# FastAPI TestClient transport (API integration tests).
+httpx==0.28.1
+# AMLworld benchmark baselines and charts (benchmarks/, task 30).
+scikit-learn==1.6.1
+pandas==2.2.3
+matplotlib==3.10.1
+xgboost==2.1.4

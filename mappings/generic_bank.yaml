@@ -1,0 +1,30 @@
+# Column_Mapping for a generic bank transaction export (Req 40.10, design §25).
+# Fixture: backend/tests/fixtures/onboarding/generic_bank.csv
+#   scripts\onboard.ps1 -Mapping mappings\generic_bank.yaml -Trans backend\tests\fixtures\onboarding\generic_bank.csv
+version: 1
+name: generic-bank
+delimiter: ","
+encoding: utf-8-sig
+tx_id: {name: TxnRef}
+timestamp:
+  source: {name: PostedAt}
+  format: "%d/%m/%Y %H:%M:%S"
+  tz: Europe/London            # naive local times; converted to UTC
+src_account: [{name: DebitAccount}]
+dst_account: [{name: CreditAccount}]
+amount:
+  source: {name: Amount}
+  decimal: "."
+  thousands: ","               # "1,250.00"
+  negative: reject
+currency: {name: Currency, transform: upper}
+channel: {name: Channel}
+merchant_category: {name: MCC}
+device_id: {name: DeviceId}
+lat: {name: Lat}
+lon: {name: Lon}
+label:
+  source: {name: IsFraud}
+  fraud_values: ["Y", "1", "true"]
+  legit_values: ["N", "0", "false"]
+  other: none                  # blank or other values: no label

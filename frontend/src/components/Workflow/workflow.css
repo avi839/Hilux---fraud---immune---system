@@ -1,0 +1,342 @@
+/* Workflow simulation tab (Req 43): chrome only (the 3D scene draws itself). Home/Pricing
+   language: segmented pill toolbar, the canvas in a framed glass card with corner dots, a
+   glass caption card, and a compact two-column legend below. Colour never carries meaning
+   alone: every shape in the legend is also named in text. */
+
+.wf {
+  --wf-card: linear-gradient(180deg, rgba(148, 163, 255, 0.06), rgba(148, 163, 255, 0.015) 50%), var(--hx-glass-base, rgba(9, 12, 24, 0.6));
+  --wf-dots:
+    radial-gradient(circle, rgba(199, 210, 254, 0.4) 0 0.9px, transparent 1.5px) left top / 4px 4px no-repeat,
+    radial-gradient(circle, rgba(199, 210, 254, 0.4) 0 0.9px, transparent 1.5px) right top / 4px 4px no-repeat,
+    radial-gradient(circle, rgba(199, 210, 254, 0.4) 0 0.9px, transparent 1.5px) left bottom / 4px 4px no-repeat,
+    radial-gradient(circle, rgba(199, 210, 254, 0.4) 0 0.9px, transparent 1.5px) right bottom / 4px 4px no-repeat;
+  gap: 20px;
+}
+
+/* --- toolbar: segmented pills ------------------------------------------------------- */
+
+.wf-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+.wf-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.wf-group__label {
+  color: var(--hx-text-muted, #9aa3c7);
+  font-size: 12px;
+  font-weight: 500;
+}
+.wf-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--hx-border, rgba(170, 185, 255, 0.1));
+  border-radius: 999px;
+  background: rgba(148, 163, 255, 0.04);
+}
+.wf .wf-seg .btn {
+  min-height: 28px;
+  padding: 0 12px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--v-soft, #c3cae8);
+  font-size: 12.5px;
+}
+.wf .wf-seg .btn:hover:not(:disabled) {
+  border-color: transparent;
+  background: rgba(148, 163, 255, 0.1);
+  color: var(--hx-text, #e8ecff);
+}
+/* Selected segment: light fill with dark text (15:1); aria-pressed is the state. */
+.wf .wf-seg .btn[aria-pressed="true"] {
+  border-color: transparent;
+  background: #eef1ff;
+  color: #070912;
+  box-shadow: none;
+}
+.wf .wf-seg .btn[aria-pressed="true"]:hover:not(:disabled) {
+  background: #ffffff;
+  color: #070912;
+}
+
+.wf-note {
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px dashed rgba(245, 158, 11, 0.5);
+  border-radius: 12px;
+  color: var(--text, #e8ecff);
+  background: rgba(245, 158, 11, 0.05);
+  font-size: 13px;
+}
+
+/* --- body: canvas + caption --------------------------------------------------------- */
+
+.wf-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: 20px;
+  align-items: stretch;
+}
+@media (max-width: 960px) {
+  .wf-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.wf-main {
+  min-width: 0;
+}
+
+.wf-stage {
+  position: relative;
+  height: clamp(380px, 62vh, 720px);
+  overflow: hidden;
+  border: 1px solid var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  border-radius: var(--hx-radius, 16px);
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(99, 102, 241, 0.16), transparent 65%),
+    #070912;
+  box-shadow:
+    inset 0 1px 0 rgba(232, 236, 255, 0.06),
+    0 30px 80px -40px rgba(143, 168, 255, 0.45);
+  touch-action: none;
+}
+/* corner dots over the canvas, as on the brand cards */
+.wf-stage::after,
+.wf-textview::after,
+.wf-caption::after,
+.wf-legend::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--wf-dots);
+}
+.wf-stage canvas,
+.wf-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wf-loading {
+  margin: 0;
+  padding: 24px;
+}
+
+.wf-caption {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 22px 22px 24px;
+  border: 1px solid var(--hx-border, rgba(170, 185, 255, 0.1));
+  border-radius: var(--hx-radius, 16px);
+  background: var(--wf-card);
+  box-shadow: inset 0 1px 0 rgba(232, 236, 255, 0.06);
+}
+.wf-caption__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--hx-text-muted, #9aa3c7);
+  font: 500 11px/1.4 var(--v-mono, ui-monospace, monospace);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.wf-caption__title::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hx-cyan, #7dd3fc);
+  box-shadow: 0 0 8px rgba(125, 211, 252, 0.8);
+}
+.wf-caption__kv {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  margin: 0;
+  font-size: 13px;
+}
+.wf-caption__kv dt,
+.wf-caption__kv dd {
+  padding: 8px 0;
+  border-top: 1px solid var(--hx-line, rgba(170, 185, 255, 0.08));
+}
+.wf-caption__kv dt {
+  padding-right: 14px;
+  color: var(--hx-text-muted, #9aa3c7);
+}
+.wf-caption__kv dd {
+  margin: 0;
+  color: var(--hx-text, #e8ecff);
+}
+.wf-caption__text {
+  margin: 0;
+  color: var(--v-soft, #c3cae8);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.wf-caption__note {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  border-radius: 12px;
+  background: rgba(244, 63, 94, 0.04);
+  font-size: 13px;
+}
+
+/* --- legend: compact, two columns under the canvas ---------------------------------- */
+
+.wf-legend {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 32px;
+  padding: 20px 24px 22px;
+  border: 1px solid var(--hx-border, rgba(170, 185, 255, 0.1));
+  border-radius: var(--hx-radius, 16px);
+  background: var(--wf-card);
+}
+@media (max-width: 760px) {
+  .wf-legend {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.wf-legend__col {
+  min-width: 0;
+}
+.wf-legend__title {
+  margin: 0 0 10px;
+  color: var(--hx-text-muted, #9aa3c7);
+  font: 500 11px/1.4 var(--v-mono, ui-monospace, monospace);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.wf-legend__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--v-soft, #c3cae8);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.wf-legend__list li {
+  display: grid;
+  grid-template-columns: 1.15em minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+.wf-legend__list strong {
+  color: var(--hx-text, #e8ecff);
+  font-weight: 600;
+}
+.wf-legend__list .wf-icon {
+  margin-top: 0.12em;
+}
+
+/* --- icons and shapes --------------------------------------------------------------- */
+
+.wf-icon {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+}
+.wf-icon__ring {
+  fill: none;
+  stroke: var(--hx-cyan, #22d3ee);
+  stroke-width: 2;
+}
+.wf-icon__num {
+  fill: var(--text, #ededf2);
+  font-size: 9px;
+  font-weight: 700;
+}
+.wf-shape {
+  stroke: var(--text, #ededf2);
+  stroke-width: 0.8;
+}
+.wf-shape--legit {
+  fill: var(--hx-legit, #34d399);
+}
+.wf-shape--fraud {
+  fill: var(--hx-fraud, #f43f5e);
+}
+.wf-shape--case {
+  fill: #0d0d22;
+  stroke: var(--hx-accent, #8b5cf6);
+  stroke-width: 1.6;
+}
+.wf-shape--attack {
+  fill: #f97316;
+}
+.wf-shape--shield {
+  fill: color-mix(in srgb, var(--hx-cyan, #22d3ee) 45%, transparent);
+  stroke: var(--hx-cyan, #22d3ee);
+}
+.wf-shape--pulse {
+  fill: var(--hx-accent, #8b5cf6);
+}
+
+/* --- text view ---------------------------------------------------------------------- */
+
+.wf-textview {
+  position: relative;
+  max-height: clamp(380px, 62vh, 720px);
+  overflow: auto;
+  padding: 20px 24px;
+  border: 1px solid var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  border-radius: var(--hx-radius, 16px);
+  background: var(--wf-card);
+}
+.wf-textview::after {
+  position: sticky;
+  display: none;
+}
+.wf-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-left: 1.6em;
+}
+.wf-steps li {
+  padding: 8px 12px;
+  border-left: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 13.5px;
+}
+.wf-steps__now {
+  border-left-color: #eef1ff !important;
+  background: rgba(199, 210, 254, 0.08);
+}
+.wf-steps__head,
+.wf-steps__text {
+  margin: 0;
+}
+.wf-steps__text {
+  color: var(--v-soft, #c3cae8);
+}
+.wf-steps__stage {
+  display: inline-block;
+  min-width: 6.5em;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.85em;
+  color: var(--hx-cyan, #22d3ee);
+}
+.wf-steps__mark {
+  font-weight: 700;
+}

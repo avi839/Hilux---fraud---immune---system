@@ -1,0 +1,472 @@
+/* HELIX Benchmark tab. Same language as Home, Pricing and the SOC console: navy-black,
+   hairlines, glass cards, Sora titles, very little colour. Rules are scoped under .bench
+   (with .hx-view) so they win over the generic dashboard rules. Meaning is always written as
+   text (badges, Yes/No/Partial, patterns plus printed values); tints only repeat it. */
+
+.bench {
+  --b-soft: #c3cae8;
+  --b-line: var(--hx-line, rgba(170, 185, 255, 0.08));
+  --b-mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+}
+.bench h3,
+.bench p,
+.bench ul,
+.bench dl,
+.bench dd,
+.bench figure {
+  margin: 0;
+}
+
+/* --- read this first ------------------------------------------------------------------ */
+
+.bench .bench-first {
+  padding: 16px 22px;
+  border: 1px dashed rgba(199, 210, 254, 0.28);
+  border-radius: var(--hx-radius);
+  background: rgba(148, 163, 255, 0.04);
+}
+.bench .bench-first__title {
+  margin-bottom: 8px;
+  font-family: var(--hx-font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--hx-text);
+}
+.bench .bench-first ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 6px 28px;
+  padding-left: 18px;
+  color: var(--b-soft);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+/* --- KPI row -------------------------------------------------------------------------- */
+
+.bench .bench-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bench .bench-block__title,
+.bench .bench-card__title {
+  font-family: var(--hx-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--hx-text);
+}
+.bench .bench-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0;
+  list-style: none;
+}
+.bench .bench-kpi {
+  gap: 6px;
+  padding: 18px 20px;
+  border: 1px solid var(--hx-border);
+  border-radius: var(--hx-radius);
+}
+.bench .bench-kpi > .bench-kpi__label {
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+.bench .bench-kpi > .bench-kpi__value {
+  font-family: var(--hx-font-display);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--hx-text);
+}
+.bench .bench-kpi > .bench-kpi__cmp {
+  color: var(--b-soft);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.bench .bench-kpi__mark {
+  display: inline-block;
+  width: 1.2em;
+  font-size: 10px;
+}
+.bench .bench-kpi__cmp--better .bench-kpi__mark {
+  color: var(--ok);
+}
+.bench .bench-kpi__cmp--worse .bench-kpi__mark {
+  color: var(--danger);
+}
+.bench .bench-kpi > .bench-kpi__sup {
+  padding-top: 6px;
+  border-top: 1px solid var(--b-line);
+  color: var(--hx-text-muted);
+  font-size: 12px;
+}
+.bench .bench-frame {
+  max-width: 900px;
+  padding: 14px 18px;
+  border-left: 2px solid rgba(199, 210, 254, 0.45);
+  color: var(--hx-text);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* --- cards ---------------------------------------------------------------------------- */
+
+.bench .bench-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bench .bench-card:hover {
+  transform: none;
+}
+.bench .bench-eyebrow {
+  color: var(--hx-text-muted);
+  font: 500 11px/1.4 var(--b-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.bench .bench-card > .bench-eyebrow + .bench-card__title {
+  margin-top: -8px;
+}
+.bench .bench-note {
+  color: var(--hx-text-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.bench .bench-note--lead {
+  color: var(--b-soft);
+  font-size: 13.5px;
+}
+.bench .bench-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+.bench .bench-note--inline {
+  flex: 1 1 320px;
+}
+
+/* --- capacity toggle: segmented radio group with a sliding pill --------------------- */
+
+.bench .bench-toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--bench-n, 3), 1fr);
+  padding: 4px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 999px;
+  background: rgba(148, 163, 255, 0.04);
+  box-shadow: inset 0 1px 0 rgba(232, 236, 255, 0.04);
+}
+.bench .bench-toggle__pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--bench-n, 3));
+  border-radius: 999px;
+  background: #e8ecff;
+  box-shadow:
+    inset 0 -1px 0 rgba(7, 9, 18, 0.12),
+    0 4px 18px -6px rgba(199, 210, 254, 0.45);
+  transform: translateX(calc(var(--bench-i, 0) * 100%));
+  pointer-events: none;
+}
+.bench .bench-toggle__opt {
+  position: relative;
+  z-index: 1;
+  min-width: 92px;
+  height: 34px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--hx-text-muted);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.bench .bench-toggle__opt:hover:not([aria-checked="true"]) {
+  color: var(--hx-text);
+}
+.bench .bench-toggle__opt[aria-checked="true"] {
+  color: #070912;
+}
+.bench .bench-toggle__opt:focus-visible {
+  outline-offset: 2px;
+}
+
+/* --- tables --------------------------------------------------------------------------- */
+
+.bench .bench-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--b-line);
+  border-radius: var(--hx-radius-sm);
+}
+.bench .bench-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: collapse;
+}
+.bench .bench-table--small {
+  min-width: 520px;
+}
+.bench .bench-matrix {
+  min-width: 860px;
+}
+.bench .bench-table caption {
+  padding: 12px 14px 10px;
+  color: var(--b-soft);
+  font-size: 13px;
+  text-align: left;
+}
+.bench .bench-table th,
+.bench .bench-table td {
+  vertical-align: top;
+}
+.bench .bench-table thead th {
+  white-space: normal;
+  line-height: 1.35;
+}
+.bench .bench-dir {
+  display: block;
+  color: var(--hx-text-muted);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.bench .bench-table td.num,
+.bench .bench-table th.num {
+  text-align: right;
+}
+.bench .bench-row--helix > th {
+  box-shadow: inset 2px 0 0 rgba(199, 210, 254, 0.6);
+}
+.bench .bench-row--helix {
+  background: rgba(143, 168, 255, 0.05);
+}
+.bench .bench-row--ref > * {
+  color: var(--hx-text-muted);
+  font-style: italic;
+}
+.bench .bench-sys {
+  display: block;
+  color: var(--hx-text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.bench .bench-sys__key {
+  display: block;
+  max-width: 180px;
+  color: var(--hx-text-muted);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+.bench .bench-val {
+  display: block;
+  color: var(--hx-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.bench .bench-seed {
+  display: block;
+  color: var(--hx-text-muted);
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+.bench .bench-badge {
+  display: inline-flex;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 1px 7px;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.bench .bench-badge--overall {
+  border: 1px solid rgba(199, 210, 254, 0.6);
+  background: rgba(199, 210, 254, 0.14);
+  color: #eef1ff;
+}
+.bench .bench-badge--label-free {
+  border: 1px dashed rgba(110, 231, 183, 0.6);
+  background: rgba(52, 211, 153, 0.08);
+  color: #d1fae5;
+}
+.bench .bench-badge__icon {
+  width: 10px;
+  height: 10px;
+}
+.bench .bench-badge--label-free .bench-badge__icon {
+  opacity: 0.7;
+}
+
+/* --- chart ---------------------------------------------------------------------------- */
+
+.bench .bench-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bench .bench-chart__svg {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+}
+.bench .bench-chart__label {
+  fill: var(--hx-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+.bench .bench-chart__note {
+  fill: var(--hx-text-muted);
+  font-size: 11px;
+}
+.bench .bench-chart__value {
+  fill: var(--hx-text);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.bench .bench-bar {
+  stroke: rgba(199, 210, 254, 0.55);
+  stroke-width: 1;
+}
+.bench .bench-bar--solid {
+  fill: #c7d2fe;
+}
+.bench .bench-bar__bg {
+  fill: rgba(148, 163, 255, 0.12);
+}
+.bench .bench-bar__ink {
+  fill: #8fa3e6;
+}
+.bench .bench-bar__stroke {
+  stroke: #8fa3e6;
+  stroke-width: 1.4;
+}
+.bench .bench-chart__caption {
+  color: var(--hx-text-muted);
+  font-size: 12.5px;
+}
+.bench .bench-details summary {
+  width: fit-content;
+  color: var(--b-soft);
+  font-size: 13px;
+  cursor: pointer;
+}
+.bench .bench-details[open] summary {
+  margin-bottom: 10px;
+}
+.bench .bench-details .bench-scroll table {
+  width: 100%;
+}
+
+/* --- capability matrix -------------------------------------------------------------- */
+
+.bench .bench-cap__main {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--hx-text);
+  font-weight: 500;
+}
+.bench .bench-cap--no .bench-cap__main {
+  color: var(--hx-text-muted);
+  font-weight: 400;
+}
+.bench .bench-cap__icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.bench .bench-cap__icon--yes {
+  color: #a7f3d0;
+}
+.bench .bench-cap__icon--partial {
+  color: #c7d2fe;
+}
+.bench .bench-cap__icon--no {
+  color: var(--hx-text-muted);
+}
+.bench .bench-cap__note {
+  display: block;
+  margin-top: 2px;
+  color: var(--hx-text-muted);
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+/* --- assumptions and footer --------------------------------------------------------- */
+
+.bench .bench-assume {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px 24px;
+}
+.bench .bench-assume dt {
+  color: var(--hx-text-muted);
+  font: 500 10.5px/1.4 var(--b-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.bench .bench-assume dd {
+  margin-top: 3px;
+  color: var(--b-soft);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.bench .bench-assume--wide {
+  grid-column: 1 / -1;
+}
+.bench .bench-honesty {
+  max-width: 860px;
+  margin: 8px auto 0;
+  padding: 16px 22px;
+  border: 1px dashed rgba(199, 210, 254, 0.18);
+  border-radius: var(--hx-radius);
+  color: var(--hx-text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* --- responsive, motion, forced colours --------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .bench .bench-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .bench .bench-kpis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bench .bench-toggle__pill {
+    transition: transform 380ms var(--hx-ease);
+  }
+  .bench .bench-toggle__opt {
+    transition: color 260ms var(--hx-ease);
+  }
+}
+@media (forced-colors: active) {
+  .bench .bench-toggle__pill {
+    display: none;
+  }
+  .bench .bench-toggle__opt[aria-checked="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

@@ -1,0 +1,51 @@
+# Column_Mapping for IBM AMLworld *_Trans.csv files (Req 40.10, design §25).
+# Proves the generic CSV_Adapter: for every row it gives the same Transaction_Event (or skip
+# reason) as the dedicated Dataset_Loader (Property 84). Only the tx_id prefix differs:
+# "amlworld-<stem>-<row>" here, "aml-<stem>-<row>" from the loader.
+# `--dataset amlworld` still uses the Dataset_Loader, because it also parses pattern files.
+version: 1
+name: amlworld
+delimiter: ","
+encoding: utf-8-sig
+timestamp:
+  source: {index: 0}
+  format: "%Y/%m/%d %H:%M"
+  alt_formats: [iso8601]
+  tz: UTC
+# The two "Account" headers are duplicates, so columns are taken by position.
+src_account:
+  - {index: 1, transform: int}   # From Bank, leading zeros dropped
+  - {index: 2}                   # Account
+dst_account:
+  - {index: 3, transform: int}   # To Bank
+  - {index: 4}                   # Account
+join: ":"
+amount:
+  source: {index: 7}             # Amount Paid
+  decimal: "."
+  thousands: ""
+  negative: below_min
+currency: {index: 8}             # Payment Currency (a name, mapped below)
+currency_strict: true
+currency_names:
+  US Dollar: USD
+  Euro: EUR
+  Yuan: CNY
+  Yen: JPY
+  UK Pound: GBP
+  Rupee: INR
+  Ruble: RUB
+  Australian Dollar: AUD
+  Canadian Dollar: CAD
+  Swiss Franc: CHF
+  Mexican Peso: MXN
+  Brazil Real: BRL
+  Saudi Riyal: SAR
+  Shekel: ILS
+  Bitcoin: XBT
+channel: {index: 9}              # Payment Format
+label:
+  source: {index: 10}            # Is Laundering
+  fraud_values: ["1"]
+  legit_values: ["0"]
+  other: skip

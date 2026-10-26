@@ -1,0 +1,391 @@
+/* Transaction trace (Req 38.4-38.6), in the Home/Pricing language: a prominent search field
+   with recent-transaction chips, then the six stages as a vertical stepper (numbered nodes on
+   a hairline, one glass card per stage). Scoped under .trace-view (with .tabpanel where
+   styles.css competes) so it wins regardless of stylesheet order. */
+
+.trace-view .trace {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* --- finder: search + recent chips -------------------------------------------------- */
+
+.trace-view .trace-finder {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  border: 1px solid var(--hx-border);
+  border-radius: var(--hx-radius);
+  background:
+    radial-gradient(70% 120% at 50% 0%, rgba(143, 168, 255, 0.08), transparent 70%),
+    linear-gradient(180deg, rgba(148, 163, 255, 0.05), rgba(148, 163, 255, 0.015)),
+    var(--hx-glass-base);
+  box-shadow: inset 0 1px 0 rgba(232, 236, 255, 0.06);
+}
+.trace-view .trace-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 720px;
+}
+.trace-view .trace-search__label {
+  color: var(--v-soft);
+  font-size: 13px;
+  font-weight: 500;
+}
+.trace-view .trace-search__box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 8px 0 18px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 999px;
+  background: rgba(7, 9, 19, 0.75);
+  transition:
+    border-color var(--hx-dur) var(--hx-ease),
+    box-shadow var(--hx-dur) var(--hx-ease);
+}
+.trace-view .trace-search__box:focus-within {
+  border-color: var(--hx-accent);
+  box-shadow: 0 0 0 4px rgba(143, 168, 255, 0.14);
+}
+.trace-view .trace-search__icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--hx-text-muted);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.trace-view .trace-search__box input {
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--hx-text);
+  font-family: var(--v-mono);
+  font-size: 16px;
+}
+/* The box shows the focus ring (focus-within) for the borderless field inside it. */
+.trace-view .trace-search__box input:focus,
+.trace-view .trace-search__box input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.trace-view .trace-search__box .btn {
+  min-height: 40px;
+  padding: 0 22px;
+  font-size: 14px;
+}
+
+.trace-view .trace-recent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.trace-view .trace-recent__title {
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.trace-view .trace-recent__empty {
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+.trace-view .trace-recent__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.trace-view .trace-chip {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 999px;
+  background: rgba(148, 163, 255, 0.04);
+  color: var(--v-soft);
+  font: 500 12.5px/1 var(--v-mono);
+  cursor: pointer;
+  transition:
+    background-color var(--hx-dur) var(--hx-ease),
+    border-color var(--hx-dur) var(--hx-ease),
+    color var(--hx-dur) var(--hx-ease);
+}
+.trace-view .trace-chip:hover {
+  border-color: rgba(199, 210, 254, 0.38);
+  background: rgba(148, 163, 255, 0.09);
+  color: var(--hx-text);
+}
+.trace-view .trace-chip[aria-pressed="true"] {
+  border-color: transparent;
+  background: #eef1ff;
+  color: #070912;
+}
+
+.trace-view .msg {
+  margin: 0;
+}
+
+/* --- result + stepper --------------------------------------------------------------- */
+
+.trace-view .trace-result {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.trace-view .trace-result__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.trace-view .trace-result__title {
+  margin: 0;
+  font-family: var(--hx-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.trace-view .trace-result__meta {
+  margin: 0;
+  color: var(--v-soft);
+  font-family: var(--v-mono);
+  font-size: 13px;
+}
+.trace-view .trace-muted {
+  margin: 4px 0;
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+
+.trace-view .trace-stages {
+  --node: 34px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* the hairline connector behind the nodes */
+.trace-view .trace-stages::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--node) / 2 + 20px);
+  bottom: 40px;
+  left: calc(var(--node) / 2 - 0.5px);
+  width: 1px;
+  background: linear-gradient(180deg, var(--hx-border-strong), var(--hx-line) 85%, transparent);
+}
+.trace-view .trace-step {
+  display: grid;
+  grid-template-columns: var(--node) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.trace-view .trace-step__node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--node);
+  height: var(--node);
+  margin-top: 18px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 50%;
+  background: var(--hx-bg-elev);
+  box-shadow: 0 0 0 5px var(--hx-bg);
+  color: var(--hx-text);
+  font: 600 13px/1 var(--hx-font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabpanel .trace-view .trace-stage,
+.trace-view .trace-stage {
+  position: relative;
+  min-width: 0;
+  padding: 20px 24px 22px;
+  border: 1px solid var(--hx-border);
+  border-radius: var(--hx-radius);
+  background: linear-gradient(180deg, rgba(148, 163, 255, 0.06), rgba(148, 163, 255, 0.015) 50%), var(--hx-glass-base);
+  box-shadow: inset 0 1px 0 rgba(232, 236, 255, 0.05);
+}
+.tabpanel .trace-view .trace-stage:hover {
+  transform: none;
+  border-color: var(--hx-border-strong);
+  box-shadow: inset 0 1px 0 rgba(232, 236, 255, 0.07);
+}
+.trace-view .trace-stage::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  --d: radial-gradient(circle, rgba(199, 210, 254, 0.35) 0 0.9px, transparent 1.5px);
+  background:
+    var(--d) left top / 4px 4px no-repeat,
+    var(--d) right top / 4px 4px no-repeat,
+    var(--d) left bottom / 4px 4px no-repeat,
+    var(--d) right bottom / 4px 4px no-repeat;
+}
+.trace-view .trace-stage__title {
+  margin: 0;
+  color: var(--hx-text);
+  font: 600 13px/1.4 var(--v-mono);
+  letter-spacing: 0.14em;
+}
+.trace-view .trace-stage__hint {
+  margin: 2px 0 14px;
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+.trace-view .trace-stage p {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+}
+
+/* key-value rows with hairlines */
+.trace-view .trace-dl {
+  display: grid;
+  grid-template-columns: minmax(120px, max-content) minmax(0, 1fr);
+  margin: 4px 0 0;
+  font-size: 13.5px;
+}
+.trace-view .trace-dl__row {
+  display: contents;
+}
+.trace-view .trace-dl dt,
+.trace-view .trace-dl dd {
+  padding: 9px 0;
+  border-top: 1px solid var(--v-line);
+}
+.trace-view .trace-dl dt {
+  padding-right: 20px;
+  color: var(--hx-text-muted);
+}
+.trace-view .trace-dl dd {
+  margin: 0;
+  color: var(--hx-text);
+  font-family: var(--v-mono);
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+}
+.trace-view .trace-flag {
+  color: #fcd34d;
+}
+
+.trace-view .trace-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.trace-view .trace-table th,
+.trace-view .trace-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--v-line);
+  text-align: left;
+}
+.trace-view .trace-table thead th {
+  color: var(--hx-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom-color: var(--hx-border);
+}
+.trace-view .trace-table tbody th {
+  font-weight: 500;
+}
+.trace-view .trace-table td {
+  font-family: var(--v-mono);
+  font-size: 12.5px;
+}
+.tabpanel .trace-view .trace-table tbody tr:nth-child(even) {
+  background: transparent;
+}
+.trace-view .trace-table__bar {
+  width: 22%;
+  min-width: 110px;
+}
+
+.trace-view .trace-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--v-mono);
+  font-size: 12.5px;
+}
+.trace-view .trace-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(110px, 22%);
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  border-top: 1px solid var(--v-line);
+}
+
+/* --- mass bars ---------------------------------------------------------------------- */
+
+.trace-view .trace-mass,
+.trace-view .trace-interval {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(148, 163, 255, 0.08);
+}
+.trace-view .trace-mass__seg {
+  height: 100%;
+}
+.trace-view .trace-mass__seg--f {
+  background: #fb7185;
+}
+.trace-view .trace-mass__seg--l {
+  background: #34d399;
+}
+.trace-view .trace-mass__seg--u {
+  background: #737ba0;
+}
+.trace-view .trace-interval {
+  max-width: 360px;
+  margin-top: 8px;
+}
+.trace-view .trace-interval__b {
+  background: #fb7185;
+}
+.trace-view .trace-interval__p {
+  background: rgba(251, 113, 133, 0.35);
+}
+.trace-view .trace-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 10px 0 0;
+  color: var(--hx-text-muted);
+  font-size: 12px;
+}
+.trace-view .trace-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.trace-view .trace-legend i {
+  width: 10px;
+  height: 6px;
+  border-radius: 999px;
+}

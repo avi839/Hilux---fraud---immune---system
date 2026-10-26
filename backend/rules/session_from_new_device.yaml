@@ -1,0 +1,16 @@
+# Example auth-target Detection_Rule: fires on a payment when the source account had a
+# successful login from a never-seen device inside the Auth_Correlation_Window.
+id: HXR-0002
+title: Payment after a login from a new device at night
+status: test
+target: auth
+techniques: [HX-T0105, HX-T0107]
+detection:
+  new_device_login:
+    auth.event_type: LOGIN_SUCCESS
+    auth.new_device: true
+  night:
+    auth.hour|lt: 6
+  condition: new_device_login and night
+mass:
+  fraud: 0.3

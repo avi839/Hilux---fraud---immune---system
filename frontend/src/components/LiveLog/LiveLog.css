@@ -1,0 +1,175 @@
+/* Live log (Req 38.7), in the Home/Pricing language: one glass card with a toolbar (status,
+   counts, Pause/Resume and Clear pills) over a clean list: monospace time, a kind chip that
+   carries its name in text, then the message. Tints only repeat the kind's name. */
+
+.livelog .livelog__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--hx-border);
+  border-radius: var(--hx-radius);
+  background: linear-gradient(180deg, rgba(148, 163, 255, 0.06), rgba(148, 163, 255, 0.015) 120px), var(--hx-glass-base);
+  box-shadow:
+    inset 0 1px 0 rgba(232, 236, 255, 0.06),
+    0 24px 48px -28px rgba(0, 0, 0, 0.8);
+}
+.livelog .livelog__card::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  --d: radial-gradient(circle, rgba(199, 210, 254, 0.35) 0 0.9px, transparent 1.5px);
+  background:
+    var(--d) left top / 4px 4px no-repeat,
+    var(--d) right top / 4px 4px no-repeat,
+    var(--d) left bottom / 4px 4px no-repeat,
+    var(--d) right bottom / 4px 4px no-repeat;
+}
+
+.livelog .livelog__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--v-line);
+}
+.livelog .livelog__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  min-width: 0;
+}
+.livelog .livelog__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+}
+.livelog .livelog__dot--paused {
+  background: var(--hx-text-muted);
+  box-shadow: none;
+}
+.livelog .livelog__state {
+  color: var(--hx-text);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.livelog .livelog__meta {
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+.livelog .livelog__held {
+  border-color: rgba(199, 210, 254, 0.45);
+  font-variant-numeric: tabular-nums;
+}
+.livelog .livelog__actions {
+  display: flex;
+  gap: 8px;
+}
+.livelog .livelog__actions .hx-pill[aria-pressed="true"] {
+  border-color: transparent;
+}
+
+.livelog .livelog__note {
+  margin: 0;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--v-line);
+  color: #fcd34d;
+  font-size: 13px;
+}
+
+.livelog .livelog__scroll {
+  height: clamp(360px, calc(100vh - 380px), 720px);
+  overflow-y: auto;
+  padding: 6px 0;
+  scrollbar-width: thin;
+}
+.livelog .livelog__scroll:focus-visible {
+  outline: 2px solid var(--hx-accent-2);
+  outline-offset: -4px;
+}
+.livelog .livelog__empty {
+  margin: 0;
+  padding: 40px 24px;
+  color: var(--hx-text-muted);
+  font-size: 13.5px;
+  text-align: center;
+}
+
+.livelog .livelog__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.livelog .livelog__line {
+  display: grid;
+  grid-template-columns: 104px 148px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 16px;
+  padding: 8px 24px;
+  border-bottom: 1px solid rgba(170, 185, 255, 0.05);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.livelog .livelog__line:last-child {
+  border-bottom: 0;
+}
+.livelog .livelog__line:hover {
+  background: rgba(143, 168, 255, 0.04);
+}
+.livelog .livelog__time {
+  color: var(--hx-text-muted);
+  font-family: var(--v-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.livelog .livelog__kind {
+  justify-self: start;
+  padding: 0 9px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 999px;
+  color: var(--v-soft);
+  font: 500 11px/1.75 var(--v-mono);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.livelog .livelog__text {
+  min-width: 0;
+  color: var(--hx-text);
+  overflow-wrap: anywhere;
+}
+
+/* kind tints (the chip's text names the kind; colour only repeats it) */
+.livelog .livelog__line--rejected .livelog__kind,
+.livelog .livelog__line--antibody-retired .livelog__kind {
+  border-color: rgba(251, 113, 133, 0.5);
+  color: var(--danger);
+}
+.livelog .livelog__line--duplicate .livelog__kind,
+.livelog .livelog__line--label .livelog__kind {
+  border-color: rgba(245, 158, 11, 0.45);
+  color: #fcd34d;
+}
+.livelog .livelog__line--case-opened .livelog__kind,
+.livelog .livelog__line--antibody-created .livelog__kind,
+.livelog .livelog__line--playbook .livelog__kind {
+  border-color: rgba(52, 211, 153, 0.45);
+  color: var(--ok);
+}
+
+@media (max-width: 720px) {
+  .livelog .livelog__line {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .livelog .livelog__text {
+    grid-column: 1 / -1;
+  }
+}

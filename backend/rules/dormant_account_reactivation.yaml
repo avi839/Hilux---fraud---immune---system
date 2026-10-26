@@ -1,0 +1,20 @@
+# Example Detection_Rule (Req 31). Load with RuleEngine.load_directory("rules"); activation is
+# an explicit investigator step after the backtest.
+id: HXR-0001
+title: Dormant account moves a large amount
+description: >-
+  An account with history that has been inactive for 30 days or more sends 1000 or more.
+  Closes the HX-T0014 coverage gap.
+status: experimental
+target: transaction
+techniques: [HX-T0014]
+detection:
+  dormant:
+    dna.count|gte: 5
+    dna.seconds_since_last|gte: 2592000
+  large:
+    tx.amount|gte: 1000
+  condition: dormant and large
+mass:
+  fraud: 0.4
+  legit: 0.0

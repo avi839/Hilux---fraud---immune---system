@@ -1,0 +1,251 @@
+/* SOC console (Req 38.2), AuthKit-style: KPI row, then a calm two-column bento of glass
+   cards. Scoped under .soc-console (with .hx-view) so it wins over the generic .soc-* rules
+   of styles.css. State is always written as text; tints only repeat it. */
+
+/* --- investigator field (page header) --------------------------------------------- */
+
+.soc-console .soc-who {
+  display: grid;
+  grid-template-columns: auto minmax(160px, 220px);
+  align-items: center;
+  gap: 4px 12px;
+  max-width: none;
+  margin: 0;
+}
+.soc-console .soc-who__label {
+  color: var(--v-soft);
+  font-size: 13px;
+  font-weight: 500;
+}
+.soc-console .soc-who input {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13.5px;
+}
+.soc-console .soc-who__hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+/* --- KPI row ------------------------------------------------------------------------ */
+
+.soc-console .soc-kpis {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 1100px) {
+  .soc-console .soc-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .soc-console .soc-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.soc-console .soc-kpi {
+  gap: 6px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(148, 163, 255, 0.06), rgba(148, 163, 255, 0.015)), var(--hx-glass-base);
+}
+.soc-console .soc-kpi__label {
+  order: 0;
+  color: var(--hx-text-muted);
+  font-size: 12.5px;
+}
+.soc-console .soc-kpi__value {
+  order: 1;
+  font-family: var(--hx-font-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--hx-text);
+}
+.soc-console .soc-kpi__note {
+  order: 2;
+  color: var(--hx-text-muted);
+  font-size: 12px;
+}
+
+/* --- bento grid --------------------------------------------------------------------- */
+
+.soc-console .soc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 1000px) {
+  .soc-console .soc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* The ledger table is wide: it gets the full row. */
+.soc-console .panel--soc-audit {
+  grid-column: 1 / -1;
+}
+.soc-console .soc-panel,
+.soc-console .panel {
+  min-height: 0;
+}
+
+.soc-console .soc-explain {
+  margin: 0 0 16px;
+  color: var(--hx-text-muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.soc-console .soc-notice {
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--hx-border);
+  border-radius: 12px;
+  background: rgba(148, 163, 255, 0.04);
+  color: var(--v-soft);
+  font-size: 13px;
+}
+.soc-console .soc-unavailable {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px dashed rgba(245, 158, 11, 0.4);
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.04);
+  color: #fcd34d;
+  font-size: 13px;
+}
+.soc-console .soc-subsection,
+.soc-console .ev-section__title {
+  margin: 18px 0 8px;
+  color: var(--v-soft);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.soc-console .soc-sub,
+.soc-console .soc-handoff {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--v-line);
+}
+.soc-console .soc-row {
+  margin-top: 12px;
+}
+.soc-console .soc-fieldset {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--hx-border);
+  border-radius: 12px;
+}
+.soc-console .soc-fieldset legend {
+  padding: 0 6px;
+  color: var(--v-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+.soc-console .soc-check {
+  margin: 4px 14px 4px 0;
+  font-size: 13px;
+}
+
+.soc-console .scroll {
+  border: 1px solid var(--v-line);
+  border-radius: 12px;
+}
+.soc-console .scroll--short {
+  max-height: 340px;
+}
+
+.soc-console .soc-cards {
+  gap: 10px;
+}
+/* A long approval queue scrolls inside its card instead of stretching the whole row. Every
+   card in it holds buttons, so it stays reachable from the keyboard. */
+.soc-console .panel--soc-playbooks .soc-cards {
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+}
+.soc-console .soc-card {
+  padding: 12px 14px;
+  border-color: var(--hx-border);
+  border-radius: 12px;
+  background: rgba(148, 163, 255, 0.03);
+}
+.soc-console .soc-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--hx-border-strong);
+}
+
+/* Ledger payloads are long unbroken JSON: one line, cut with an ellipsis (full text in title). */
+.soc-console .panel--soc-audit td.wrap {
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.soc-console .table .mono {
+  font-size: 12px;
+  font-weight: 400;
+}
+.soc-console .msg {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+.soc-console .badge {
+  border-radius: 999px;
+}
+.soc-console textarea.code {
+  border-radius: 12px;
+  line-height: 1.5;
+}
+
+/* --- kill chain --------------------------------------------------------------------- */
+
+.soc-console .killchain {
+  gap: 8px;
+  margin: 0 0 14px;
+}
+.soc-console .killchain__stage {
+  padding: 10px 14px;
+  border: 1px solid var(--hx-border);
+  border-radius: 12px;
+  background: rgba(148, 163, 255, 0.025);
+}
+.soc-console .killchain__stage--seen {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.04);
+}
+.soc-console .killchain__stage--most {
+  border-width: 1px;
+  border-color: rgba(251, 113, 133, 0.6);
+  background: rgba(244, 63, 94, 0.06);
+}
+.soc-console .killchain__name {
+  font-weight: 500;
+}
+.soc-console .killchain__tag {
+  border-radius: 999px;
+  padding: 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.soc-console .soc-footnote {
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 12.5px;
+  text-align: center;
+}

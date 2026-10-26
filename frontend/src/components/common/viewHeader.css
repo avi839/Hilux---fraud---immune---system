@@ -1,0 +1,225 @@
+/* Shared chrome of the showcase views (SOC console, Red vs Blue, Trace, Live log, Workflow):
+   page width, page header, pill buttons, quiet tables and sentence-case card titles. Same
+   language as Home and Pricing: navy-black, hairlines, glass, very little colour. Scoped under
+   .hx-view so it wins over the generic dashboard rules without !important. */
+
+.hx-view,
+.tabpanel .hx-view {
+  --v-line: var(--hx-line, rgba(170, 185, 255, 0.08));
+  --v-soft: #c3cae8; /* secondary text, 11:1 on --hx-bg */
+  --v-head-bg: #0b0e1c; /* opaque, for sticky table headers over glass */
+  --v-mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 28px 0 72px;
+}
+.hx-view :focus-visible {
+  outline: 2px solid var(--hx-accent-2, #c7d2fe);
+  outline-offset: 3px;
+}
+
+/* --- page header ------------------------------------------------------------------- */
+
+.hx-view-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--v-line);
+}
+.hx-view-head__text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  max-width: 720px;
+}
+.hx-view-head__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--hx-text-muted);
+  font: 500 11px/1.4 var(--v-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.hx-view-head__eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hx-border-strong));
+}
+.hx-view-head__title {
+  margin: 0;
+  font-family: var(--hx-font-display);
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--hx-text);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hx-view-head__title {
+    background: linear-gradient(180deg, #ffffff 0%, #eef1ff 45%, #c4cdff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+.hx-view-head__sub {
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 15px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.hx-view-head__aside {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  min-width: 0;
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+
+/* --- cards ------------------------------------------------------------------------- */
+
+/* Sentence-case card title used by every view's cards. */
+.hx-view .hx-view-card__title,
+.hx-view .panel__title {
+  margin: 0;
+  font-family: var(--hx-font-display);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--hx-text);
+}
+.hx-view .panel {
+  border-color: var(--hx-border);
+}
+.hx-view .panel__header {
+  min-height: 0;
+  padding: 20px 24px 0;
+  border-bottom: 0;
+}
+.hx-view .panel__body {
+  padding: 12px 24px 24px;
+}
+
+/* --- pill buttons ------------------------------------------------------------------ */
+
+.hx-view .btn {
+  min-height: 34px;
+  padding: 0 16px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 999px;
+  background: rgba(148, 163, 255, 0.04);
+  color: var(--hx-text);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: none;
+}
+.hx-view .btn:hover:not(:disabled) {
+  border-color: rgba(199, 210, 254, 0.38);
+  background: rgba(148, 163, 255, 0.09);
+  box-shadow: none;
+}
+.hx-view .btn--small {
+  min-height: 28px;
+  padding: 0 12px;
+  font-size: 12.5px;
+}
+.hx-view .btn--primary {
+  border-color: transparent;
+  background: #eef1ff;
+  color: #070912;
+}
+.hx-view .btn--primary:hover:not(:disabled) {
+  border-color: transparent;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(199, 210, 254, 0.1);
+}
+.hx-view .btn--danger {
+  border-color: rgba(251, 113, 133, 0.45);
+}
+.hx-view .btn--warn {
+  border-color: rgba(245, 158, 11, 0.45);
+}
+.hx-view .btn[aria-pressed="true"] {
+  border-color: rgba(199, 210, 254, 0.55);
+  background: rgba(199, 210, 254, 0.14);
+  color: #ffffff;
+}
+
+/* --- inputs ------------------------------------------------------------------------ */
+
+.hx-view input[type="text"],
+.hx-view input[type="number"],
+.hx-view input:not([type]),
+.hx-view select,
+.hx-view textarea {
+  border-color: var(--hx-border-strong);
+  border-radius: 10px;
+  background: rgba(7, 9, 19, 0.7);
+}
+
+/* --- tables ------------------------------------------------------------------------ */
+
+.hx-view .table {
+  font-size: 13px;
+}
+.hx-view .table th,
+.hx-view .table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--v-line);
+}
+.hx-view .table thead th {
+  background: var(--v-head-bg);
+  color: var(--hx-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border-bottom-color: var(--hx-border);
+}
+.hx-view .table tbody th {
+  position: static;
+  background: transparent;
+  font-weight: 500;
+  color: var(--hx-text);
+}
+/* No zebra stripes (hairlines only); the breach/gap row highlights are left alone. */
+.hx-view .table tbody tr:nth-child(even):not(.row--breach):not(.row--gap) {
+  background: transparent;
+}
+.hx-view .table tbody tr:hover:not(.row--breach):not(.row--gap) {
+  background: rgba(143, 168, 255, 0.05);
+}
+.hx-view .table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.hx-view .table--compact th,
+.hx-view .table--compact td {
+  padding: 7px 10px;
+}
+
+/* --- motion ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-view *,
+  .hx-view *::before,
+  .hx-view *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

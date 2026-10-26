@@ -1,0 +1,1207 @@
+/* Live dashboard layout (task 27.3): KPI strip, queue + Case workspace, compact feed and
+   loop, Controls drawer. Everything is scoped under .lv so it wins over the single-class
+   rules of styles.css (loaded later) without !important. Colours come from the theme tokens
+   with fallbacks; colour is only ever a second signal next to text. Spacing is on an 8 px
+   scale; cards have 16 px corners. */
+
+.lv {
+  --lv-gap: 24px;
+  --lv-radius: 16px;
+  --lv-card-bg: linear-gradient(180deg, rgba(148, 163, 255, 0.06), var(--hx-surface, rgba(148, 163, 255, 0.04)) 120px),
+    var(--hx-glass-base, rgba(9, 12, 24, 0.6));
+  --lv-line: var(--hx-line, rgba(170, 185, 255, 0.08));
+  --lv-muted: var(--hx-text-muted, #9aa3c7);
+  --lv-text: var(--hx-text, #e8ecff);
+  --lv-accent: var(--hx-accent, #8fa8ff);
+  --lv-display: var(--hx-font-display, "Sora Variable", "Inter Variable", system-ui, sans-serif);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lv-gap);
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 24px 32px 48px;
+  font-size: 14px;
+  color: var(--lv-text);
+}
+.lv:focus {
+  outline: none;
+}
+
+/* Section titles: sentence case, 15 px / 600. */
+.lv .lv-title,
+.lv .panel__title {
+  margin: 0;
+  font-family: var(--hx-font, inherit);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--lv-text);
+}
+
+/* --- cards ---------------------------------------------------------------------------- */
+
+.lv .panel,
+.lv .lv-card {
+  /* styles.css names grid areas for the old three-column grid; this layout uses plain tracks. */
+  grid-area: auto;
+  position: relative;
+  border: 1px solid var(--hx-border, rgba(170, 185, 255, 0.1));
+  border-radius: var(--lv-radius);
+  background: var(--lv-card-bg);
+  box-shadow:
+    inset 0 1px 0 rgba(232, 236, 255, 0.05),
+    0 18px 40px -28px rgba(0, 0, 0, 0.8);
+}
+.lv .lv-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+/* Calm hover: only the hairline brightens. */
+.lv .panel:hover,
+.lv .lv-card:hover {
+  border-color: var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  box-shadow:
+    inset 0 1px 0 rgba(232, 236, 255, 0.05),
+    0 18px 40px -28px rgba(0, 0, 0, 0.8);
+}
+.lv .panel__header {
+  min-height: 0;
+  padding: 16px 20px 8px;
+  border-bottom: 0;
+}
+.lv .panel__actions {
+  font-size: 13px;
+  color: var(--lv-muted);
+}
+.lv .panel__body {
+  padding: 8px 20px 20px;
+}
+/* Scrollers are the containing block of their absolutely positioned (sr-only) content, so
+   that content is clipped with the rest instead of stretching the page. */
+.lv .panel__body,
+.lv .scroll {
+  position: relative;
+}
+.lv .empty {
+  font-style: normal;
+}
+
+/* --- tier chips (text + dot + tint; never colour alone) ------------------------------- */
+
+.lv .tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 1px 8px;
+  border: 1px solid rgba(232, 236, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(232, 236, 255, 0.04);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.lv .tier::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.lv .tier--low {
+  color: var(--tier-low, #7dd3fc);
+  border-color: rgba(125, 211, 252, 0.3);
+  background: rgba(125, 211, 252, 0.06);
+}
+.lv .tier--medium {
+  color: var(--tier-medium, #fcd34d);
+  border-color: rgba(252, 211, 77, 0.3);
+  background: rgba(252, 211, 77, 0.06);
+}
+.lv .tier--high {
+  color: var(--tier-high, #fb923c);
+  border-color: rgba(251, 146, 60, 0.32);
+  background: rgba(251, 146, 60, 0.07);
+}
+.lv .tier--critical {
+  color: var(--tier-critical, #fb7185);
+  border-color: rgba(251, 113, 133, 0.38);
+  background: rgba(251, 113, 133, 0.08);
+}
+
+/* --- KPI strip ------------------------------------------------------------------------ */
+
+.lv-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 16px;
+}
+.lv-kpis {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+.lv .lv-kpi {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--hx-border, rgba(170, 185, 255, 0.1));
+  border-radius: var(--lv-radius);
+  background: var(--lv-card-bg);
+  animation: lv-rise var(--hx-dur, 420ms) var(--hx-ease, ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+/* Labels may wrap to a second line on narrow tiles rather than being cut off. */
+.lv .lv-kpi__label {
+  color: var(--lv-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.lv .lv-kpi__value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin: 0;
+  font-family: var(--lv-display);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+}
+/* Longer values (connection state, "0.50 / 0.25") use a smaller size on the same baseline. */
+.lv .lv-kpi__value--text {
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  min-height: 30px;
+  align-items: center;
+}
+.lv .lv-kpi__value .hx-chip {
+  font-size: 11px;
+}
+.lv .lv-kpi__unit {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lv-muted);
+  letter-spacing: 0;
+}
+.lv .lv-kpi .lv-chip {
+  align-self: center;
+  font-family: var(--hx-font, inherit);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+.lv-conn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* The status dot sits in the tile's top-right corner, so the state word gets the full width
+   ("Disconnected" fits a 1280 px layout). */
+.lv-conn__dot {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lv-muted);
+}
+.lv-conn--open .lv-conn__dot {
+  background: var(--hx-legit, #34d399);
+  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.14);
+}
+.lv-conn--down .lv-conn__dot {
+  /* A hollow ring, so "down" differs in shape too. */
+  background: transparent;
+  border: 2px solid var(--danger, #fb7185);
+}
+
+/* The two actions stack beside the tiles: Controls above the primary demo action. */
+.lv-strip__actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 8px;
+}
+.lv .lv-strip__actions .lv-pill {
+  justify-content: center;
+}
+.lv .lv-pill {
+  height: 40px;
+  padding: 0 18px;
+  font-size: 14px;
+}
+.lv .lv-pill__icon {
+  flex: none;
+}
+.lv .lv-pill--primary {
+  padding: 0 20px;
+  font-weight: 600;
+}
+
+/* --- demo result line ------------------------------------------------------------------ */
+
+.lv-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: -8px;
+  padding: 12px 16px;
+  border: 1px solid var(--hx-border, rgba(170, 185, 255, 0.1));
+  border-radius: var(--lv-radius);
+  background: var(--hx-surface, rgba(148, 163, 255, 0.04));
+  animation: lv-rise 280ms var(--hx-ease, ease-out) backwards;
+}
+.lv-demo[data-state="idle"] {
+  display: none;
+}
+.lv-demo .msg {
+  margin: 0;
+}
+.lv-demo .demo-result__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.lv-demo .demo-result__dismiss {
+  min-height: 28px;
+  width: 28px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+}
+.lv-demo .demo-result__lines {
+  margin: 0;
+  font-size: 13px;
+}
+.lv-demo .demo-result__lines > summary {
+  font-weight: 500;
+  color: var(--lv-muted);
+}
+.lv-demo .demo-cases {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 8px 16px;
+  margin: 0;
+}
+.lv-demo .demo-cases > li {
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--lv-line);
+  border-radius: 12px;
+}
+.lv-demo .demo-cases__title {
+  margin-top: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* --- main area: queue (40%) + workspace (60%) ------------------------------------------ */
+
+.lv-main {
+  display: grid;
+  grid-template-columns: minmax(320px, 2fr) minmax(0, 3fr);
+  gap: var(--lv-gap);
+  align-items: stretch;
+}
+.lv-main > * {
+  min-width: 0;
+}
+
+/* Case queue: a scroll column of clean cards. The workspace sets the row height; the queue
+   card is taken out of flow to fill exactly that height, so both columns end together. */
+.lv-main__queue {
+  position: relative;
+  min-height: 600px;
+}
+.lv .lv-main__queue > .panel {
+  position: absolute;
+  inset: 0;
+}
+.lv .panel--queue .panel__body {
+  max-height: none;
+}
+.lv .queue {
+  gap: 8px;
+  padding: 2px;
+}
+.lv .queue__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--lv-line);
+  border-radius: 12px;
+  background: rgba(148, 163, 255, 0.025);
+}
+.lv .queue__item:hover {
+  transform: none;
+  border-color: var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  background: rgba(148, 163, 255, 0.05);
+  box-shadow: none;
+}
+.lv .queue__item--selected,
+.lv .queue__item--selected:hover {
+  border-color: rgba(143, 168, 255, 0.55);
+  background: rgba(143, 168, 255, 0.1);
+  box-shadow: inset 3px 0 0 var(--lv-accent);
+}
+.lv .queue__main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.lv .queue__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lv .queue__id {
+  font-size: 13px;
+  font-weight: 600;
+}
+.lv .queue__amount {
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.lv .queue__amount-label {
+  font-weight: 400;
+  color: var(--lv-muted);
+}
+.lv .queue__meta,
+.lv .queue__accounts {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+.lv .queue__accounts {
+  font-size: 12px;
+  color: var(--lv-muted);
+}
+.lv .queue__score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.lv .queue__risk {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+}
+.lv .queue__metric-label {
+  font-size: 11px;
+  color: var(--lv-muted);
+  letter-spacing: 0.02em;
+}
+.lv .queue__risk strong {
+  font-family: var(--lv-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.lv .queue__bar,
+.lv .lv-bar,
+.lv .feed__bar,
+.lv .loop-weight__bar {
+  display: block;
+  overflow: hidden;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(232, 236, 255, 0.1);
+}
+.lv .queue__bar {
+  width: 72px;
+}
+.lv .queue__bar > span,
+.lv .lv-bar > span,
+.lv .feed__bar > span,
+.lv .loop-weight__bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lv-accent);
+}
+.lv .queue__item--critical .queue__bar > span {
+  background: var(--tier-critical, #fb7185);
+}
+.lv .queue__item--high .queue__bar > span {
+  background: var(--tier-high, #fb923c);
+}
+.lv .queue__metric {
+  font-size: 12px;
+  color: var(--lv-muted);
+}
+.lv .queue__metric strong {
+  font-weight: 500;
+}
+.lv .queue__tools {
+  margin: 16px 0 0;
+}
+.lv .queue__cleared {
+  margin-top: 16px;
+}
+
+/* --- Case workspace ------------------------------------------------------------------- */
+
+.lv .lv-ws {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 24px 24px;
+}
+.lv-case {
+  margin-top: 16px;
+}
+.lv-case__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.lv .lv-case__id {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lv-case__facts {
+  display: grid;
+  grid-template-columns: auto minmax(120px, auto) minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 16px 32px;
+  margin: 16px 0 0;
+}
+.lv-fact {
+  min-width: 0;
+}
+.lv-fact > dt {
+  margin-bottom: 4px;
+  color: var(--lv-muted);
+  font-size: 12px;
+}
+.lv-fact > dd {
+  margin: 0;
+}
+.lv .lv-fact__big {
+  display: block;
+  font-family: var(--lv-display);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.lv .lv-fact--risk .lv-bar {
+  width: 88px;
+  margin-top: 10px;
+}
+.lv .lv-fact__mid {
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  padding-top: 6px;
+}
+.lv .lv-fact__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding-top: 6px;
+  min-width: 0;
+}
+.lv .lv-fact__text .mono {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.lv .lv-fact__text:not([data-testid="ws-suggestion"]) {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.lv .lv-suggest {
+  font-size: 12px;
+}
+.lv .lv-suggest--confirmed_fraud {
+  border-color: rgba(251, 113, 133, 0.45);
+}
+.lv .lv-suggest--false_positive {
+  border-color: rgba(52, 211, 153, 0.4);
+}
+.lv .lv-suggest__note {
+  font-size: 12px;
+}
+
+/* Inline case actions: the investigator name and the three decisions on one row. */
+.lv .case-actions--inline {
+  margin: 20px 0 0;
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid var(--lv-line);
+  border-radius: 0;
+  background: none;
+}
+.lv .case-actions__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+}
+.lv .case-actions--inline .case-actions__name {
+  flex: 0 1 220px;
+  margin: 0;
+}
+.lv .case-actions--inline .case-actions__name label {
+  font-size: 12px;
+}
+.lv .case-actions--inline input {
+  height: 40px;
+}
+.lv .case-actions--inline .case-actions__buttons {
+  gap: 8px;
+}
+.lv .case-actions--inline .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 14px 0 16px;
+  border-radius: 10px;
+}
+.lv .case-actions--inline .btn--danger {
+  border-color: rgba(251, 113, 133, 0.5);
+  background: rgba(244, 63, 94, 0.1);
+}
+.lv .case-actions--inline .btn--warn {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.lv .case-actions__key {
+  min-width: 20px;
+  padding: 0 5px;
+  border: 1px solid var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  border-radius: 6px;
+  font-family: var(--mono, monospace);
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+  color: var(--lv-muted);
+}
+.lv .case-actions__hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+}
+.lv .case-actions--inline .msg {
+  margin-top: 8px;
+}
+
+/* Sub-tabs (WAI-ARIA tabs). Selection shows as text colour plus an underline bar. */
+.lv-ws__tabs {
+  margin-top: 24px;
+}
+.lv-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--lv-line);
+  overflow-x: auto;
+}
+.lv-tab {
+  position: relative;
+  padding: 10px 14px;
+  border: 0;
+  background: none;
+  color: var(--lv-muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color var(--hx-dur, 420ms) var(--hx-ease, ease-out);
+}
+.lv-tab::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--lv-text);
+  opacity: 0;
+  transition: opacity var(--hx-dur, 420ms) var(--hx-ease, ease-out);
+}
+.lv-tab:hover {
+  color: var(--lv-text);
+}
+.lv-tab--active {
+  color: var(--lv-text);
+}
+.lv-tab--active::after {
+  opacity: 1;
+}
+.lv-tab:focus-visible {
+  outline: 2px solid var(--focus, #c7d2fe);
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+.lv-ws__view {
+  padding-top: 16px;
+}
+.lv-ws__view[hidden] {
+  display: none;
+}
+
+/* Views inside the workspace are flat: no second card, no repeated title. */
+.lv .lv-ws__view > .panel,
+.lv .lv-ws__view > .panel:hover {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.lv .lv-ws__view > .panel::before,
+.lv .lv-ws__view > .panel::after {
+  display: none;
+}
+/* The view's own actions (e.g. "List view") float at the top right, beside its summary line. */
+.lv .lv-ws__view .panel__header {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  z-index: 1;
+  min-height: 0;
+  padding: 0;
+}
+.lv .lv-ws__view .viz-summary,
+.lv .lv-ws__view .shortcuts {
+  padding-right: 112px;
+  min-height: 28px;
+}
+.lv .lv-ws__view .panel__title,
+.lv .lv-ws__view .panel__case {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.lv .lv-ws__view .panel__body {
+  padding: 0;
+}
+.lv .lv-ws__view .panel__body--scroll {
+  max-height: clamp(360px, 56vh, 600px);
+  padding-right: 8px;
+}
+.lv .lv-ws__view .viz-stage {
+  min-height: 380px;
+}
+.lv .ev-summary {
+  font-size: 13px;
+}
+.lv .shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 16px;
+}
+.lv .shortcuts__line {
+  margin: 0;
+}
+.lv .shortcuts__help,
+.lv [data-testid="ev-shortcut-note"] {
+  flex-basis: 100%;
+  margin: 0;
+}
+.lv [data-testid="ev-shortcut-note"]:empty {
+  display: none;
+}
+
+/* Empty state. */
+.lv-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 32px;
+  border: 1px dashed var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  border-radius: var(--lv-radius);
+  background: rgba(148, 163, 255, 0.03);
+}
+.lv-empty__mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
+  border: 1px solid var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  border-radius: 12px;
+  color: var(--lv-accent);
+}
+.lv .lv-empty__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.lv-empty__text {
+  max-width: 52ch;
+  margin: 0;
+  color: var(--lv-muted);
+}
+.lv-linkbtn {
+  margin-top: 8px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--lv-accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(143, 168, 255, 0.4);
+  text-underline-offset: 4px;
+}
+.lv-linkbtn:hover:not(:disabled) {
+  text-decoration-color: currentColor;
+}
+.lv-linkbtn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* --- bottom row: feed + loop ------------------------------------------------------------ */
+
+.lv-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--lv-gap);
+  align-items: start;
+}
+.lv-bottom > * {
+  min-width: 0;
+}
+
+/* About ten two-line rows visible; the rest scrolls. */
+.lv .feed__scroll {
+  height: 520px;
+  max-height: 520px;
+  border: 1px solid var(--lv-line);
+  border-radius: 12px;
+}
+.lv .table th,
+.lv .table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--lv-line);
+}
+.lv .table th {
+  background: var(--panel-2, #15192c);
+  font-size: 12px;
+  font-weight: 500;
+}
+.lv .table tbody tr:nth-child(even) {
+  background: transparent;
+}
+.lv .table tbody tr:hover {
+  background: rgba(148, 163, 255, 0.05);
+}
+/* Fixed layout so the table fits its card: long ids truncate (full value in the title). */
+.lv .feed {
+  table-layout: fixed;
+}
+/* Columns: time | tx id over route | amount | risk | case. The transaction column takes the
+   remaining width. */
+.lv .feed th:nth-child(1) {
+  width: 90px;
+}
+.lv .feed th:nth-child(3) {
+  width: 104px;
+}
+.lv .feed th:nth-child(4) {
+  width: 88px;
+}
+.lv .feed th:nth-child(5) {
+  width: 100px;
+}
+.lv .feed td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.lv .feed th,
+.lv .feed td {
+  padding: 6px 8px;
+}
+.lv .feed th:first-child,
+.lv .feed td:first-child {
+  padding-left: 12px;
+}
+.lv .feed td.feed__time {
+  font-size: 12px;
+}
+.lv .feed__time time > span {
+  display: block;
+  line-height: 1.35;
+}
+.lv .feed__time .feed__date {
+  font-size: 11px;
+  color: var(--lv-muted);
+}
+/* Tier chip over the Case id, so neither is cut off. */
+.lv .feed__case-in {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.lv .feed__tx > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.35;
+  font-size: 12px;
+}
+.lv .feed__route {
+  color: var(--lv-muted);
+}
+.lv .feed__time {
+  color: var(--lv-muted);
+}
+.lv .feed__risk {
+  white-space: nowrap;
+}
+.lv .feed__bar {
+  display: inline-block;
+  width: 24px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.lv .feed__case .tier {
+  font-size: 10px;
+}
+
+/* HELIX loop: stage tiles, a latency chip, inline weight bars, and the rest folded away. */
+/* Six equal stage tiles in one row; the end-to-end total is a full-width line beneath. */
+.lv .loop-stages__body {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+.lv .loop-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--lv-line);
+  border-radius: 12px;
+  background: rgba(148, 163, 255, 0.025);
+}
+.lv .loop-stage--total {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 16px;
+  padding: 8px 12px;
+  border-color: rgba(143, 168, 255, 0.3);
+}
+.lv .loop-stage--total .loop-stage__name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--lv-text);
+}
+.lv .loop-stage__name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--lv-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.lv .loop-stage__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lv .loop-stage__value::after {
+  content: " " attr(data-unit);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--lv-muted);
+}
+.lv .loop-stage__value--ms {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--lv-muted);
+}
+.lv .loop-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 16px;
+}
+.lv .loop-status p {
+  margin: 0;
+}
+.lv .loop-sub {
+  margin: 16px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lv-text);
+}
+.lv .loop-weights__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lv .loop-weight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--lv-muted);
+}
+.lv .loop-weight strong {
+  color: var(--lv-text);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.lv .loop-weight__bar {
+  width: 40px;
+}
+.lv .loop-na {
+  margin: 0;
+}
+.lv .loop-more {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--lv-line);
+}
+.lv .loop-more > summary {
+  color: var(--lv-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+.lv .loop-more > summary:hover {
+  color: var(--lv-text);
+}
+.lv .loop-more__body {
+  padding-top: 4px;
+}
+.lv .kv dt {
+  min-width: 160px;
+}
+
+/* --- Controls drawer ---------------------------------------------------------------- */
+
+.lv-drawer-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+.lv-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 4, 10, 0.62);
+  animation: lv-fade 240ms var(--hx-ease, ease-out) backwards;
+}
+.lv-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 100vw);
+  border-left: 1px solid var(--hx-border, rgba(170, 185, 255, 0.1));
+  background: var(--hx-bg-elev, #0a0d1a);
+  box-shadow: -24px 0 60px -24px rgba(0, 0, 0, 0.8);
+  animation: lv-slide-in 320ms var(--hx-ease, ease-out) backwards;
+}
+.lv-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px 12px;
+}
+.lv .lv-drawer__head .lv-title {
+  font-size: 16px;
+}
+.lv-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--hx-border-strong, rgba(170, 185, 255, 0.2));
+  border-radius: 50%;
+  background: none;
+  color: var(--lv-text);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.lv-icon-btn:hover {
+  background: rgba(148, 163, 255, 0.08);
+}
+.lv-drawer__body {
+  flex: 1;
+  overflow: auto;
+  padding: 0 24px 24px;
+}
+.lv-drawer__intro {
+  margin: 0 0 16px;
+}
+.lv .lv-drawer .group {
+  margin: 0 0 16px;
+  padding: 16px;
+  border: 1px solid var(--lv-line);
+  border-radius: 12px;
+  background: rgba(148, 163, 255, 0.025);
+}
+.lv .lv-drawer .group legend {
+  padding: 0 6px;
+  color: var(--lv-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* --- motion ----------------------------------------------------------------------------- */
+
+@keyframes lv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes lv-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes lv-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lv .lv-kpi,
+  .lv-demo,
+  .lv-drawer,
+  .lv-drawer-backdrop {
+    animation: none;
+  }
+  .lv-tab,
+  .lv-tab::after {
+    transition: none;
+  }
+}
+
+/* --- narrow screens ------------------------------------------------------------------- */
+
+@media (max-width: 1280px) {
+  .lv-case__facts {
+    grid-template-columns: auto minmax(120px, auto) minmax(0, 1fr);
+  }
+  .lv-case__facts > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 1100px) {
+  .lv-main,
+  .lv-bottom {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-main__queue {
+    min-height: 0;
+  }
+  .lv .lv-main__queue > .panel {
+    position: relative;
+    inset: auto;
+  }
+  .lv .panel--queue .panel__body {
+    max-height: 480px;
+  }
+}
+@media (max-width: 1200px) {
+  .lv-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 720px) {
+  .lv {
+    padding: 16px 16px 32px;
+    --lv-gap: 16px;
+  }
+  .lv-case__facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .lv-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lv-strip__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .lv .loop-stages__body {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

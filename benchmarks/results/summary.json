@@ -1,0 +1,658 @@
+{
+  "dataset": "IBM AMLworld HI-Small (data/HI-Small_Trans.csv)",
+  "windows": {
+    "baseline_fit": [
+      "2022/09/03 00:00",
+      "2022/09/04 01:00"
+    ],
+    "helix_warmup": [
+      "2022/09/03 19:00",
+      "2022/09/04 01:00"
+    ],
+    "test": [
+      "2022/09/04 01:00",
+      "2022/09/04 13:00"
+    ],
+    "end_exclusive": true,
+    "timezone": "UTC (AMLworld timestamps are naive)"
+  },
+  "rows": {
+    "fit": 230114,
+    "fit_laundering": 412,
+    "test": 95881,
+    "test_laundering": 203,
+    "test_laundering_usd": 1104654626.67,
+    "helix_warmup": 62973,
+    "helix_test": 95451,
+    "test_rows_helix_cannot_ingest": {
+      "rows": 430,
+      "laundering": 1,
+      "laundering_usd": 943027698.87,
+      "laundering_value_share": 0.8536855557429718
+    }
+  },
+  "test_hours": 12,
+  "assumptions": {
+    "alert_unit": "one alert = one account investigation; baselines group flagged tx by (clock hour, source account), score = max; HELIX alert = one Case in the hour it was admitted (Backlog variant: created)",
+    "true_positive": "alert holds >= 1 laundering transaction",
+    "capacity": "each system takes its own top N alerts per clock hour",
+    "minutes_per_case": 20,
+    "analyst_cost_per_hour": 30,
+    "cost_per_case": 10,
+    "cost_per_alert": 20.0,
+    "currency": "Amount Paid x fixed approximate USD rate table (benchmarks/config.json)",
+    "value_cap_usd": 100000,
+    "value_cap_note": "Secondary value metric: each laundering transaction counts at most this many USD, because two test transactions (943M and 158M USD) hold ~99.8% of the raw laundering value.",
+    "helix_config": "default HelixConfig",
+    "helix_alert_budget_per_hour": 20,
+    "baseline_params": {
+      "rule": {
+        "amount_p99_usd": 1288300.42,
+        "burst_1h_p99": 317.0
+      },
+      "xgboost": {
+        "scale_pos_weight": 557.5
+      }
+    },
+    "scope_note": "on AMLworld test data only; not a real-world savings estimate"
+  },
+  "seeds": [
+    7,
+    11,
+    13
+  ],
+  "headline_seed": 7,
+  "systems": {
+    "HELIX (Active_Queue, own budget 20/h)": {
+      "candidate_alerts": 239,
+      "by_capacity": {
+        "25": {
+          "alerts": 239,
+          "tp": 11,
+          "fp": 228,
+          "alert_precision": 0.04602510460251046,
+          "precision_at_n": 0.03666666666666667,
+          "tx_recall": 0.059113300492610835,
+          "value_captured_usd": 158019634.04,
+          "value_captured_frac": 0.1430489043620658,
+          "investigator_hours": 79.67,
+          "value_per_inv_hour_usd": 1983510.05,
+          "cost_per_true_catch_usd": 434.55,
+          "wasted_hours": 76.0,
+          "value_capped_usd": 278194.73,
+          "value_capped_frac": 0.13955333516567217,
+          "value_capped_per_inv_hour_usd": 3491.98,
+          "seed_range": null
+        },
+        "50": {
+          "alerts": 239,
+          "tp": 11,
+          "fp": 228,
+          "alert_precision": 0.04602510460251046,
+          "precision_at_n": 0.018333333333333333,
+          "tx_recall": 0.059113300492610835,
+          "value_captured_usd": 158019634.04,
+          "value_captured_frac": 0.1430489043620658,
+          "investigator_hours": 79.67,
+          "value_per_inv_hour_usd": 1983510.05,
+          "cost_per_true_catch_usd": 434.55,
+          "wasted_hours": 76.0,
+          "value_capped_usd": 278194.73,
+          "value_capped_frac": 0.13955333516567217,
+          "value_capped_per_inv_hour_usd": 3491.98,
+          "seed_range": null
+        },
+        "100": {
+          "alerts": 239,
+          "tp": 11,
+          "fp": 228,
+          "alert_precision": 0.04602510460251046,
+          "precision_at_n": 0.009166666666666667,
+          "tx_recall": 0.059113300492610835,
+          "value_captured_usd": 158019634.04,
+          "value_captured_frac": 0.1430489043620658,
+          "investigator_hours": 79.67,
+          "value_per_inv_hour_usd": 1983510.05,
+          "cost_per_true_catch_usd": 434.55,
+          "wasted_hours": 76.0,
+          "value_capped_usd": 278194.73,
+          "value_capped_frac": 0.13955333516567217,
+          "value_capped_per_inv_hour_usd": 3491.98,
+          "seed_range": null
+        }
+      },
+      "roc_auc": [
+        0.5051252317270665
+      ],
+      "pr_auc": [
+        0.002180556193346961
+      ],
+      "minutes_sensitivity_N50": {
+        "10": {
+          "value_per_inv_hour_usd": 3967020.1,
+          "cost_per_true_catch_usd": 325.91,
+          "investigator_hours": 39.83
+        },
+        "20": {
+          "value_per_inv_hour_usd": 1983510.05,
+          "cost_per_true_catch_usd": 434.55,
+          "investigator_hours": 79.67
+        },
+        "30": {
+          "value_per_inv_hour_usd": 1322340.03,
+          "cost_per_true_catch_usd": 543.18,
+          "investigator_hours": 119.5
+        }
+      }
+    },
+    "HELIX + Backlog (equal capacity)": {
+      "candidate_alerts": 5328,
+      "by_capacity": {
+        "25": {
+          "alerts": 300,
+          "tp": 12,
+          "fp": 288,
+          "alert_precision": 0.04,
+          "precision_at_n": 0.04,
+          "tx_recall": 0.06403940886699508,
+          "value_captured_usd": 158021085.42,
+          "value_captured_frac": 0.14305021823733952,
+          "investigator_hours": 100.0,
+          "value_per_inv_hour_usd": 1580210.85,
+          "cost_per_true_catch_usd": 500.0,
+          "wasted_hours": 96.0,
+          "value_capped_usd": 279646.11,
+          "value_capped_frac": 0.1402814032135784,
+          "value_capped_per_inv_hour_usd": 2796.46,
+          "seed_range": null
+        },
+        "50": {
+          "alerts": 600,
+          "tp": 16,
+          "fp": 584,
+          "alert_precision": 0.02666666666666667,
+          "precision_at_n": 0.02666666666666667,
+          "tx_recall": 0.08866995073891626,
+          "value_captured_usd": 158028948.59,
+          "value_captured_frac": 0.14305733645466304,
+          "investigator_hours": 200.0,
+          "value_per_inv_hour_usd": 790144.74,
+          "cost_per_true_catch_usd": 750.0,
+          "wasted_hours": 194.67,
+          "value_capped_usd": 287509.28,
+          "value_capped_frac": 0.1442258770117076,
+          "value_capped_per_inv_hour_usd": 1437.55,
+          "seed_range": null
+        },
+        "100": {
+          "alerts": 1200,
+          "tp": 25,
+          "fp": 1175,
+          "alert_precision": 0.020833333333333332,
+          "precision_at_n": 0.020833333333333332,
+          "tx_recall": 0.13793103448275862,
+          "value_captured_usd": 158094799.98,
+          "value_captured_frac": 0.14311694910110506,
+          "investigator_hours": 400.0,
+          "value_per_inv_hour_usd": 395237.0,
+          "cost_per_true_catch_usd": 960.0,
+          "wasted_hours": 391.67,
+          "value_capped_usd": 353360.67,
+          "value_capped_frac": 0.17725950203914398,
+          "value_capped_per_inv_hour_usd": 883.4,
+          "seed_range": null
+        }
+      },
+      "roc_auc": [
+        0.5051252317270665
+      ],
+      "pr_auc": [
+        0.002180556193346961
+      ],
+      "minutes_sensitivity_N50": {
+        "10": {
+          "value_per_inv_hour_usd": 1580289.49,
+          "cost_per_true_catch_usd": 562.5,
+          "investigator_hours": 100.0
+        },
+        "20": {
+          "value_per_inv_hour_usd": 790144.74,
+          "cost_per_true_catch_usd": 750.0,
+          "investigator_hours": 200.0
+        },
+        "30": {
+          "value_per_inv_hour_usd": 526763.16,
+          "cost_per_true_catch_usd": 937.5,
+          "investigator_hours": 300.0
+        }
+      }
+    },
+    "Rule (P99 amount / 1h burst)": {
+      "candidate_alerts": 662,
+      "by_capacity": {
+        "25": {
+          "alerts": 300,
+          "tp": 3,
+          "fp": 297,
+          "alert_precision": 0.01,
+          "precision_at_n": 0.01,
+          "tx_recall": 0.014778325123152709,
+          "value_captured_usd": 1100869352.18,
+          "value_captured_frac": 0.9965733412126165,
+          "investigator_hours": 100.0,
+          "value_per_inv_hour_usd": 11008693.52,
+          "cost_per_true_catch_usd": 2000.0,
+          "wasted_hours": 99.0,
+          "value_capped_usd": 200214.0,
+          "value_capped_frac": 0.10043515608576087,
+          "value_capped_per_inv_hour_usd": 2002.14,
+          "seed_range": null
+        },
+        "50": {
+          "alerts": 581,
+          "tp": 4,
+          "fp": 577,
+          "alert_precision": 0.0068846815834767644,
+          "precision_at_n": 0.006666666666666667,
+          "tx_recall": 0.019704433497536946,
+          "value_captured_usd": 1102961375.35,
+          "value_captured_frac": 0.9984671667745822,
+          "investigator_hours": 193.67,
+          "value_per_inv_hour_usd": 5695153.4,
+          "cost_per_true_catch_usd": 2905.0,
+          "wasted_hours": 192.33,
+          "value_capped_usd": 300214.0,
+          "value_capped_frac": 0.1505990587527876,
+          "value_capped_per_inv_hour_usd": 1550.16,
+          "seed_range": null
+        },
+        "100": {
+          "alerts": 662,
+          "tp": 4,
+          "fp": 658,
+          "alert_precision": 0.006042296072507553,
+          "precision_at_n": 0.0033333333333333335,
+          "tx_recall": 0.019704433497536946,
+          "value_captured_usd": 1102961375.35,
+          "value_captured_frac": 0.9984671667745822,
+          "investigator_hours": 220.67,
+          "value_per_inv_hour_usd": 4998314.39,
+          "cost_per_true_catch_usd": 3310.0,
+          "wasted_hours": 219.33,
+          "value_capped_usd": 300214.0,
+          "value_capped_frac": 0.1505990587527876,
+          "value_capped_per_inv_hour_usd": 1360.49,
+          "seed_range": null
+        }
+      },
+      "roc_auc": [
+        0.5210150435826572
+      ],
+      "pr_auc": [
+        0.005207281656611797
+      ],
+      "minutes_sensitivity_N50": {
+        "10": {
+          "value_per_inv_hour_usd": 11390306.8,
+          "cost_per_true_catch_usd": 2178.75,
+          "investigator_hours": 96.83
+        },
+        "20": {
+          "value_per_inv_hour_usd": 5695153.4,
+          "cost_per_true_catch_usd": 2905.0,
+          "investigator_hours": 193.67
+        },
+        "30": {
+          "value_per_inv_hour_usd": 3796768.93,
+          "cost_per_true_catch_usd": 3631.25,
+          "investigator_hours": 290.5
+        }
+      }
+    },
+    "Isolation Forest": {
+      "candidate_alerts": 41865,
+      "by_capacity": {
+        "25": {
+          "alerts": 300,
+          "tp": 10,
+          "fp": 290,
+          "alert_precision": 0.03333333333333333,
+          "precision_at_n": 0.03333333333333333,
+          "tx_recall": 0.059113300492610835,
+          "value_captured_usd": 157871585.21,
+          "value_captured_frac": 0.14291488162592456,
+          "investigator_hours": 100.0,
+          "value_per_inv_hour_usd": 1578715.85,
+          "cost_per_true_catch_usd": 600.0,
+          "wasted_hours": 96.67,
+          "value_capped_usd": 130145.9,
+          "value_capped_frac": 0.06528626139719225,
+          "value_capped_per_inv_hour_usd": 1301.46,
+          "seed_range": {
+            "tp": [
+              10.0,
+              11.0
+            ],
+            "value_captured_usd": [
+              157871585.21,
+              157890412.25
+            ],
+            "value_per_inv_hour_usd": [
+              1578715.85,
+              1578904.12
+            ],
+            "value_capped_per_inv_hour_usd": [
+              1301.46,
+              1489.73
+            ],
+            "alert_precision": [
+              0.03333333333333333,
+              0.03666666666666667
+            ],
+            "tx_recall": [
+              0.059113300492610835,
+              0.06403940886699508
+            ]
+          }
+        },
+        "50": {
+          "alerts": 600,
+          "tp": 11,
+          "fp": 589,
+          "alert_precision": 0.018333333333333333,
+          "precision_at_n": 0.018333333333333333,
+          "tx_recall": 0.06403940886699508,
+          "value_captured_usd": 157890412.25,
+          "value_captured_frac": 0.1429319250046834,
+          "investigator_hours": 200.0,
+          "value_per_inv_hour_usd": 789452.06,
+          "cost_per_true_catch_usd": 1090.91,
+          "wasted_hours": 196.33,
+          "value_capped_usd": 148972.94,
+          "value_capped_frac": 0.07473064302967543,
+          "value_capped_per_inv_hour_usd": 744.86,
+          "seed_range": {
+            "tp": [
+              11.0,
+              12.0
+            ],
+            "value_captured_usd": [
+              157890412.25,
+              1100918111.13
+            ],
+            "value_per_inv_hour_usd": [
+              789452.06,
+              5504590.56
+            ],
+            "value_capped_per_inv_hour_usd": [
+              744.86,
+              1244.86
+            ],
+            "alert_precision": [
+              0.018333333333333333,
+              0.02
+            ],
+            "tx_recall": [
+              0.06403940886699508,
+              0.06896551724137931
+            ]
+          }
+        },
+        "100": {
+          "alerts": 1200,
+          "tp": 11,
+          "fp": 1189,
+          "alert_precision": 0.009166666666666667,
+          "precision_at_n": 0.009166666666666667,
+          "tx_recall": 0.06403940886699508,
+          "value_captured_usd": 157890412.25,
+          "value_captured_frac": 0.1429319250046834,
+          "investigator_hours": 400.0,
+          "value_per_inv_hour_usd": 394726.03,
+          "cost_per_true_catch_usd": 2181.82,
+          "wasted_hours": 396.33,
+          "value_capped_usd": 148972.94,
+          "value_capped_frac": 0.07473064302967543,
+          "value_capped_per_inv_hour_usd": 372.43,
+          "seed_range": {
+            "tp": [
+              11.0,
+              14.0
+            ],
+            "value_captured_usd": [
+              157890412.25,
+              1103011056.52
+            ],
+            "value_per_inv_hour_usd": [
+              394726.03,
+              2757527.64
+            ],
+            "value_capped_per_inv_hour_usd": [
+              372.43,
+              874.74
+            ],
+            "alert_precision": [
+              0.009166666666666667,
+              0.011666666666666667
+            ],
+            "tx_recall": [
+              0.06403940886699508,
+              0.07881773399014778
+            ]
+          }
+        }
+      },
+      "roc_auc": [
+        0.735443400725154,
+        0.7026782515697922,
+        0.7252793828066781
+      ],
+      "pr_auc": [
+        0.0036518843911745023,
+        0.003256377766841838,
+        0.0035175790308242497
+      ],
+      "minutes_sensitivity_N50": {
+        "10": {
+          "value_per_inv_hour_usd": 1578904.12,
+          "cost_per_true_catch_usd": 818.18,
+          "investigator_hours": 100.0
+        },
+        "20": {
+          "value_per_inv_hour_usd": 789452.06,
+          "cost_per_true_catch_usd": 1090.91,
+          "investigator_hours": 200.0
+        },
+        "30": {
+          "value_per_inv_hour_usd": 526301.37,
+          "cost_per_true_catch_usd": 1363.64,
+          "investigator_hours": 300.0
+        }
+      }
+    },
+    "XGBoost (supervised)": {
+      "candidate_alerts": 41865,
+      "by_capacity": {
+        "25": {
+          "alerts": 300,
+          "tp": 82,
+          "fp": 218,
+          "alert_precision": 0.2733333333333333,
+          "precision_at_n": 0.2733333333333333,
+          "tx_recall": 0.41379310344827586,
+          "value_captured_usd": 792102.35,
+          "value_captured_frac": 0.0007170588283861887,
+          "investigator_hours": 100.0,
+          "value_per_inv_hour_usd": 7921.02,
+          "cost_per_true_catch_usd": 73.17,
+          "wasted_hours": 72.67,
+          "value_capped_usd": 792102.35,
+          "value_capped_frac": 0.3973494530656142,
+          "value_capped_per_inv_hour_usd": 7921.02,
+          "seed_range": {
+            "tp": [
+              80.0,
+              83.0
+            ],
+            "value_captured_usd": [
+              775706.5,
+              792102.35
+            ],
+            "value_per_inv_hour_usd": [
+              7757.06,
+              7921.02
+            ],
+            "value_capped_per_inv_hour_usd": [
+              7757.06,
+              7921.02
+            ],
+            "alert_precision": [
+              0.26666666666666666,
+              0.27666666666666667
+            ],
+            "tx_recall": [
+              0.4039408866995074,
+              0.4187192118226601
+            ]
+          }
+        },
+        "50": {
+          "alerts": 600,
+          "tp": 90,
+          "fp": 510,
+          "alert_precision": 0.15,
+          "precision_at_n": 0.15,
+          "tx_recall": 0.45320197044334976,
+          "value_captured_usd": 864340.54,
+          "value_captured_frac": 0.0007824531937164453,
+          "investigator_hours": 200.0,
+          "value_per_inv_hour_usd": 4321.7,
+          "cost_per_true_catch_usd": 133.33,
+          "wasted_hours": 170.0,
+          "value_capped_usd": 864340.54,
+          "value_capped_frac": 0.43358694749271853,
+          "value_capped_per_inv_hour_usd": 4321.7,
+          "seed_range": {
+            "tp": [
+              90.0,
+              93.0
+            ],
+            "value_captured_usd": [
+              864340.54,
+              889352.03
+            ],
+            "value_per_inv_hour_usd": [
+              4321.7,
+              4446.76
+            ],
+            "value_capped_per_inv_hour_usd": [
+              4321.7,
+              4446.76
+            ],
+            "alert_precision": [
+              0.15,
+              0.155
+            ],
+            "tx_recall": [
+              0.45320197044334976,
+              0.46798029556650245
+            ]
+          }
+        },
+        "100": {
+          "alerts": 1200,
+          "tp": 106,
+          "fp": 1094,
+          "alert_precision": 0.08833333333333333,
+          "precision_at_n": 0.08833333333333333,
+          "tx_recall": 0.5320197044334976,
+          "value_captured_usd": 987740.11,
+          "value_captured_frac": 0.0008941619273967267,
+          "investigator_hours": 400.0,
+          "value_per_inv_hour_usd": 2469.35,
+          "cost_per_true_catch_usd": 226.42,
+          "wasted_hours": 364.67,
+          "value_capped_usd": 987740.11,
+          "value_capped_frac": 0.4954889874277269,
+          "value_capped_per_inv_hour_usd": 2469.35,
+          "seed_range": {
+            "tp": [
+              105.0,
+              109.0
+            ],
+            "value_captured_usd": [
+              987740.11,
+              1006303.55
+            ],
+            "value_per_inv_hour_usd": [
+              2469.35,
+              2515.76
+            ],
+            "value_capped_per_inv_hour_usd": [
+              2469.35,
+              2515.76
+            ],
+            "alert_precision": [
+              0.0875,
+              0.09083333333333334
+            ],
+            "tx_recall": [
+              0.5270935960591133,
+              0.5467980295566502
+            ]
+          }
+        }
+      },
+      "roc_auc": [
+        0.9687116330359724,
+        0.9672462293219345,
+        0.9714797694277718
+      ],
+      "pr_auc": [
+        0.3350983460151938,
+        0.33522342858332344,
+        0.33525197426518694
+      ],
+      "minutes_sensitivity_N50": {
+        "10": {
+          "value_per_inv_hour_usd": 8643.41,
+          "cost_per_true_catch_usd": 100.0,
+          "investigator_hours": 100.0
+        },
+        "20": {
+          "value_per_inv_hour_usd": 4321.7,
+          "cost_per_true_catch_usd": 133.33,
+          "investigator_hours": 200.0
+        },
+        "30": {
+          "value_per_inv_hour_usd": 2881.14,
+          "cost_per_true_catch_usd": 166.67,
+          "investigator_hours": 300.0
+        }
+      }
+    }
+  },
+  "helix_run": {
+    "config": "default HelixConfig",
+    "alert_budget_per_period": 20,
+    "period_s": 3600,
+    "investigation_cost": 50.0,
+    "scope": {
+      "start": "2022/09/03 19:00",
+      "test_start": "2022/09/04 01:00",
+      "end": "2022/09/04 13:00",
+      "max_rows": null
+    },
+    "rows_in_scope": 158424,
+    "warmup_rows": 62973,
+    "test_rows": 95451,
+    "load_s": 12.5,
+    "warmup_s": 71.2,
+    "test_s": 455.2,
+    "cases_after_warmup": 0,
+    "cases_total": 5336,
+    "cases_admitted": 307,
+    "worker_errors": 0,
+    "auto_cleared": null
+  }
+}

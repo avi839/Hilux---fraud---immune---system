@@ -1,0 +1,124 @@
+%%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 40}, "themeVariables": {"fontSize": "16px"}}}%%
+flowchart TB
+  subgraph SRC["Sources"]
+    GEN["Synthetic_Generator"]
+    ATK["Attacker_Agent"]
+    DSL["AMLworld Dataset_Loader"]
+    REST["REST ingest"]
+  end
+
+  subgraph SENSE["SENSE"]
+    CODEC["Event_Codec"]
+    ING["Stream_Ingestor"]
+  end
+
+  subgraph PERCEIVE["PERCEIVE"]
+    SENS["6 Sensor_Agents<br/>Amount, Velocity, Timing,<br/>Geo, Counterparty, Drift"]
+    AB["Antibodies"]
+    F1["Evidence_Fuser stage 1"]
+  end
+
+  subgraph REMEMBER["REMEMBER"]
+    PS["Profile_Store / Behavioural_DNA"]
+    CPD["Change_Point_Detector (BOCPD)"]
+  end
+
+  subgraph REASON["REASON"]
+    TG["Temporal_Graph"]
+    MD["Motif_Detectors"]
+    F2["Evidence_Fuser stage 2"]
+  end
+
+  subgraph ACT["ACT"]
+    RS["Risk / Severity"]
+    CM["Case_Manager"]
+    PR["Prioritiser<br/>Active_Queue / Backlog"]
+    EX["Explanation_Engine"]
+    RP["Replay service"]
+  end
+
+  subgraph LEARN["LEARN"]
+    FL["Feedback_Learner"]
+    SW[("Sensor_Weights")]
+    IMM["Immune_System"]
+  end
+
+  subgraph PERSIST["Persistence"]
+    DB[("DuckDB Storage<br/>batched writer, snapshots")]
+  end
+
+  subgraph IFACE["Interface"]
+    API["FastAPI REST + WebSocket hub"]
+    UI["React Dashboard<br/>live feed, queue, evidence,<br/>3D graph, geo map, replay, loop panel"]
+    INV(["Investigator"])
+  end
+
+  subgraph SIDE["Side channel (isolated)"]
+    GT[("Ground_Truth_Store<br/>separate DuckDB table")]
+    EVAL["Evaluation_Monitor"]
+  end
+
+  subgraph SOC["Increment 4: SOC/Cyber layer (Req 28-37)"]
+    AUTH["Auth telemetry + Auth_Sensor"]
+    KC["Kill chain"]
+    TM["Technique matrix"]
+    DR["Detection rules"]
+    PB["Playbooks (simulated)"]
+    CAN["Canaries"]
+    TI["Threat intel"]
+    AL["Audit ledger"]
+    SOCC["SOC console"]
+    PT["Purple team"]
+  end
+
+  GEN --> CODEC
+  ATK --> CODEC
+  DSL --> CODEC
+  REST --> CODEC
+  CODEC --> ING
+
+  ING --> SENS
+  ING --> AB
+  PS -->|"profile read"| SENS
+  CPD -->|"run-length posterior"| SENS
+  SENS -->|"mass functions"| F1
+  AB -->|"mass functions"| F1
+  F1 -->|"update after PERCEIVE"| PS
+  PS --> CPD
+
+  PS -->|"event"| TG
+  TG --> MD
+  F1 -->|"stage-1 assessment"| F2
+  MD -->|"motif masses"| F2
+
+  F2 --> RS
+  RS --> CM
+  MD -->|"motif grouping"| CM
+  CM --> PR
+  CM --> EX
+  PR --> API
+  EX --> API
+  RP --> API
+
+  ING --> DB
+  CM --> DB
+  F2 --> DB
+  DB --> RP
+
+  API <--> UI
+  UI --> INV
+  INV -->|"feedback labels"| FL
+  FL --> SW
+  SW -->|"weights"| F1
+
+  ATK -.->|"labels"| GT
+  GT -.-> EVAL
+  GT -.->|"attacker misses"| IMM
+  IMM -->|"new antibodies"| AB
+  EVAL --> API
+
+  SOC -.->|"auth evidence"| F1
+  SOC -.-> API
+
+  style SOC stroke-dasharray: 6 4
+  style SIDE stroke-dasharray: 6 4

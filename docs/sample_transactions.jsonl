@@ -1,0 +1,15 @@
+{"tx_id":"T001","ts":"2024-06-03T09:15:00Z","src":"ACC-ALICE","dst":"MER-GROCER","amount":"42.50","currency":"EUR","channel":"card","lat":52.52,"lon":13.40,"device_id":"DEV-A1"}
+{"tx_id":"T002","ts":"2024-06-03T13:05:00Z","src":"ACC-ALICE","dst":"MER-CAFE","amount":"8.90","currency":"EUR","channel":"card","lat":52.51,"lon":13.39,"device_id":"DEV-A1"}
+{"tx_id":"T003","ts":"2024-06-04T09:40:00Z","src":"ACC-ALICE","dst":"MER-GROCER","amount":"51.20","currency":"EUR","channel":"card","lat":52.52,"lon":13.40,"device_id":"DEV-A1"}
+{"tx_id":"T004","ts":"2024-06-04T18:30:00Z","src":"ACC-ALICE","dst":"MER-GYM","amount":"35.00","currency":"EUR","channel":"card","lat":52.53,"lon":13.41,"device_id":"DEV-A1"}
+{"tx_id":"T005","ts":"2024-06-05T10:10:00Z","src":"ACC-ALICE","dst":"MER-GROCER","amount":"47.80","currency":"EUR","channel":"card","lat":52.52,"lon":13.40,"device_id":"DEV-A1"}
+{"tx_id":"T006","ts":"2024-06-05T10:40:00Z","src":"ACC-ALICE","dst":"MER-GROCER","amount":"39.99","currency":"EUR","channel":"card"}
+{"tx_id":"T007","ts":"2024-06-05T11:20:00Z","src":"ACC-ALICE","dst":"ACC-UNKNOWN-77","amount":"4800.00","currency":"EUR","channel":"online","lat":6.52,"lon":3.38,"device_id":"DEV-X9"}
+{"tx_id":"T007","ts":"2024-06-05T11:20:00Z","src":"ACC-ALICE","dst":"ACC-UNKNOWN-77","amount":"4800.00","currency":"EUR","channel":"online","lat":6.52,"lon":3.38,"device_id":"DEV-X9"}
+{"tx_id":"T009","ts":"2024-06-05T12:00:00Z","src":"ACC-ALICE","dst":"MER-CAFE","amount":"-20.00","currency":"euro"}
+{"tx_id":"T010","ts":"2024-06-05T09:00:00Z","src":"ACC-BOB","dst":"ACC-SHELL-1","amount":"9800.00","currency":"EUR","channel":"online"}
+{"tx_id":"T011","ts":"2024-06-05T15:30:00Z","src":"ACC-BOB","dst":"ACC-SHELL-2","amount":"9650.00","currency":"EUR","channel":"online"}
+{"tx_id":"T012","ts":"2024-06-06T08:45:00Z","src":"ACC-BOB","dst":"ACC-SHELL-3","amount":"9900.00","currency":"EUR","channel":"online"}
+{"tx_id":"T013","ts":"2024-06-06T14:00:00Z","src":"ACC-CARL","dst":"ACC-DAVE","amount":"5000.00","currency":"EUR","channel":"online"}
+{"tx_id":"T014","ts":"2024-06-06T14:25:00Z","src":"ACC-DAVE","dst":"ACC-ERIN","amount":"4600.00","currency":"EUR","channel":"online"}
+{"tx_id":"T015","ts":"2024-06-06T14:48:00Z","src":"ACC-ERIN","dst":"ACC-FINN","amount":"4300.00","currency":"EUR","channel":"online"}

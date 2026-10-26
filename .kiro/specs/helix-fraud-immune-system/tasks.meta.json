@@ -1,0 +1,1355 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create backend/ with pyproject/requirements.txt (design pins, Python 3.10), package skeleton per design Project Structure, HelixConfig + validate(), SimClock, and pytest/Hypothesis profiles, with unit + Hypothesis property tests for the design properties of this module. _Requirements: 3.12, 6.11, 24.4_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864710952
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864726616
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792865313032
+      }
+    ],
+    "2.1 Implement Event_Codec with unit + Hypothesis property tests for the design properties of this module. _Requirements: 1_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864711144
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792865323177
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866028359
+      }
+    ],
+    "2.2 Implement Stream_Ingestor with unit + Hypothesis property tests for the design properties of this module. _Requirements: 1, 2_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714140
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866038502
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866838479
+      }
+    ],
+    "3.1 Implement pure Dempster-Shafer Fusion with unit + Hypothesis property tests for the design properties of this module. _Requirements: 6_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714194
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792865324187
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866029929
+      }
+    ],
+    "3.2 Implement Risk/Severity scoring with unit + Hypothesis property tests for the design properties of this module. _Requirements: 13.1, 13.2, 13.3, 13.7, 13.8, 13.9, 13.10, 13.11, 13.12_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714313
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866039767
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866839661
+      }
+    ],
+    "4.1 Implement Profile_Store/Behavioural_DNA with unit + Hypothesis property tests for the design properties of this module. _Requirements: 8_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714394
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792865325393
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866031131
+      }
+    ],
+    "4.2 Implement BOCPD Change_Point_Detector with unit + Hypothesis property tests for the design properties of this module. _Requirements: 9_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714446
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866041273
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866841258
+      }
+    ],
+    "5.1 Implement the six Sensor_Agents with unit + Hypothesis property tests for the design properties of this module. _Requirements: 5, 7_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714493
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866852210
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792867765644
+      }
+    ],
+    "5.2 Implement the sensor runner with unit + Hypothesis property tests for the design properties of this module. _Requirements: 5_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714541
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792867779252
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792868710977
+      }
+    ],
+    "6.1 Implement Temporal_Graph with unit + Hypothesis property tests for the design properties of this module. _Requirements: 10_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714583
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792865326598
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866032172
+      }
+    ],
+    "6.2 Implement Motif_Detectors with unit + Hypothesis property tests (brute-force oracle) for the design properties of this module. _Requirements: 11_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714632
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866042133
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866842206
+      }
+    ],
+    "7.1 Implement Case_Manager + Prioritiser with unit + Hypothesis property tests for the design properties of this module. _Requirements: 12, 13, 14_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714682
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866852486
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792867766887
+      }
+    ],
+    "7.2 Implement Evidence_Chain + Explanation_Engine with unit + Hypothesis property tests for the design properties of this module. _Requirements: 15, 16, 18_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714734
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792867779335
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792868712333
+      }
+    ],
+    "8.1 Wire SENSE→ACT pipeline with two-stage fusion, with unit + Hypothesis property tests for the design properties of this module. _Requirements: 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714815
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792869480385
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792870408180
+      }
+    ],
+    "8.2 Add end-to-end test on docs/sample_transactions.jsonl (low Minimum_History_Count config): 1 duplicate, 1 rejected, Alice T007 high-tier case, Bob structuring case T010-T012, one mule-chain case T013-T015. _Requirements: 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714856
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792870415582
+      },
+      {
+        "executionId": "b2d1cac6-717a-4cbd-ae6d-937c46c0ac31",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792871047436
+      }
+    ],
+    "9.1 Implement Synthetic_Generator with unit + Hypothesis property tests for the design properties of this module. _Requirements: 3_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714909
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866853680
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792867768089
+      }
+    ],
+    "9.2 Implement AMLworld Dataset_Loader (hand-written fixture in tests/fixtures/aml) with unit + Hypothesis property tests for the design properties of this module. _Requirements: 4_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864714958
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792867779871
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792868713594
+      }
+    ],
+    "9.3 Implement Evaluation_Monitor plus a ground-truth import-isolation test, with unit + Hypothesis property tests for the design properties of this module. _Requirements: 14.12, 20.12, 24.11_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715005
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792869481461
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792870408955
+      }
+    ],
+    "10.1 Implement DuckDB Storage (batched writer, snapshots, restore) with unit + Hypothesis property tests for the design properties of this module. _Requirements: 17, 24_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715048
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866854672
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792867769067
+      }
+    ],
+    "10.2 Implement Replay service with unit + Hypothesis property tests for the design properties of this module. _Requirements: 24_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715090
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792868730084
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792869473812
+      }
+    ],
+    "11.1 Implement REST endpoints and WebSockets with unit + Hypothesis property tests for the design properties of this module. _Requirements: 23, 25_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715136
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792870416788
+      },
+      {
+        "executionId": "b2d1cac6-717a-4cbd-ae6d-937c46c0ac31",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792871048671
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792871219412
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792872478790
+      }
+    ],
+    "11.2 Implement security (loopback bind, CORS, WS origin) and metrics with unit + Hypothesis property tests for the design properties of this module. _Requirements: 25, 27_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715175
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792872487110
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792873541911
+      }
+    ],
+    "12.1 Scaffold dashboard with WS client, store, LiveFeed, CaseQueue, Controls. _Requirements: 22_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715219
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792872487912
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792873543304
+      },
+      {
+        "executionId": "fe7657c3-e058-4b00-8ebb-97dfffc59193",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890459001
+      },
+      {
+        "executionId": "bb8e51c2-5c5c-4f2b-8b4d-dcc03571a1b6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890603971
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792903044586
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906683779
+      }
+    ],
+    "12.2 Implement EvidencePanel, LoopPanel, and accessibility. _Requirements: 22_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715265
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792873555348
+      },
+      {
+        "executionId": "1e931c97-4d2e-4c91-a4c4-526f4bd01611",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792875083641
+      }
+    ],
+    "12.3 Implement Network3D, GeoMap, ReplaySlider. _Requirements: 22_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715307
+      },
+      {
+        "executionId": "b3dab03a-aec3-4f66-bc2d-c1d2ff6155bf",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792875180677
+      },
+      {
+        "executionId": "a48e9fb8-dcf7-4aa8-a18f-3e4955e09823",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792876331474
+      },
+      {
+        "executionId": "9043d9d9-9122-44d0-8fd0-ea9819f831f8",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792887924846
+      },
+      {
+        "executionId": "3d052993-260b-4734-8274-4fe6cfcc6446",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792889778155
+      }
+    ],
+    "13.1 Add run scripts and README (quickstart, manual AMLworld Kaggle download, security section). _Requirements: 27.6_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715360
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890356348
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792910355224
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792910365762
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792912634679
+      }
+    ],
+    "14.1 Implement Feedback_Learner with unit + Hypothesis property tests for the design properties of this module. _Requirements: 19_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715402
+      },
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792870417897
+      },
+      {
+        "executionId": "b2d1cac6-717a-4cbd-ae6d-937c46c0ac31",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792871049715
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792871219503
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792872478579
+      }
+    ],
+    "14.2 Implement Attacker_Agent with unit + Hypothesis property tests for the design properties of this module. _Requirements: 20_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715495
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792872488896
+      },
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792873541750
+      }
+    ],
+    "14.3 Implement Immune_System with unit + Hypothesis property tests for the design properties of this module. _Requirements: 21_": [
+      {
+        "executionId": "b3dab03a-aec3-4f66-bc2d-c1d2ff6155bf",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792875180752
+      },
+      {
+        "executionId": "a48e9fb8-dcf7-4aa8-a18f-3e4955e09823",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792876331294
+      },
+      {
+        "executionId": "9043d9d9-9122-44d0-8fd0-ea9819f831f8",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792887908628
+      },
+      {
+        "executionId": "3d052993-260b-4734-8274-4fe6cfcc6446",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792889786697
+      },
+      {
+        "executionId": "ccc8b906-2ecf-40e9-9c4e-397bb472212e",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890118447
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890357304
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890373205
+      },
+      {
+        "executionId": "fe7657c3-e058-4b00-8ebb-97dfffc59193",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890457889
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792903044872
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906683901
+      }
+    ],
+    "15. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715583
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890358416
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792910355318
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792912657183
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792913578205
+      }
+    ],
+    "16.1 Implement Req 28-29 components with unit + Hypothesis property tests for the design properties of this module. _Requirements: 28, 29_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715627
+      },
+      {
+        "executionId": "b3dab03a-aec3-4f66-bc2d-c1d2ff6155bf",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792875180854
+      },
+      {
+        "executionId": "a48e9fb8-dcf7-4aa8-a18f-3e4955e09823",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792876331578
+      },
+      {
+        "executionId": "9043d9d9-9122-44d0-8fd0-ea9819f831f8",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792887958980
+      },
+      {
+        "executionId": "3d052993-260b-4734-8274-4fe6cfcc6446",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792889779071
+      }
+    ],
+    "16.2 Implement Req 30-31 components with unit + Hypothesis property tests for the design properties of this module. _Requirements: 30, 31_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715668
+      },
+      {
+        "executionId": "3d052993-260b-4734-8274-4fe6cfcc6446",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792889787559
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890360413
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792903045695
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906684065
+      }
+    ],
+    "16.3 Implement Req 32-33 components with unit + Hypothesis property tests for the design properties of this module. _Requirements: 32, 33_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715714
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890362324
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906692395
+      },
+      {
+        "executionId": "dd6ea4cc-96f1-4584-ab93-f0fc5f936875",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906779184
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792910365866
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792912630880
+      }
+    ],
+    "16.4 Implement Req 34-35 components with unit + Hypothesis property tests for the design properties of this module. _Requirements: 34, 35_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715774
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890362945
+      },
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906692536
+      },
+      {
+        "executionId": "dd6ea4cc-96f1-4584-ab93-f0fc5f936875",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906779406
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792910366619
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792912632059
+      }
+    ],
+    "16.5 Implement Req 36-37 components with unit + Hypothesis property tests for the design properties of this module. _Requirements: 36, 37_": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792864715816
+      },
+      {
+        "executionId": "fcba44c8-50da-4116-a811-da760ff13fe1",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792890364074
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792910355405
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792910367916
+      },
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792912633295
+      }
+    ],
+    "1. Scaffold": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792865313100
+      }
+    ],
+    "2. Event_Codec + Stream_Ingestor": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866838554
+      }
+    ],
+    "3. Fusion + Risk/Severity": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866839717
+      }
+    ],
+    "4. Profile_Store + Change_Point_Detector": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866841324
+      }
+    ],
+    "6. Temporal_Graph + Motif_Detectors": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792866842269
+      }
+    ],
+    "5. Sensor_Agents": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792868711067
+      }
+    ],
+    "7. Case_Manager, Prioritiser, Evidence_Chain, Explanation_Engine": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792868712387
+      }
+    ],
+    "10. Storage + Replay": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792869473893
+      }
+    ],
+    "9. Synthetic data, AMLworld loader, evaluation": [
+      {
+        "executionId": "ec21841c-c073-434a-ba22-5f9ee5e51b5a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792870409035
+      }
+    ],
+    "8. Pipeline wiring": [
+      {
+        "executionId": "b2d1cac6-717a-4cbd-ae6d-937c46c0ac31",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792871047603
+      }
+    ],
+    "11. FastAPI API_Server": [
+      {
+        "executionId": "a13ec2f2-682d-45bf-83da-9f740d2be7dc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792873541985
+      }
+    ],
+    "12. React+Vite+TS Dashboard": [
+      {
+        "executionId": "3d052993-260b-4734-8274-4fe6cfcc6446",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792889778257
+      }
+    ],
+    "14. Learning loop": [
+      {
+        "executionId": "6c8c4273-24a2-47fb-9566-5df7303015e0",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792906683996
+      }
+    ],
+    "16. SOC/cyber layer (built last)": [
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792912633464
+      }
+    ],
+    "13. Run scripts + README": [
+      {
+        "executionId": "5cd222da-a4a8-475d-bbf5-4099c61f02a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792912634805
+      }
+    ],
+    "18.1 Mount all SOC routers (soc_routes, soc_response_routes, soc_intel_routes, soc_ops_routes) in create_app/secure_app, build SOC components (RuleEngine, PlaybookRunner, CanaryRegistry, IndicatorStore, AuditLedger, SocConsole, PurpleTeam, ResilienceMode) in AppState with Storage persistence, add SocConfig fields and a `--soc` CLI flag, with API tests. _Requirements: 28, 29, 30, 31, 32, 33, 34, 35, 36, 37_": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914044523
+      },
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914052894
+      },
+      {
+        "executionId": "3fb01e70-776e-4500-b60f-5f420a56fe46",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792935492859
+      }
+    ],
+    "18.2 Wire SOC components into the pipeline behind soc.enabled: canary and indicator contributions in stage-1 fusion, canary Case creation and Prioritiser exemption, generator/Profile_Store/Immune exclusion of canaries, attacker canary population and technique tags, PlaybookRunner on Case updates, Audit_Ledger hooks for labels, escalations, weight changes, rule and config changes, with unit + Hypothesis property tests. _Requirements: 18.9, 30.5, 32, 33, 34, 35_": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914044720
+      },
+      {
+        "executionId": "a65bee71-9a2f-4b30-8223-ffa6c98699b6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792923029634
+      },
+      {
+        "executionId": "3fb01e70-776e-4500-b60f-5f420a56fe46",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792935498612
+      },
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792937237989
+      },
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792937830648
+      }
+    ],
+    "19.1 Fix the Case snowball and per-event O(case size) ACT cost (bounded case merging, incremental Evidence_Chain/kill-chain/persist), keep the default generator config responsive, with unit + Hypothesis property tests and a perf test. _Requirements: 12, 25_": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914044870
+      },
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914054082
+      },
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792937831901
+      },
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792939326492
+      }
+    ],
+    "19.2 Restore state on restart from Storage, flush Storage before timeline reads, fix the test_monitor_is_wired_to_the_pipeline wait race, with tests. _Requirements: 24_": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914045016
+      },
+      {
+        "executionId": "a65bee71-9a2f-4b30-8223-ffa6c98699b6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792923030705
+      },
+      {
+        "executionId": "3fb01e70-776e-4500-b60f-5f420a56fe46",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792935499383
+      },
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792937235483
+      }
+    ],
+    "20.1 Add tabbed dashboard shell and the SOC console view. _Requirements: 38_": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914045169
+      },
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914055098
+      },
+      {
+        "executionId": "67822de1-88d9-41d1-a9ca-ac502020718c",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914558107
+      },
+      {
+        "executionId": "a65bee71-9a2f-4b30-8223-ffa6c98699b6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792923010843
+      },
+      {
+        "executionId": "a65bee71-9a2f-4b30-8223-ffa6c98699b6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792923030914
+      },
+      {
+        "executionId": "3fb01e70-776e-4500-b60f-5f420a56fe46",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792935493781
+      }
+    ],
+    "20.2 Implement the Red-vs-Blue arena view. _Requirements: 38_": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914045297
+      },
+      {
+        "executionId": "a65bee71-9a2f-4b30-8223-ffa6c98699b6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792923031233
+      },
+      {
+        "executionId": "3fb01e70-776e-4500-b60f-5f420a56fe46",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792935494880
+      }
+    ],
+    "20.3 Implement the transaction trace endpoint and view, the live log view and the guided tour. _Requirements: 38_": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914045419
+      },
+      {
+        "executionId": "a65bee71-9a2f-4b30-8223-ffa6c98699b6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792923031960
+      },
+      {
+        "executionId": "3fb01e70-776e-4500-b60f-5f420a56fe46",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792935496451
+      },
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792937236229
+      }
+    ],
+    "21. Checkpoint - Ensure all tests pass, extend the Playwright smoke test to the new views, refresh docs/dashboard.png and README": [
+      {
+        "executionId": "5285206d-c0fb-43a3-8cc7-38e17ca68164",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792914045622
+      },
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792939326935
+      }
+    ],
+    "20. Showcase dashboard": [
+      {
+        "executionId": "3fb01e70-776e-4500-b60f-5f420a56fe46",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792935494975
+      }
+    ],
+    "18. SOC integration": [
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792937830743
+      }
+    ],
+    "19. Hardening": [
+      {
+        "executionId": "5082c69f-e8c3-4c3f-9511-6a32317ee3a9",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792939326674
+      }
+    ],
+    "22.1 Implement dataset streaming into the live API_Server and the generic CSV adapter with warm-up and the onboarding script, with unit + Hypothesis property tests for the design properties of this module. _Requirements: 39, 40_": [
+      {
+        "executionId": "7f87d4ab-b522-4395-af9f-d073dc802df2",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792940400293
+      },
+      {
+        "executionId": "617c27f3-ec9f-4767-b186-16542aa55a99",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792940538653
+      },
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792945547560
+      }
+    ],
+    "22.2 Implement auto-triage, suggested label, bulk feedback endpoint and workload metrics, with unit + Hypothesis property tests for the design properties of this module. _Requirements: 41_": [
+      {
+        "executionId": "7f87d4ab-b522-4395-af9f-d073dc802df2",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792940400521
+      },
+      {
+        "executionId": "617c27f3-ec9f-4767-b186-16542aa55a99",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792940539393
+      },
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792943701172
+      },
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792945549206
+      }
+    ],
+    "22.3 Implement the dashboard dataset status panel, suggested label, bulk labelling and keyboard shortcuts, with vitest + axe tests. _Requirements: 39, 41_": [
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792945550178
+      },
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792946530938
+      }
+    ],
+    "22. Viability: datasets, onboarding, workload": [
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792946531111
+      }
+    ],
+    "21. Checkpoint - Ensure all tests pass, extend the Playwright smoke test to the new views, refresh docs/dashboard.png, and write the final README (story, how it works, every scenario, AMLworld evaluation, onboarding, deployment for small and large organisations, limitations)": [
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792946531702
+      },
+      {
+        "executionId": "bd17b011-b7ba-4337-b6ad-24c77de2b31f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792947730741
+      }
+    ],
+    "23.1 Run the AMLworld HI-Small evaluation on the downloaded data (data/HI-Small_Trans.csv, data/HI-Small_Patterns.txt) with scripts/aml.ps1, record the real precision, recall, captured fraud fraction and per-pattern detection in the README Evaluation section, and verify live streaming with demo.ps1 -Dataset amlworld. _Requirements: 4, 39_": [
+      {
+        "executionId": "4e30f562-e958-49e2-a896-11e07e2fdf6e",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792948665397
+      },
+      {
+        "executionId": "694ab97f-689f-494f-bee3-76188e79cdba",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792948925743
+      },
+      {
+        "executionId": "14161644-4fb1-4bfb-b21c-1c8c4c3708e5",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792950043783
+      },
+      {
+        "executionId": "eeaea623-44c8-4bd0-b49c-25fa31cb0111",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792967619360
+      },
+      {
+        "executionId": "eeaea623-44c8-4bd0-b49c-25fa31cb0111",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792971335306
+      }
+    ],
+    "25.1 Add a plain-language walkthrough to README.md: one real transaction traced through every stage with its actual numbers, the inner per-event loop and the outer learning loops, the build journey from scratch to end, and a plain-words glossary. _Requirements: 22, 27.6, 38_": [
+      {
+        "executionId": "9dba23f1-0def-4c11-9ee3-63b5d0cc975a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792949141613
+      },
+      {
+        "executionId": "14161644-4fb1-4bfb-b21c-1c8c4c3708e5",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792949491505
+      },
+      {
+        "executionId": "14161644-4fb1-4bfb-b21c-1c8c4c3708e5",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792950035584
+      }
+    ],
+    "25. README walkthrough": [
+      {
+        "executionId": "14161644-4fb1-4bfb-b21c-1c8c4c3708e5",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792950035669
+      }
+    ],
+    "26.1 Apply the dark AuthKit-inspired theme and motion system across the dashboard. _Requirements: 42_": [
+      {
+        "executionId": "173433c4-9f31-441e-b0ab-51f58c433af2",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792950805161
+      },
+      {
+        "executionId": "173433c4-9f31-441e-b0ab-51f58c433af2",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792952903394
+      }
+    ],
+    "26.2 Implement the Workflow tab: lazy-loaded 3D simulation with story and live modes. _Requirements: 43_": [
+      {
+        "executionId": "173433c4-9f31-441e-b0ab-51f58c433af2",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792950805947
+      },
+      {
+        "executionId": "173433c4-9f31-441e-b0ab-51f58c433af2",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792952903226
+      }
+    ],
+    "26.3 Checkpoint: vitest, build, Playwright smoke test with the Workflow tab, screenshots and README frontend sections. _Requirements: 42, 43_": [
+      {
+        "executionId": "173433c4-9f31-441e-b0ab-51f58c433af2",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792952911120
+      },
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792962683832
+      },
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792964301511
+      }
+    ],
+    "27.1 Rebrand: AuthKit-style navy theme tokens, starfield, grid frame and spotlight backgrounds, HELIX logo, loading splash, header and navigation, and Home route wiring. _Requirements: 42_": [
+      {
+        "executionId": "37c81bab-f5af-47a8-936a-1d2b976b76a6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792954599007
+      },
+      {
+        "executionId": "ba9e601d-c355-4c33-a758-bb3785e8bc6a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792957954025
+      }
+    ],
+    "27.2 Build the Home landing page: hero, fanned product cards, six-stage loop, features, live workflow preview and calls to action. _Requirements: 42, 43_": [
+      {
+        "executionId": "37c81bab-f5af-47a8-936a-1d2b976b76a6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792954601048
+      },
+      {
+        "executionId": "ba9e601d-c355-4c33-a758-bb3785e8bc6a",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792957954605
+      }
+    ],
+    "27.3 Declutter the Live dashboard: KPI strip, queue, case workspace with sub-tabs, compact feed and loop, and a controls drawer. _Requirements: 22, 42_": [
+      {
+        "executionId": "37c81bab-f5af-47a8-936a-1d2b976b76a6",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792954601274
+      },
+      {
+        "executionId": "822910e7-c3d8-49ab-9c4a-04fd8f6ba858",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792959559813
+      },
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792960792803
+      },
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792962670557
+      }
+    ],
+    "28.1 Remove the Tour tab and guided tour, and add a Pricing tab with illustrative organisation plans and a monthly/annual billing toggle. _Requirements: 38, 42_": [
+      {
+        "executionId": "e40d9845-67e1-4390-aab7-279ed6b862bc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792958417342
+      },
+      {
+        "executionId": "e40d9845-67e1-4390-aab7-279ed6b862bc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792959417874
+      }
+    ],
+    "28. Pricing tab": [
+      {
+        "executionId": "e40d9845-67e1-4390-aab7-279ed6b862bc",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792959418375
+      }
+    ],
+    "27.4 Polish the showcase views (SOC console, Red vs Blue, Transaction trace, Live log, Guided tour, Workflow chrome) to the new design. _Requirements: 38, 42_": [
+      {
+        "executionId": "822910e7-c3d8-49ab-9c4a-04fd8f6ba858",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792959560097
+      },
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792960793512
+      },
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792962670849
+      }
+    ],
+    "27. AuthKit-style redesign": [
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792962670923
+      }
+    ],
+    "26. Showcase frontend: theme and Workflow simulation": [
+      {
+        "executionId": "71fcdbb9-e2cf-4f39-9db3-20067f67e25f",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792964301674
+      }
+    ],
+    "23. AMLworld benchmark run": [
+      {
+        "executionId": "eeaea623-44c8-4bd0-b49c-25fa31cb0111",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792971335614
+      }
+    ],
+    "29.1 Improve HELIX on AMLworld: map or add motif detectors for the unmapped pattern types, tune the alert threshold and budget on a training day and evaluate on a separate test day, re-run the benchmark and update the README results. _Requirements: 4, 11_": [
+      {
+        "executionId": "457d1d27-4f57-4553-9809-39d9ad3145ad",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792971507556
+      }
+    ],
+    "30.1 Build the honest head-to-head benchmark in benchmarks/: export HELIX alerts from a warm-up then test replay, add the rule and Isolation Forest baselines, compare at equal alert limits (25, 50, 100 per hour) with ROI metrics, and write the results table, chart and BENCHMARK_NOTES.md. _Requirements: 4, 39, 41_": [
+      {
+        "executionId": "5fba5f4d-cf33-40a3-a5ee-092015f3a201",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792974245599
+      }
+    ],
+    "30.2 Add the XGBoost baseline (time-based split, same features) to the benchmark and re-run the comparison. _Requirements: 4_": [
+      {
+        "executionId": "5fba5f4d-cf33-40a3-a5ee-092015f3a201",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792974246036
+      }
+    ],
+    "30.3 Add a Benchmark section to the frontend showing the measured comparison and ROI numbers from the benchmark results. _Requirements: 38, 42_": [
+      {
+        "executionId": "ea8b1f26-baae-45fe-beb7-bcfdd67523f8",
+        "chatSessionId": "sess_9f454144-fcc5-4259-8d66-6f42fc8164c0",
+        "timestamp": 1792977702871
+      }
+    ]
+  }
+}

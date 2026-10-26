@@ -1,0 +1,128 @@
+# HELIX_Technique_Catalogue (Req 30.1). Loaded with yaml.safe_load and validated by
+# helix.soc.techniques.Catalogue.from_dict: ids match HX-T + four digits and are unique, every
+# technique has a name, a FRAUD or CYBER domain, a description and a Kill_Chain_Stage, and both
+# domains are present.
+#
+# Numbering: HX-T00xx are FRAUD techniques (HX-T0001..HX-T0007 keep the provisional ids the
+# Immune_System already tags antibodies with), HX-T01xx are CYBER techniques.
+#
+# The catalogue is inspired by MITRE ATT&CK. It is NOT official MITRE data and its ids are not
+# ATT&CK ids.
+version: "1.0.0"
+notice: "ATT&CK-inspired technique catalogue; not official MITRE data."
+techniques:
+  - id: HX-T0001
+    name: Round-trip cycle
+    domain: FRAUD
+    kill_chain_stage: LAYERING
+    description: Funds move through a directed cycle of 2-6 accounts and return to the origin within 72 hours.
+  - id: HX-T0002
+    name: Fan-out dispersal
+    domain: FRAUD
+    kill_chain_stage: LAYERING
+    description: One account spreads funds to many counterparties in a short window.
+  - id: HX-T0003
+    name: Fan-in aggregation
+    domain: FRAUD
+    kill_chain_stage: LAYERING
+    description: Many accounts send funds to one collector account in a short window.
+  - id: HX-T0004
+    name: Structuring
+    domain: FRAUD
+    kill_chain_stage: LAYERING
+    description: Repeated transfers just below the reporting threshold that together exceed it.
+  - id: HX-T0005
+    name: Mule chain
+    domain: FRAUD
+    kill_chain_stage: LAYERING
+    description: Funds hop along a chain of pass-through accounts with short dwell times.
+  - id: HX-T0006
+    name: Account takeover cash-out
+    domain: FRAUD
+    kill_chain_stage: CASH_OUT
+    description: A payment made from an account shortly after suspicious authentication activity.
+  - id: HX-T0007
+    name: Card testing
+    domain: FRAUD
+    kill_chain_stage: RECONNAISSANCE
+    description: Bursts of small probing payments that check whether stolen credentials work.
+  - id: HX-T0008
+    name: Anomalous high-value transfer
+    domain: FRAUD
+    kill_chain_stage: CASH_OUT
+    description: A transfer far above the account's usual amounts.
+  - id: HX-T0009
+    name: Transaction velocity burst
+    domain: FRAUD
+    kill_chain_stage: CASH_OUT
+    description: Many transactions in a short window compared with the account's usual rate.
+  - id: HX-T0010
+    name: Off-pattern timing
+    domain: FRAUD
+    kill_chain_stage: CASH_OUT
+    description: Activity at hours or weekdays the account rarely uses.
+  - id: HX-T0011
+    name: Impossible travel
+    domain: FRAUD
+    kill_chain_stage: ACCOUNT_TAKEOVER
+    description: Consecutive transactions from locations too far apart for the elapsed time.
+  - id: HX-T0012
+    name: Payment to unknown counterparty
+    domain: FRAUD
+    kill_chain_stage: CASH_OUT
+    description: Money sent to a counterparty the account has never paid before.
+  - id: HX-T0013
+    name: Behavioural drift
+    domain: FRAUD
+    kill_chain_stage: ACCOUNT_TAKEOVER
+    description: An abrupt change in the account's behaviour that is not a confirmed legitimate regime shift.
+  - id: HX-T0014
+    name: Dormant account reactivation
+    domain: FRAUD
+    kill_chain_stage: CASH_OUT
+    description: A long-inactive account suddenly moves a significant amount.
+  - id: HX-T0099
+    name: Unattributed anomalous behaviour
+    domain: FRAUD
+    kill_chain_stage: ACCOUNT_TAKEOVER
+    description: Evidence from an adaptive detector whose origin has no known technique.
+  - id: HX-T0101
+    name: Password guessing
+    domain: CYBER
+    kill_chain_stage: CREDENTIAL_ACCESS
+    description: A burst of failed logins from one device or session followed by a success.
+  - id: HX-T0102
+    name: Credential stuffing
+    domain: CYBER
+    kill_chain_stage: CREDENTIAL_ACCESS
+    description: Failed logins from rotating sessions or IP addresses using leaked credentials.
+  - id: HX-T0103
+    name: SIM swap
+    domain: CYBER
+    kill_chain_stage: ACCOUNT_TAKEOVER
+    description: A password reset and login from a new device after the victim's number is ported.
+  - id: HX-T0104
+    name: MFA bypass and device takeover
+    domain: CYBER
+    kill_chain_stage: ACCOUNT_TAKEOVER
+    description: Failed MFA challenges followed by a successful challenge from an attacker device.
+  - id: HX-T0105
+    name: New-device login
+    domain: CYBER
+    kill_chain_stage: ACCOUNT_TAKEOVER
+    description: A successful login from a device never seen for the account.
+  - id: HX-T0106
+    name: Payee manipulation
+    domain: CYBER
+    kill_chain_stage: PAYEE_MANIPULATION
+    description: A new payee is added shortly before money moves to it.
+  - id: HX-T0107
+    name: Session hijacking
+    domain: CYBER
+    kill_chain_stage: ACCOUNT_TAKEOVER
+    description: An authenticated session is reused from a different device or network.
+  - id: HX-T0108
+    name: Account reconnaissance
+    domain: CYBER
+    kill_chain_stage: RECONNAISSANCE
+    description: Probing logins or lookups that enumerate valid accounts before an attack.

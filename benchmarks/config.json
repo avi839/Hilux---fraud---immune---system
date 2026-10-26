@@ -1,0 +1,36 @@
+{
+  "seed": 7,
+  "seeds": [7, 11, 13],
+  "capacities": [25, 50, 100],
+  "headline_capacity": 50,
+  "minutes_per_case": 20,
+  "minutes_sensitivity": [10, 20, 30],
+  "analyst_cost_per_hour": 30,
+  "cost_per_case": 10,
+  "value_cap_usd": 100000,
+  "value_cap_note": "Secondary value metric: each laundering transaction counts at most this many USD, because two test transactions (943M and 158M USD) hold ~99.8% of the raw laundering value.",
+  "windows": {
+    "fit_start": "2022/09/03 00:00",
+    "helix_warmup_start": "2022/09/03 19:00",
+    "test_start": "2022/09/04 01:00",
+    "test_end": "2022/09/05 00:00"
+  },
+  "usd_rate_note": "Fixed approximate USD value of one unit of each AMLworld payment currency (rounded, circa 2022). Applied identically to every system; only used to weight laundering value.",
+  "usd_per_unit": {
+    "US Dollar": 1.0,
+    "Euro": 1.0,
+    "UK Pound": 1.17,
+    "Swiss Franc": 1.04,
+    "Canadian Dollar": 0.76,
+    "Australian Dollar": 0.68,
+    "Yen": 0.0071,
+    "Yuan": 0.145,
+    "Rupee": 0.0125,
+    "Ruble": 0.0165,
+    "Mexican Peso": 0.05,
+    "Brazil Real": 0.19,
+    "Shekel": 0.29,
+    "Saudi Riyal": 0.27,
+    "Bitcoin": 20000.0
+  }
+}

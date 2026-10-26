@@ -1,0 +1,20 @@
+# Response_Playbook (Req 32). Actions are simulated inside HELIX only (Req 27.11).
+id: PB-ATO-CONTAIN
+version: 1
+title: Contain an account takeover
+description: >-
+  Hold the Case's payments, force step-up authentication and freeze the accounts when an
+  account-takeover technique is present at HIGH or above. HIGH and CRITICAL Cases need
+  Investigator approval (Playbook_Approval_Threshold, default HIGH).
+trigger:
+  min_tier: HIGH
+  techniques: [HX-T0006, HX-T0101, HX-T0102, HX-T0103, HX-T0104, HX-T0105, HX-T0106, HX-T0107]
+  match: all
+actions:
+  - type: HOLD_TRANSACTION
+  - type: STEP_UP_AUTH
+  - type: FREEZE_ACCOUNT
+  - type: NOTIFY
+    params:
+      channel: fraud-ops
+      message: Account takeover contained (simulated hold, step-up and freeze).

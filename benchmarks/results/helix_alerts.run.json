@@ -1,0 +1,23 @@
+{
+  "config": "default HelixConfig",
+  "alert_budget_per_period": 20,
+  "period_s": 3600,
+  "investigation_cost": 50.0,
+  "scope": {
+    "start": "2022/09/03 19:00",
+    "test_start": "2022/09/04 01:00",
+    "end": "2022/09/04 13:00",
+    "max_rows": null
+  },
+  "rows_in_scope": 158424,
+  "warmup_rows": 62973,
+  "test_rows": 95451,
+  "load_s": 12.5,
+  "warmup_s": 71.2,
+  "test_s": 455.2,
+  "cases_after_warmup": 0,
+  "cases_total": 5336,
+  "cases_admitted": 307,
+  "worker_errors": 0,
+  "auto_cleared": null
+}

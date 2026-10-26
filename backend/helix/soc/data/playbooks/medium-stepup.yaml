@@ -1,0 +1,14 @@
+# Response_Playbook (Req 32). Actions are simulated inside HELIX only (Req 27.11).
+id: PB-MEDIUM-STEPUP
+version: 1
+title: Step up authentication on a medium Case
+description: >-
+  Ask the Case's account holders to re-authenticate and notify fraud operations. Below the
+  approval threshold, so it runs without a human decision.
+trigger:
+  tiers: [MEDIUM]
+actions:
+  - type: STEP_UP_AUTH
+  - type: NOTIFY
+    params:
+      channel: fraud-ops

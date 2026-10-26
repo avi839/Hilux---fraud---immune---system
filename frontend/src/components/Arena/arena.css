@@ -1,0 +1,353 @@
+/* Red-vs-Blue arena (Req 38.3), in the Home/Pricing language: a two-sided scoreboard of big
+   numbers (red attacker left, blue defender right), the detection chart across the full width,
+   then tidy glass cards. Red/blue only tint hairlines and a small dot; every side, state and
+   outcome is also written out as text. Rules are scoped under .arena (with .tabpanel where
+   styles.css competes) so they win regardless of stylesheet order. */
+
+.arena {
+  --a-red: #fb7185; /* text step of --hx-fraud, 6.9:1 on --hx-bg */
+  --a-blue: #a5b4fc; /* 9.6:1 on --hx-bg */
+}
+
+.arena .arena-updated {
+  padding: 4px 12px;
+  border: 1px solid var(--hx-border);
+  border-radius: 999px;
+  color: var(--hx-text-muted);
+  font: 500 12px/1.6 var(--v-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- scoreboard --------------------------------------------------------------------- */
+
+.arena .arena-board__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .arena .arena-board__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .arena .arena-vs {
+    display: none;
+  }
+}
+
+.arena .arena-team {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 24px 26px 26px;
+  overflow: hidden;
+  border: 1px solid var(--hx-border);
+  border-radius: var(--hx-radius);
+  background: linear-gradient(180deg, rgba(148, 163, 255, 0.07), rgba(148, 163, 255, 0.02) 60%), var(--hx-glass-base);
+  box-shadow:
+    inset 0 1px 0 rgba(232, 236, 255, 0.06),
+    0 24px 48px -28px rgba(0, 0, 0, 0.8);
+}
+/* A soft tinted hairline along the top edge marks the side. */
+.arena .arena-team::before {
+  content: "";
+  position: absolute;
+  inset: 0 24px auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--side), transparent);
+  opacity: 0.8;
+}
+.arena .arena-team--red {
+  --side: var(--a-red);
+}
+.arena .arena-team--blue {
+  --side: var(--a-blue);
+}
+.arena .arena-team__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--v-soft);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.arena .arena-team__name::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--side);
+  box-shadow: 0 0 8px var(--side);
+}
+.arena .arena-team__state {
+  padding: 0 9px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 999px;
+  color: var(--hx-text);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+.arena .arena-team__role {
+  margin: 0 0 14px;
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+
+.arena .arena-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 16px;
+  margin: 0;
+  border-top: 1px solid var(--v-line);
+}
+.arena .arena-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 16px 16px 0 0;
+}
+.arena .arena-stat dt {
+  color: var(--hx-text-muted);
+  font-size: 12px;
+}
+.arena .arena-stat dd {
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.arena .arena-stat__big {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--hx-font-display);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--hx-text);
+}
+
+.arena .arena-vs {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 50%;
+  background: var(--hx-glass-base);
+  color: var(--hx-text-muted);
+  font: 500 12px/1 var(--v-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --- cards -------------------------------------------------------------------------- */
+
+.arena .arena-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 1000px) {
+  .arena .arena-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.arena .arena-wide {
+  grid-column: 1 / -1;
+}
+
+.tabpanel .arena .arena-card,
+.arena .arena-card {
+  position: relative;
+  min-width: 0;
+  padding: 22px 24px 24px;
+  border: 1px solid var(--hx-border);
+  border-radius: var(--hx-radius);
+  background: linear-gradient(180deg, rgba(148, 163, 255, 0.06), rgba(148, 163, 255, 0.015) 50%), var(--hx-glass-base);
+  box-shadow: inset 0 1px 0 rgba(232, 236, 255, 0.05);
+}
+.tabpanel .arena .arena-card:hover {
+  transform: none;
+  border-color: var(--hx-border-strong);
+  box-shadow: inset 0 1px 0 rgba(232, 236, 255, 0.07);
+}
+/* corner dots, as on .hx-card */
+.arena .arena-card::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  --d: radial-gradient(circle, rgba(199, 210, 254, 0.35) 0 0.9px, transparent 1.5px);
+  background:
+    var(--d) left top / 4px 4px no-repeat,
+    var(--d) right top / 4px 4px no-repeat,
+    var(--d) left bottom / 4px 4px no-repeat,
+    var(--d) right bottom / 4px 4px no-repeat;
+}
+.arena .arena-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.arena .arena-red .arena-card__title::before,
+.arena .arena-blue .arena-card__title::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--a-red);
+}
+.arena .arena-blue .arena-card__title::before {
+  background: var(--a-blue);
+}
+.arena .arena-card__hint {
+  margin: 4px 0 16px;
+  color: var(--hx-text-muted);
+  font-size: 13px;
+}
+.arena .arena-note {
+  margin: 0 0 12px;
+  color: var(--v-soft);
+  font-size: 12.5px;
+}
+.arena .arena-note strong {
+  color: var(--hx-text);
+}
+
+.arena .arena-scroll {
+  max-height: 360px;
+  overflow: auto;
+  border: 1px solid var(--v-line);
+  border-radius: 12px;
+  scrollbar-width: thin;
+}
+.arena .arena-scroll:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.arena .arena-scroll .table td,
+.arena .arena-scroll .table th {
+  white-space: nowrap;
+}
+
+.arena .arena-empty {
+  margin: 4px 0;
+  font-size: 13px;
+}
+
+.arena .mono {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* Outcome text carries the meaning; the chip outline only repeats it. */
+.arena .arena-outcome {
+  display: inline-block;
+  padding: 0 9px;
+  border: 1px solid var(--hx-border-strong);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--v-soft);
+}
+.arena .arena-outcome--ok {
+  border-color: rgba(52, 211, 153, 0.45);
+  color: var(--ok);
+}
+.arena .arena-outcome--warn {
+  border-color: rgba(245, 158, 11, 0.5);
+  border-style: dashed;
+  color: #fcd34d;
+}
+.arena .arena-outcome--bad {
+  border-color: rgba(251, 113, 133, 0.6);
+  color: var(--a-red);
+  font-weight: 600;
+}
+
+.arena .arena-status {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* --- detection chart ---------------------------------------------------------------- */
+
+.arena .arena-chart {
+  margin: 0;
+}
+.arena .arena-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.arena .arena-chart__grid {
+  stroke: var(--v-line);
+  stroke-width: 1;
+}
+.arena .arena-chart__axis {
+  fill: var(--hx-text-muted);
+  font-size: 11px;
+}
+.arena .arena-chart__mean {
+  fill: none;
+  stroke: var(--a-blue);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 4;
+}
+.arena .arena-chart__point {
+  fill: #e8ecff;
+  stroke: var(--hx-bg);
+  stroke-width: 1;
+}
+.arena .arena-chart figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 12px;
+}
+.arena .arena-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--hx-text-muted);
+  font-size: 12.5px;
+}
+.arena .arena-legend__point {
+  width: 8px;
+  height: 8px;
+  background: #e8ecff;
+}
+.arena .arena-legend__mean {
+  width: 22px;
+  border-top: 2px dashed var(--a-blue);
+}
+.arena .arena-details {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--v-line);
+}
+.arena .arena-details summary {
+  width: fit-content;
+  color: var(--v-soft);
+  font-size: 13px;
+  cursor: pointer;
+}
+.arena .arena-details[open] summary {
+  margin-bottom: 10px;
+}
+.arena .arena-details summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}

@@ -1,0 +1,12 @@
+# Response_Playbook (Req 32). Actions are simulated inside HELIX only (Req 27.11).
+id: PB-CRITICAL-HOLD
+version: 1
+title: Hold payments of a critical Case
+description: Hold every payment in a CRITICAL Case and notify the on-call lead.
+trigger:
+  tiers: [CRITICAL]
+actions:
+  - type: HOLD_TRANSACTION
+  - type: NOTIFY
+    params:
+      channel: fraud-oncall

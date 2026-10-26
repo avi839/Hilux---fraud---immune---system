@@ -1,0 +1,46 @@
+{
+  "name": "helix-dashboard",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node node_modules/vite/bin/vite.js",
+    "build": "node node_modules/typescript/bin/tsc -b && node node_modules/vite/bin/vite.js build",
+    "preview": "node node_modules/vite/bin/vite.js preview",
+    "typecheck": "node node_modules/typescript/bin/tsc -b",
+    "test": "node node_modules/vitest/vitest.mjs --run",
+    "e2e": "node node_modules/@playwright/test/cli.js test"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "@fontsource-variable/sora": "5.3.0",
+    "@react-three/drei": "9.122.0",
+    "@react-three/fiber": "8.18.0",
+    "deck.gl": "9.0.38",
+    "maplibre-gl": "4.7.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-force-graph-3d": "1.26.0",
+    "react-map-gl": "7.1.8",
+    "three": "0.186.1",
+    "zustand": "5.0.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.1.0",
+    "@testing-library/user-event": "14.5.2",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "@types/three": "0.186.0",
+    "@vitejs/plugin-react": "4.3.4",
+    "axe-core": "4.10.2",
+    "fast-check": "3.23.2",
+    "jsdom": "25.0.1",
+    "typescript": "5.7.2",
+    "vite": "6.0.7",
+    "vitest": "3.0.2",
+    "vitest-axe": "0.1.0"
+  }
+}

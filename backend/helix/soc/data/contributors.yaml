@@ -1,0 +1,26 @@
+# Contributor-to-technique mapping (Req 30.2). Keys use the kill-chain stage-key scheme of
+# helix.cases.killchain.stage_keys:
+#   sensor.<name>     a Sensor_Agent (coverage: what the sensor can detect)
+#   auth.<signal>     an Auth_Sensor Evidence_Chain entry with that Suspicious_Auth_Activity signal
+#   motif.<TYPE>      a Motif_Detector
+# Detection_Rules carry their own techniques (rule YAML) and Antibodies their tags, so they are
+# not listed here. Every id must exist in techniques.yaml (Req 30.3).
+catalogue_version: "1.0.0"
+mappings:
+  sensor.amount: [HX-T0008]
+  sensor.velocity: [HX-T0009, HX-T0007]
+  sensor.timing: [HX-T0010]
+  sensor.geo: [HX-T0011]
+  sensor.counterparty: [HX-T0012]
+  sensor.drift: [HX-T0013]
+  sensor.auth: [HX-T0006, HX-T0101, HX-T0102, HX-T0103, HX-T0104, HX-T0105, HX-T0106]
+  auth.failed_logins: [HX-T0006, HX-T0101, HX-T0102]
+  auth.mfa_failure: [HX-T0006, HX-T0104]
+  auth.password_reset: [HX-T0006, HX-T0103]
+  auth.new_device: [HX-T0006, HX-T0105]
+  auth.new_payee: [HX-T0006, HX-T0106]
+  motif.ROUND_TRIP_CYCLE: [HX-T0001]
+  motif.FAN_OUT: [HX-T0002]
+  motif.FAN_IN: [HX-T0003]
+  motif.STRUCTURING: [HX-T0004]
+  motif.MULE_CHAIN: [HX-T0005]
